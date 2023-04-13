@@ -10,12 +10,27 @@ import InputDate from '../InputDate';
 import InputSelect from '../InputSelect';
 
 import { Form } from 'react-bootstrap';
+import { data } from 'autoprefixer';
 
 function MedModalAtualizar({props, remedio}) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    // Elementos do formulário:
+    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastroPura); //--------------DATA
+    const [nome, setNome] = useState(remedio.nome);
+    const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
+    const [lote, setLote] = useState(remedio.lote);
+    const [origem, setOrigem] = useState(remedio.origem);
+    const [classe, setClasse] = useState(remedio.classe); //-----------------SELECT
+    const [tipo, setTipo] = useState(remedio.tipo); //---------------------SELECT
+    const [validade, setValidade] = useState(remedio.validade); //------------------------DATA
+    const [fabricante, setFabricante] = useState(remedio.fabricante);
+    const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
+    const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
+    const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte); //-SELECT
 
     return (
         <>
@@ -44,40 +59,41 @@ function MedModalAtualizar({props, remedio}) {
                             <Row>
                                 <Col sm={6}>
                                     {/* remedio.dataCadastro */}
-                                    <InputDate label={"Data do cadastro"} controlId={"inputDataCadastro"} value={remedio.dataCadastroPura.substr(0, 10)}/>
+                                    <InputDate label={"Data do cadastro"} controlId={"inputDataCadastro"} value={''}/>
+                                    <p>Data: {data}</p>
                                 </Col>
                                 <Col sm={6}>
-                                    <InputText label={"Lote"} controlId={"inputLoteMed"} value={remedio.lote}/>
+                                    <InputText label={"Lote"} controlId={"inputLoteMed"} value={lote} data={lote} setData={setLote}/>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={remedio.nome}/>
+                                    <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={nome} data={nome} setData={setNome}/>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Princípio ativo e dosagem"} controlId={"inputPrincMed"} value={remedio.principioAtivo}/>
+                                    <InputText label={"Princípio ativo e dosagem"} controlId={"inputPrincMed"} value={principioAtivo} data={principioAtivo} setData={setPrincipioAtivo}/>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Origem do medicamento"} controlId={"inputOrigemMed"} value={remedio.origem}/>
+                                    <InputText label={"Origem do medicamento"} controlId={"inputOrigemMed"} value={origem} data={origem} setData={setOrigem}/>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Fabricante"} controlId={"inputFabrivanteMed"} value={remedio.fabricante}/>
+                                    <InputText label={"Fabricante"} controlId={"inputFabrivanteMed"} value={fabricante} data={fabricante} setData={setFabricante}/>
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={remedio.validadePura.substr(0, 10)}/>
+                                    <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={remedio.validadePura?.substr(0, 10)}/>
                                 </Col>
                                 <Col sm={6}>
                                     <InputSelect label={"Classe"} opcao={"Genérico"}/>

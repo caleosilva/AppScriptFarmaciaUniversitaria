@@ -71,41 +71,44 @@ export const getMedicamentos = () => {
   return JSON.stringify(informacoes);
 };
 
-export const appendRowMedicamentos = (formObject) => {
+export const appendRowMedicamentos = (medicamento) => {
   var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
   var ws = ss.getSheetByName("Medicamentos");
 
+  
   ws.appendRow([
-    formObject.dataCadastro,
-    formObject.nome,
-    formObject.principioAtivo,
-    formObject.lote,
-    formObject.origem,
-    formObject.classe,
-    formObject.tipo,
-    formObject.validade,
-    formObject.fabricante,
-    formObject.tarja,
-    formObject.apresentacao,
-    formObject.motivoDescarte
+    medicamento.dataCadastro,
+    medicamento.nome,
+    medicamento.principioAtivo,
+    medicamento.lote,
+    medicamento.origem,
+    medicamento.classe,
+    medicamento.tipo,
+    medicamento.validade,
+    medicamento.fabricante,
+    medicamento.tarja,
+    medicamento.apresentacao,
+    medicamento.motivoDescarte
   ]);
 }
 
 
-function getInformacoesMedicamentos(){
+export const getInformacoesMedicamentos = () => {
   var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
   var ws = ss.getSheetByName("InformacoesMedicamentos");
   var data = ws.getRange(2,1,ws.getLastRow()-1, 5).getValues();
 
   var informacoes = [];
+
   let classes = []
   let tiposMedicamentos = []
   let tarja = []
   let apresentacao = []
   let motivoDescarte = []
 
-  for(i = 0; i < data.length; i++){
-    for(j=0; j<data[i].length; j++){
+
+  for(let i = 0; i < data.length; i++){
+    for(let j=0; j<data[i].length; j++){
 
       if(data[i][j].length>0 && j==0){
         classes.push(data[i][j]);
@@ -120,6 +123,7 @@ function getInformacoesMedicamentos(){
       }
     }
   }
+
   informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDescarte)
   return JSON.stringify(informacoes);
 }

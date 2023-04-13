@@ -15,7 +15,6 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 import { serverFunctions } from '../../../utils/serverFunctions';
-import { string } from 'prop-types';
 
 
 
@@ -28,21 +27,14 @@ function TabelaMedicamentos() {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
     }, []);
 
-    //Error: Função de script não encontrada: getInformacoesMedicamentos
     // const [infoDD, setInfoDD] = useState(null)
     // useEffect(() => {
     //     serverFunctions.getInformacoesMedicamentos().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
     // }, []);
 
-
-    const adicionarNovoMedicamento = (medicamento) => {
-        setData([...data, medicamento])
-    }
-
-
-
     const [busca, setBusca] = useState('');
-    console.log(busca)
+    // console.log("Infor DD:\n");
+    // console.log(infoDD)
     
 
     return (
@@ -66,7 +58,7 @@ function TabelaMedicamentos() {
                                 </Button> */}
                             </InputGroup>
 
-                            <MedModalCadastrar cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}/>
+                            <MedModalCadastrar data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}/>
                         </Container>
                     </Navbar>
 
@@ -85,7 +77,7 @@ function TabelaMedicamentos() {
                             {data ? data.filter((item) => {
                                 return busca.toLowerCase() === '' 
                                 ? item 
-                                : item.nome.toLowerCase().includes(busca)
+                                : item.nome.toLowerCase().includes(busca.toLowerCase())
                             }).map((remedio, index) =>
                                 <tr key={index}>
                                     <td>{remedio.nome}</td>

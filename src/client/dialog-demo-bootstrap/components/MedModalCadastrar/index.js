@@ -15,11 +15,16 @@ import { serverFunctions } from '../../../utils/serverFunctions';
 import { Form } from 'react-bootstrap';
 
 
-function MedModalCadastrar(props) {
+function MedModalCadastrar({props, data, setData}) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    // const [infoDD, setInfoDD] = useState(null)
+    // useEffect(() => {
+    //     serverFunctions.getInformacoesMedicamentos().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
+    // }, []);
 
     // Elementos do formulário:
     const [dataCadastro, setDataCadastro] = useState(''); //--------------DATA
@@ -37,9 +42,8 @@ function MedModalCadastrar(props) {
 
     const cadastrarMed = (event) => {
         event.preventDefault();
-        // serverFunctions.appendRowMedicamentos().catch(alert);
 
-        const med = {
+        const medicamento = {
             dataCadastro, 
             nome, 
             principioAtivo, 
@@ -54,9 +58,25 @@ function MedModalCadastrar(props) {
             motivoDescarte
         }
 
-        props.cadastrarMedicamento(med)
+        // Atualiza a tabela:
+        setData([...data, medicamento])
 
-        console.log(med)
+        // Adiciona no google sheets
+        serverFunctions.appendRowMedicamentos(medicamento).catch(alert);
+
+        // Limpa os formulários
+        setDataCadastro('')
+        setNome('')
+        setPrincipioAtivo('')
+        setLote('')
+        setOrigem('')
+        setClasse('')
+        setTipo('')
+        setValidade('')
+        setFabricante('')
+        setTarja('')
+        setApresentacao('')
+        setMotivoDescarte('')
     }
 
     return (
@@ -95,7 +115,6 @@ function MedModalCadastrar(props) {
                             <Row>
                                 <Col>
                                     <InputText label={"Nome do medicamento"} placeholder={"Nome"} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome}/>
-                                    <p>Nome: {nome}</p>
                                 </Col>
                             </Row>
 
@@ -123,9 +142,8 @@ function MedModalCadastrar(props) {
                                 </Col>
                                 <Col sm={6}>
                                     <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse}/>
+                                    <p>Classe: {classe}</p>
                                 </Col>
-
-
                             </Row>
 
                             <Row>
