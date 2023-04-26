@@ -20,17 +20,18 @@ function MedModalAtualizar({props, remedio}) {
 
     // Elementos do formulário:
     const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastroPura); //--------------DATA
+    const [validadePura, setValidadePura] = useState(remedio.validadePura); //--------------DATA    
     const [nome, setNome] = useState(remedio.nome);
     const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
     const [lote, setLote] = useState(remedio.lote);
     const [origem, setOrigem] = useState(remedio.origem);
     const [classe, setClasse] = useState(remedio.classe); //-----------------SELECT
-    const [tipo, setTipo] = useState(remedio.tipo); //---------------------SELECT
+    // const [tipo, setTipo] = useState(remedio.tipo); //---------------------SELECT
     const [validade, setValidade] = useState(remedio.validade); //------------------------DATA
     const [fabricante, setFabricante] = useState(remedio.fabricante);
-    const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
-    const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
-    const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte); //-SELECT
+    // const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
+    // const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
+    // const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte); //-SELECT
 
     return (
         <>
@@ -58,9 +59,8 @@ function MedModalAtualizar({props, remedio}) {
                         <Form>
                             <Row>
                                 <Col sm={6}>
-                                    {/* remedio.dataCadastro */}
-                                    <InputDate label={"Data do cadastro"} controlId={"inputDataCadastro"} value={''}/>
-                                    <p>Data: {data}</p>
+                                    <InputDate label={"Data do cadastro"} controlId={"inputDataCadastro"} value={dataCadastro?.substr(0, 10)} setData={setDataCadastro}/>
+                                    <p>{dataCadastro}</p>
                                 </Col>
                                 <Col sm={6}>
                                     <InputText label={"Lote"} controlId={"inputLoteMed"} value={lote} data={lote} setData={setLote}/>
@@ -93,10 +93,12 @@ function MedModalAtualizar({props, remedio}) {
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={remedio.validadePura?.substr(0, 10)}/>
+                                    <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={validadePura?.substr(0, 10)} setData={setValidadePura}/>
+                                    <p>{validadePura}</p>
                                 </Col>
                                 <Col sm={6}>
-                                    <InputSelect label={"Classe"} opcao={"Genérico"}/>
+                                    <InputSelect label={"Classe"} data={classe} setData={setClasse}/>
+                                    {classe}
                                 </Col>
 
 

@@ -9,57 +9,57 @@ import InputText from '../InputText';
 import InputDate from '../InputDate';
 import InputSelect from '../InputSelect';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { serverFunctions } from '../../../utils/serverFunctions';
 import { Form } from 'react-bootstrap';
 
 
-function MedModalCadastrar({props, data, setData}) {
+function MedModalCadastrar({ props, data, setData, listaDD }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    // const [infoDD, setInfoDD] = useState(null)
-    // useEffect(() => {
-    //     serverFunctions.getInformacoesMedicamentos().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
-    // }, []);
+    // Carrega os dados do DropDown
+    const [lista, setLista] = useState();
 
     // Elementos do formulário:
+    const [classe, setClasse] = useState(''); //-----------------SELECT
+    const [tipo, setTipo] = useState(''); //---------------------SELECT 
+    const [tarja, setTarja] = useState(''); //-------------------SELECT
+    const [apresentacao, setApresentacao] = useState(''); //-----SELECT
+    const [motivoDescarte, setMotivoDescarte] = useState(''); //-SELECT
     const [dataCadastro, setDataCadastro] = useState(''); //--------------DATA
+    const [validade, setValidade] = useState(); //------------------------DATA
     const [nome, setNome] = useState('');
     const [principioAtivo, setPrincipioAtivo] = useState('');
     const [lote, setLote] = useState('');
     const [origem, setOrigem] = useState('');
-    const [classe, setClasse] = useState(''); //-----------------SELECT
-    const [tipo, setTipo] = useState(''); //---------------------SELECT
-    const [validade, setValidade] = useState(); //------------------------DATA
     const [fabricante, setFabricante] = useState('');
-    const [tarja, setTarja] = useState(''); //-------------------SELECT
-    const [apresentacao, setApresentacao] = useState(''); //-----SELECT
-    const [motivoDescarte, setMotivoDescarte] = useState(''); //-SELECT
+
 
     const cadastrarMed = (event) => {
         event.preventDefault();
 
+        // Verifica se o medicamento já existe
         const medicamento = {
-            dataCadastro, 
-            nome, 
-            principioAtivo, 
-            lote, 
-            origem, 
-            classe, 
-            tipo, 
-            validade, 
-            fabricante, 
-            tarja, 
-            apresentacao, 
+            dataCadastro,
+            nome,
+            principioAtivo,
+            lote,
+            origem,
+            classe,
+            tipo,
+            validade,
+            fabricante,
+            tarja,
+            apresentacao,
             motivoDescarte
         }
 
         // Atualiza a tabela:
-        setData([...data, medicamento])
+        setData([medicamento, ...data])
 
         // Adiciona no google sheets
         serverFunctions.appendRowMedicamentos(medicamento).catch(alert);
@@ -77,7 +77,14 @@ function MedModalCadastrar({props, data, setData}) {
         setTarja('')
         setApresentacao('')
         setMotivoDescarte('')
+
     }
+
+    useEffect(() => {
+        setLista(listaDD)
+    }, [listaDD]);
+
+    console.log('lista: ' + listaDD);
 
     return (
         <>
@@ -98,41 +105,41 @@ function MedModalCadastrar({props, data, setData}) {
                 centered
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Cadastro de medicamento</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={cadastrarMed}>
                         <Container>
                             <Row>
                                 <Col sm={6}>
-                                    <InputDate label={"Data do cadastro"} placeholder={"DD/MM/AAAA"} controlId={"inputDataCadastro"} name={"dataCadastro"} data={dataCadastro} setData={setDataCadastro}/>
+                                    <InputDate label={"Data do cadastro"} placeholder={"DD/MM/AAAA"} controlId={"inputDataCadastro"} name={"dataCadastro"} data={dataCadastro} setData={setDataCadastro} />
                                 </Col>
                                 <Col sm={6}>
-                                    <InputText label={"Lote"} placeholder={"ABC123"} controlId={"inputLoteMed"} name={"lote"} data={lote} setData={setLote}/>
+                                    <InputText label={"Lote"} placeholder={"ABC123"} controlId={"inputLoteMed"} name={"lote"} data={lote} setData={setLote} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Nome do medicamento"} placeholder={"Nome"} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome}/>
+                                    <InputText label={"Nome do medicamento"} placeholder={"Nome"} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Princípio ativo e dosagem"} placeholder={"50mg de ..."} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo}/>
+                                    <InputText label={"Princípio ativo e dosagem"} placeholder={"50mg de ..."} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Origem do medicamento"} placeholder={"Ex: Doação"} controlId={"inputOrigemMed"} name={"origem"} data={origem} setData={setOrigem}/>
+                                    <InputText label={"Origem do medicamento"} placeholder={"Ex: Doação"} controlId={"inputOrigemMed"} name={"origem"} data={origem} setData={setOrigem} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Fabricante"} placeholder={"Ex: EMS"} controlId={"inputFabrivanteMed"} name={"fabricante"} data={fabricante} setData={setFabricante}/>
+                                    <InputText label={"Fabricante"} placeholder={"Ex: EMS"} controlId={"inputFabrivanteMed"} name={"fabricante"} data={fabricante} setData={setFabricante} />
                                 </Col>
                             </Row>
 
@@ -141,27 +148,26 @@ function MedModalCadastrar({props, data, setData}) {
                                     <InputDate label={"Data de validade"} placeholder={"DD/MM/AAAA"} controlId={"inputDataValidade"} name={"validade"} data={validade} setData={setValidade} />
                                 </Col>
                                 <Col sm={6}>
-                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse}/>
-                                    <p>Classe: {classe}</p>
+                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista[0]} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja}/>
+                                    <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista[2]} />
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputSelect label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao}/>
+                                    <InputSelect label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista[3]} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo}/>
+                                    <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo} lista={lista[1]} />
                                 </Col>
                                 <Col sm={4}>
-                                    <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte}/>
+                                    <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte} lista={lista[4]} />
                                 </Col>
                             </Row>
                         </Container>
@@ -170,7 +176,7 @@ function MedModalCadastrar({props, data, setData}) {
                             Cancelar
                         </Button>
 
-                        <Button type="submit" variant="dark" >Cadastrar</Button>
+                        <Button type="submit" variant="dark" onClick={handleClose}>Cadastrar</Button>
                         {/* onClick={() => cadastrarMedicamento(formObject)} */}
                     </Form>
                 </Modal.Body>

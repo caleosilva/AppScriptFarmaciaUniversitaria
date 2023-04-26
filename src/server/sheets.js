@@ -45,7 +45,6 @@ export const getMedicamentos = () => {
   for(i=0; i<data.length; i++){
     var dataCadastro = new Date(data[i][0]);
     var dataCadastroFormatada = (dataCadastro.getDate() + 1) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
-
     var dataValidade = new Date(data[i][7]);
     var dataValidadeFormatada = (dataValidade.getDate() + 1) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
 
@@ -63,18 +62,17 @@ export const getMedicamentos = () => {
       "fabricante": data[i][8],
       "tarja": data[i][9],
       "apresentacao": data[i][10],
-      "motivoDescarte": data[i][11]
+      "motivoDescarte": data[i][11],
+      "index": data[i][12]
     }
     informacoes.push(remedio)
   }
-
   return JSON.stringify(informacoes);
 };
 
 export const appendRowMedicamentos = (medicamento) => {
   var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
   var ws = ss.getSheetByName("Medicamentos");
-
   
   ws.appendRow([
     medicamento.dataCadastro,
@@ -126,4 +124,24 @@ export const getInformacoesMedicamentos = () => {
 
   informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDescarte)
   return JSON.stringify(informacoes);
+}
+
+
+export const findRowMedicamentos = (dados) => {
+  // index deve ser passado por parâmetro:
+  // var dados = ['3', 'peDro', '12'];
+  // var codigo = dados[0]+ dados[1] + dados[2];
+  // var codigoLower = codigo.toString().toLowerCase();
+
+  // var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
+  // var ws = ss.getSheetByName("Medicamentos");
+  // var lastRow = ws.getLastRow();
+
+  // for(var i=2; i<= lastRow; i++){
+  //   var info = ws.getRange(i, 2).getValue().toString() + ws.getRange(i, 4).getValue().toString() + ws.getRange(i, 8).getValue().toString();
+  //   if(info.toString().toLowerCase() == codigoLower){
+  //     return true;
+  //   }
+  // }
+  return false;
 }

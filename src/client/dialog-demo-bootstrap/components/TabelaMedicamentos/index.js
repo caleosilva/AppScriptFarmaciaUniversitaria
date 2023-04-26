@@ -20,21 +20,20 @@ import { serverFunctions } from '../../../utils/serverFunctions';
 
 function TabelaMedicamentos() {
 
-    
-
     const [data, setData] = useState(null);
     useEffect(() => {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
     }, []);
 
-    // const [infoDD, setInfoDD] = useState(null)
-    // useEffect(() => {
-    //     serverFunctions.getInformacoesMedicamentos().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
-    // }, []);
+    const [infoDD, setInfoDD] = useState(null)
+    useEffect(() => {
+        serverFunctions.getInformacoesMedicamentos().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
+    }, []);
 
     const [busca, setBusca] = useState('');
     // console.log("Infor DD:\n");
-    // console.log(infoDD)
+    console.log(infoDD)
+    
     
 
     return (
@@ -58,7 +57,7 @@ function TabelaMedicamentos() {
                                 </Button> */}
                             </InputGroup>
 
-                            <MedModalCadastrar data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}/>
+                            <MedModalCadastrar listaDD={infoDD} data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}/>
                         </Container>
                     </Navbar>
 
