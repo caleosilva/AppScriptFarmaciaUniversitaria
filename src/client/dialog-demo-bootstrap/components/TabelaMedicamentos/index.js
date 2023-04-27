@@ -31,10 +31,6 @@ function TabelaMedicamentos() {
     }, []);
 
     const [busca, setBusca] = useState('');
-    // console.log("Infor DD:\n");
-    console.log(infoDD)
-    
-    
 
     return (
         <section className='m-5'>
@@ -81,7 +77,7 @@ function TabelaMedicamentos() {
                                 <tr key={index}>
                                     <td>{remedio.nome}</td>
                                     <td>{remedio.lote}</td>
-                                    <td>{remedio.dataCadastro}</td>
+                                    <td>{remedio.validade}</td>
                                     <td colSpan={"1"}>
                                         <GrupoBotao remedio={remedio} />
                                     </td>

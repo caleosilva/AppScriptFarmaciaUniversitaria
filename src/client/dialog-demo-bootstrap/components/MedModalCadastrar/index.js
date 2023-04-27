@@ -42,7 +42,15 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
     const cadastrarMed = (event) => {
         event.preventDefault();
 
-        // Verifica se o medicamento já existe
+
+
+        var codigo = (nome + lote + validade).toString().toLowerCase();
+        console.log("Cod: " + codigo);
+
+        //dorflex12342023-04-29
+
+
+        // Cria um objeto com os dados do medicamento
         const medicamento = {
             dataCadastro,
             nome,
@@ -58,33 +66,36 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
             motivoDescarte
         }
 
-        // Atualiza a tabela:
-        setData([medicamento, ...data])
+        // Verifica se ele não existe para poder finalizar o cadastro
+        serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
+            console.log("Sucesso " + sucesso)
 
-        // Adiciona no google sheets
-        serverFunctions.appendRowMedicamentos(medicamento).catch(alert);
+            if (sucesso) {
+                // Atualiza a tabela:
+                setData([medicamento, ...data])
 
-        // Limpa os formulários
-        setDataCadastro('')
-        setNome('')
-        setPrincipioAtivo('')
-        setLote('')
-        setOrigem('')
-        setClasse('')
-        setTipo('')
-        setValidade('')
-        setFabricante('')
-        setTarja('')
-        setApresentacao('')
-        setMotivoDescarte('')
-
+                // Limpa os formulários
+                setDataCadastro('')
+                setNome('')
+                setPrincipioAtivo('')
+                setLote('')
+                setOrigem('')
+                setClasse('')
+                setTipo('')
+                setValidade('')
+                setFabricante('')
+                setTarja('')
+                setApresentacao('')
+                setMotivoDescarte('')
+            } else {
+                console.log("Medicamento já existe na tabela")
+            }
+        }).catch(alert);
     }
 
     useEffect(() => {
         setLista(listaDD)
     }, [listaDD]);
-
-    console.log('lista: ' + listaDD);
 
     return (
         <>
@@ -148,26 +159,26 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                                     <InputDate label={"Data de validade"} placeholder={"DD/MM/AAAA"} controlId={"inputDataValidade"} name={"validade"} data={validade} setData={setValidade} />
                                 </Col>
                                 <Col sm={6}>
-                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista[0]} />
+                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista[2]} />
+                                    <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista ? lista[2] : []} />
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputSelect label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista[3]} />
+                                    <InputSelect label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista ? lista[3] : []} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo} lista={lista[1]} />
+                                    <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
                                 </Col>
                                 <Col sm={4}>
-                                    <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte} lista={lista[4]} />
+                                    <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte} lista={lista ? lista[4] : []} />
                                 </Col>
                             </Row>
                         </Container>
@@ -177,14 +188,9 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                         </Button>
 
                         <Button type="submit" variant="dark" onClick={handleClose}>Cadastrar</Button>
-                        {/* onClick={() => cadastrarMedicamento(formObject)} */}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    {/* <Button variant="outline-secondary" onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                    <Button variant="dark" onClick={() => cadastrarMedicamento(formObject)}>Cadastrar</Button> */}
                 </Modal.Footer>
             </Modal>
         </>

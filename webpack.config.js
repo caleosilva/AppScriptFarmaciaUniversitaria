@@ -115,7 +115,7 @@ const clientConfig = ({ isDevClientWrapper }) => ({
       // typescript config
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!bootstrap)/,
         use: [
           {
             loader: 'babel-loader',
@@ -135,7 +135,7 @@ const clientConfig = ({ isDevClientWrapper }) => ({
       },
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!bootstrap)/,
         use: {
           loader: 'babel-loader',
           // only enable react-refresh for dev builds, and not when building the dev client "wrapper"
@@ -337,7 +337,7 @@ const serverConfig = {
       // typescript config
       {
         test: /\.tsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!bootstrap)/,
         use: [
           {
             loader: 'babel-loader',
@@ -349,7 +349,7 @@ const serverConfig = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/(?!bootstrap)/,
         use: {
           loader: 'babel-loader',
         },

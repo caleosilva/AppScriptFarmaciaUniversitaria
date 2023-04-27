@@ -38,19 +38,20 @@ export const doGet = (e) => {
 export const getMedicamentos = () => {
   var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
   var ws = ss.getSheetByName("Medicamentos");
-  var data = ws.getRange(2,1,ws.getLastRow()-1, 13).getValues();
-  
+  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 13).getValues();
+
   var informacoes = [];
 
-  for(i=0; i<data.length; i++){
+  for (i = 0; i < data.length; i++) {
     var dataCadastro = new Date(data[i][0]);
-    var dataCadastroFormatada = (dataCadastro.getDate() + 1) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
+    var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
+
     var dataValidade = new Date(data[i][7]);
-    var dataValidadeFormatada = (dataValidade.getDate() + 1) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
+    var dataValidadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
 
     const remedio = {
       "dataCadastroPura": data[i][0],
-      "dataCadastro": dataCadastroFormatada, 
+      "dataCadastro": dataCadastroFormatada,
       "nome": data[i][1],
       "principioAtivo": data[i][2],
       "lote": data[i][3],
@@ -71,9 +72,37 @@ export const getMedicamentos = () => {
 };
 
 export const appendRowMedicamentos = (medicamento) => {
+  //ABRINDO A PLANILHA
   var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
   var ws = ss.getSheetByName("Medicamentos");
-  
+
+  var lastRow = ws.getLastRow();
+
+  // VERIFICAR SE O MEDICAMENTO EXISTE, APOS, RETORNAR TRUE OR FALSWE
+  var codigo = medicamento.nome + medicamento.lote + medicamento.validade;
+  var codigoLower = codigo.toString().toLowerCase();
+
+  for (var i = 2; i <= lastRow; i++) {
+
+    let dataCadastroVerificacao = new Date(ws.getRange(i, 8).getValue().toString());    
+    // return dataCadastroVerificacao;
+
+    let dataCadastroFormatadaVerificacao = (dataCadastroVerificacao.getFullYear()) + "-" + ("00" + (dataCadastroVerificacao.getMonth() + 1 )).slice(-2)
+    + "-" + (dataCadastroVerificacao.getUTCDate());
+    
+
+    var info = ws.getRange(i, 2).getValue().toString() + ws.getRange(i, 4).getValue().toString() + dataCadastroFormatadaVerificacao;
+
+
+    if (info.toString().toLowerCase() === codigoLower) {
+      return false;
+    }
+  }
+
+  // Criando o índice para o novo medicamento:
+  var data = ws.getRange(lastRow, 13).getValues();
+  var novoIndex = parseInt(data[0]) + 1;
+
   ws.appendRow([
     medicamento.dataCadastro,
     medicamento.nome,
@@ -86,15 +115,18 @@ export const appendRowMedicamentos = (medicamento) => {
     medicamento.fabricante,
     medicamento.tarja,
     medicamento.apresentacao,
-    medicamento.motivoDescarte
+    medicamento.motivoDescarte,
+    novoIndex
   ]);
+
+  return true;
 }
 
 
 export const getInformacoesMedicamentos = () => {
   var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
   var ws = ss.getSheetByName("InformacoesMedicamentos");
-  var data = ws.getRange(2,1,ws.getLastRow()-1, 5).getValues();
+  var data = ws.getRange(2, 1, ws.getLastRow() - 1, 5).getValues();
 
   var informacoes = [];
 
@@ -105,18 +137,18 @@ export const getInformacoesMedicamentos = () => {
   let motivoDescarte = []
 
 
-  for(let i = 0; i < data.length; i++){
-    for(let j=0; j<data[i].length; j++){
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data[i].length; j++) {
 
-      if(data[i][j].length>0 && j==0){
+      if (data[i][j].length > 0 && j == 0) {
         classes.push(data[i][j]);
-      } else if (data[i][j].length>0 && j==1){
+      } else if (data[i][j].length > 0 && j == 1) {
         tiposMedicamentos.push(data[i][j]);
-      } else if (data[i][j].length>0 && j==2){
+      } else if (data[i][j].length > 0 && j == 2) {
         tarja.push(data[i][j]);
-      } else if (data[i][j].length>0 && j==3){
+      } else if (data[i][j].length > 0 && j == 3) {
         apresentacao.push(data[i][j]);
-      } else if (data[i][j].length>0 && j==4){
+      } else if (data[i][j].length > 0 && j == 4) {
         motivoDescarte.push(data[i][j]);
       }
     }
@@ -128,20 +160,19 @@ export const getInformacoesMedicamentos = () => {
 
 
 export const findRowMedicamentos = (dados) => {
-  // index deve ser passado por parâmetro:
   // var dados = ['3', 'peDro', '12'];
-  // var codigo = dados[0]+ dados[1] + dados[2];
-  // var codigoLower = codigo.toString().toLowerCase();
+  var codigo = dados[0] + dados[1] + dados[2];
+  var codigoLower = codigo.toString().toLowerCase();
 
-  // var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
-  // var ws = ss.getSheetByName("Medicamentos");
-  // var lastRow = ws.getLastRow();
+  var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
+  var ws = ss.getSheetByName("Medicamentos");
+  var lastRow = ws.getLastRow();
 
-  // for(var i=2; i<= lastRow; i++){
-  //   var info = ws.getRange(i, 2).getValue().toString() + ws.getRange(i, 4).getValue().toString() + ws.getRange(i, 8).getValue().toString();
-  //   if(info.toString().toLowerCase() == codigoLower){
-  //     return true;
-  //   }
-  // }
+  for (var i = 2; i <= lastRow; i++) {
+    var info = ws.getRange(i, 2).getValue().toString() + ws.getRange(i, 4).getValue().toString() + ws.getRange(i, 8).getValue().toString();
+    if (info.toString().toLowerCase() == codigoLower) {
+      return true;
+    }
+  }
   return false;
 }

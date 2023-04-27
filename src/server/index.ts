@@ -3,7 +3,7 @@ import {
   openDialogBootstrap,
 } from './ui';
 
-import { getSheetsData, addSheet, deleteSheet, setActiveSheet, doGet, getMedicamentos, getInformacoesMedicamentos, appendRowMedicamentos} from './sheets';
+import { getSheetsData, addSheet, deleteSheet, setActiveSheet, doGet, getMedicamentos, getInformacoesMedicamentos, appendRowMedicamentos, findRowMedicamentos} from './sheets';
 
 // Public functions must be exported as named exports
 export {
@@ -16,5 +16,6 @@ export {
   setActiveSheet,
   getMedicamentos,
   getInformacoesMedicamentos,
-  appendRowMedicamentos
+  appendRowMedicamentos,
+  findRowMedicamentos
 };
