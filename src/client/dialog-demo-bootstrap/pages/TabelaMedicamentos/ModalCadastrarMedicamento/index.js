@@ -5,15 +5,13 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 
-import InputText from '../InputText';
-import InputDate from '../InputDate';
-import InputSelect from '../InputSelect';
-import AlertaPositivo from '../AlertaPositivo';
-import AlertaNegativo from '../AlertaNegativo';
+import InputText from '../../../components/InputText';
+import InputDate from '../../../components/InputDate'
+import InputSelect from '../../../components/InputSelect';
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { serverFunctions } from '../../../utils/serverFunctions';
+import { serverFunctions } from '../../../../utils/serverFunctions';
 import { Form } from 'react-bootstrap';
 
 

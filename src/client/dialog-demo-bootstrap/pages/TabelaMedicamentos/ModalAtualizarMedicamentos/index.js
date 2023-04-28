@@ -4,14 +4,15 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
-
-import InputText from '../InputText';
-import InputDate from '../InputDate';
-import InputSelect from '../InputSelect';
-
 import { Form } from 'react-bootstrap';
-import { data } from 'autoprefixer';
-import { serverFunctions } from '../../../utils/serverFunctions';
+
+import InputText from '../../../components/InputText';
+import InputDate from '../../../components/InputDate'
+import InputSelect from '../../../components/InputSelect';
+import { serverFunctions } from '../../../../utils/serverFunctions';
+
+
+
 
 
 function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {

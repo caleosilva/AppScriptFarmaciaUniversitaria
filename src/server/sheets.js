@@ -84,12 +84,12 @@ export const appendRowMedicamentos = (medicamento) => {
 
   for (var i = 2; i <= lastRow; i++) {
 
-    let dataCadastroVerificacao = new Date(ws.getRange(i, 8).getValue().toString());    
+    let dataCadastroVerificacao = new Date(ws.getRange(i, 8).getValue().toString());
     // return dataCadastroVerificacao;
 
-    let dataCadastroFormatadaVerificacao = (dataCadastroVerificacao.getFullYear()) + "-" + ("00" + (dataCadastroVerificacao.getMonth() + 1 )).slice(-2)
-    + "-" + (dataCadastroVerificacao.getUTCDate());
-    
+    let dataCadastroFormatadaVerificacao = (dataCadastroVerificacao.getFullYear()) + "-" + ("00" + (dataCadastroVerificacao.getMonth() + 1)).slice(-2)
+      + "-" + (dataCadastroVerificacao.getUTCDate());
+
 
     var info = ws.getRange(i, 2).getValue().toString() + ws.getRange(i, 4).getValue().toString() + dataCadastroFormatadaVerificacao;
 
@@ -171,6 +171,24 @@ export const findRowMedicamentos = (dados) => {
   for (var i = 2; i <= lastRow; i++) {
     var info = ws.getRange(i, 2).getValue().toString() + ws.getRange(i, 4).getValue().toString() + ws.getRange(i, 8).getValue().toString();
     if (info.toString().toLowerCase() == codigoLower) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export const updateRowMedicamentos = (medicamento) => {
+  var ss = SpreadsheetApp.openById("1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA");
+  var ws = ss.getSheetByName("Medicamentos");
+  var lastRow = ws.getLastRow();
+
+  var index = medicamento.index.toString();
+  var novosDados = [medicamento.dataCadastro, medicamento.nome, medicamento.principioAtivo, medicamento.lote, medicamento.origem, medicamento.classe, medicamento.tipo, medicamento.validade, medicamento.fabricante, medicamento.tarja, medicamento.apresentacao, medicamento.motivoDescarte, index]
+
+  for (var i = 2; i <= lastRow; i++) {
+    let codInd = ws.getRange(i, 13).getValue().toString();
+    if (codInd == index) {
+      ws.getRange('A' + i + ':M' + i).setValues([novosDados])
       return true;
     }
   }

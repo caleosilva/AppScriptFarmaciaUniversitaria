@@ -4,22 +4,21 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import InputBuscar from '../InputBuscar';
-import GrupoBotao from '../GrupoBotao';
-import MedModalCadastrar from '../MedModalCadastrar';
-import Button from 'react-bootstrap';
 import { InputGroup } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
-
 import React from 'react';
 import { useState, useEffect } from 'react';
 
+
+import InputBuscar from '../../components/InputBuscar' // TENHO QUE REFATORAR PARA UTILIZAR ISSO AQ
+import MedModalCadastrar from './ModalCadastrarMedicamento';
+import OperacoesMedicamento from './OperacoesMedicamento'
 import { serverFunctions } from '../../../utils/serverFunctions';
 
 
 
 function TabelaMedicamentos() {
-
+    
     const [data, setData] = useState(null);
     useEffect(() => {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
@@ -48,9 +47,6 @@ function TabelaMedicamentos() {
                                     value={busca}
                                     onChange={(ev) => setBusca(ev.target.value)}
                                 />
-                                {/* <Button variant="outline-secondary" id="button-addon2">
-                                    Buscar
-                                </Button> */}
                             </InputGroup>
 
                             <MedModalCadastrar listaDD={infoDD} data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}/>
@@ -62,9 +58,9 @@ function TabelaMedicamentos() {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th style={{ width: '40%' }} >Nome</th>
-                                <th style={{ width: '20%' }} >Lote</th>
-                                <th style={{ width: '20%' }} >Data de validade</th>
+                                <th style={{ width: '20%' }} >Nome</th>
+                                <th style={{ width: '40%' }} >Princípio ativo e dosagem</th>
+                                <th style={{ width: '20%' }} >Apresentação</th>
                                 <th style={{ width: '20%' }} >Operações</th>
                             </tr>
                         </thead>
@@ -76,10 +72,10 @@ function TabelaMedicamentos() {
                             }).map((remedio, index) =>
                                 <tr key={index}>
                                     <td>{remedio.nome}</td>
-                                    <td>{remedio.lote}</td>
-                                    <td>{remedio.validade}</td>
+                                    <td>{remedio.principioAtivo}</td>
+                                    <td>{remedio.apresentacao}</td>
                                     <td colSpan={"1"}>
-                                        <GrupoBotao tresOpcoes={false} remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
+                                        <OperacoesMedicamento remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
                                     </td>
                                 </tr>
                             ) : ''}

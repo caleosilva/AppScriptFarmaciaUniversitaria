@@ -4,23 +4,18 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
-
-import InputText from '../InputText';
-import InputDate from '../InputDate';
-import InputSelect from '../InputSelect';
-import BotaoDark from '../BotaoDark';
-import BotaoSecondary from '../BotaoSecondary';
 import { Form } from 'react-bootstrap';
-import ExibirInputSimples from '../ExibirInputSimples';
+
+import BotaoDark from '../../../components/BotaoDark';
+import BotaoSecondary from '../../../components/BotaoSecondary';
+import ExibirInputSimples from '../../../components/ExibirInputSimples';
 
 function MedModalVerMais({ props, remedio }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    // onSubmit
-
+    
     return (
         <>
             <Button variant="outline-secondary" onClick={handleShow}>
