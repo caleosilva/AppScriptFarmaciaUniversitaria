@@ -14,7 +14,6 @@ import { useState } from 'react';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import { Form } from 'react-bootstrap';
 
-
 function MedModalCadastrar({ props, data, setData, listaDD }) {
     const [show, setShow] = useState(false);
 
@@ -145,21 +144,22 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                             </Row>
 
                             <Row>
-                                <Col>
+                                <Col sm={6}>
                                     <InputText label={"Fabricante"} placeholder={"Ex: EMS"} controlId={"inputFabrivanteMed"} name={"fabricante"} data={fabricante} setData={setFabricante} />
                                 </Col>
-                            </Row>
-
-                            <Row>
                                 <Col sm={6}>
                                     <InputDate label={"Data de validade"} placeholder={"DD/MM/AAAA"} controlId={"inputDataValidade"} name={"validade"} data={validade} setData={setValidade} />
                                 </Col>
-                                <Col sm={6}>
+                            </Row>
+
+                            <Row className='mb-3'>
+                                
+                                <Col>
                                     <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
                                 </Col>
                             </Row>
 
-                            <Row>
+                            <Row className='mb-3'>
                                 <Col sm={6}>
                                     <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista ? lista[2] : []} />
                                 </Col>

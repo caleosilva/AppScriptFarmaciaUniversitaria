@@ -20,10 +20,17 @@ const NavBarFU = () => {
   }];
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container>
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed='top'>
+      <Container fluid>
         <Navbar.Brand>
           <Link to={'/home'} style={{ textDecoration: 'none', color: 'white' }}>
+            <img
+              src="/img/logoFarmacia.png"
+              width="30"
+              height="30"
+              className="d-inline-block align-top me-2"
+              alt="React Bootstrap logo"
+            />
             {"Farmácia Universitária"}
           </Link>
         </Navbar.Brand>

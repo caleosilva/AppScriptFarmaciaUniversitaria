@@ -76,7 +76,13 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
     return (
         <>
             <Button variant="outline-secondary" onClick={handleShow}>
-                Atualizar
+                <img
+                    alt=""
+                    src="/img/icones/edit.svg"
+                    width="25"
+                    height="25"
+                    className="d-inline-block align-top"
+                />{' '}
             </Button>
 
             <Modal
@@ -125,23 +131,22 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                             </Row>
 
                             <Row>
-                                <Col>
+                                <Col sm={6}>
                                     <InputText label={"Fabricante"} controlId={"inputFabrivanteMed"} value={fabricante} data={fabricante} setData={setFabricante} />
                                 </Col>
-                            </Row>
 
-                            <Row>
                                 <Col sm={6}>
                                     <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={validadePura?.substr(0, 10)} setData={setValidadePura} />
                                 </Col>
-                                <Col sm={6}>
-                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
-                                </Col>
-
-
                             </Row>
 
                             <Row>
+                                <Col>
+                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
+                                </Col>
+                            </Row>
+
+                            <Row className='mt-3'>
                                 <Col sm={6}>
                                     <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista ? lista[2] : []} />
                                 </Col>
@@ -160,7 +165,7 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                                 </Col>
                             </Row>
 
-                            <div className='mt-3 d-flex justify-content-around'>
+                            <div className='mt-3 mb-3 d-flex justify-content-around'>
                                 <Button variant="outline-secondary" onClick={handleClose}>
                                     Cancelar
                                 </Button>
@@ -172,12 +177,6 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                         </Form>
                     </Container>
                 </Modal.Body>
-                <Modal.Footer>
-                    {/* <Button variant="outline-secondary" onClick={handleClose}>
-                        Cancelar
-                    </Button>
-                    <Button variant="dark">Salvar</Button> */}
-                </Modal.Footer>
             </Modal>
         </>
     );

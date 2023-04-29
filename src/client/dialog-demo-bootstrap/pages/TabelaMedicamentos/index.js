@@ -1,5 +1,3 @@
-import './TabelaMedicamentos.css'
-
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
@@ -14,11 +12,11 @@ import InputBuscar from '../../components/InputBuscar' // TENHO QUE REFATORAR PA
 import MedModalCadastrar from './ModalCadastrarMedicamento';
 import OperacoesMedicamento from './OperacoesMedicamento'
 import { serverFunctions } from '../../../utils/serverFunctions';
-
-
+import '../style.css'
+import './TabelaMedicamentos.css'
 
 function TabelaMedicamentos() {
-    
+
     const [data, setData] = useState(null);
     useEffect(() => {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
@@ -32,10 +30,10 @@ function TabelaMedicamentos() {
     const [busca, setBusca] = useState('');
 
     return (
-        <section className='m-5'>
+        <section className='margemNavBar ms-5 me-5'>
             <Card>
                 <Card.Header>
-                    
+
                     <Navbar>
                         <Container d-flex className='justify-content-around'>
                             <Navbar.Brand href="">Medicamentos</Navbar.Brand>
@@ -47,9 +45,18 @@ function TabelaMedicamentos() {
                                     value={busca}
                                     onChange={(ev) => setBusca(ev.target.value)}
                                 />
+                                <InputGroup.Text>
+                                    <img
+                                        alt=""
+                                        src="/img/icones/search.svg"
+                                        width="25"
+                                        height="25"
+                                        className="d-inline-block align-top"
+                                    />{' '}
+                                </InputGroup.Text>
                             </InputGroup>
 
-                            <MedModalCadastrar listaDD={infoDD} data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}/>
+                            <MedModalCadastrar listaDD={infoDD} data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)} />
                         </Container>
                     </Navbar>
 
@@ -60,21 +67,22 @@ function TabelaMedicamentos() {
                             <tr>
                                 <th style={{ width: '20%' }} >Nome</th>
                                 <th style={{ width: '40%' }} >Princípio ativo e dosagem</th>
-                                <th style={{ width: '20%' }} >Apresentação</th>
-                                <th style={{ width: '20%' }} >Operações</th>
+                                <th style={{ width: '30%' }} >Apresentação</th>
+                                <th style={{ width: '10%' }} >Operações</th>
                             </tr>
                         </thead>
                         <tbody>
                             {data ? data.filter((item) => {
-                                return busca.toLowerCase() === '' 
-                                ? item 
-                                : item.nome.toLowerCase().includes(busca.toLowerCase())
+                                return busca.toLowerCase() === ''
+                                    ? item
+                                    : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
+                                    item.principioAtivo.toLowerCase().includes(busca.toLowerCase())
                             }).map((remedio, index) =>
                                 <tr key={index}>
                                     <td>{remedio.nome}</td>
                                     <td>{remedio.principioAtivo}</td>
                                     <td>{remedio.apresentacao}</td>
-                                    <td colSpan={"1"}>
+                                    <td>
                                         <OperacoesMedicamento remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
                                     </td>
                                 </tr>

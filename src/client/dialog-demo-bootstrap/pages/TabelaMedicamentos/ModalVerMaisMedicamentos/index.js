@@ -15,11 +15,17 @@ function MedModalVerMais({ props, remedio }) {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
+
     return (
         <>
             <Button variant="outline-secondary" onClick={handleShow}>
-                Info
+                <img
+                    alt=""
+                    src="/img/icones/expand_content.svg"
+                    width="25"
+                    height="25"
+                    className="d-inline-block align-top"
+                />{' '}
             </Button>
 
             <Modal
@@ -69,16 +75,17 @@ function MedModalVerMais({ props, remedio }) {
                             </Row>
 
                             <Row>
-                                <Col>
+                                <Col sm={6}>
                                     <ExibirInputSimples label={'Fabricante'} data={remedio.fabricante} controlId={"inputFabrivanteMed"} />
+                                </Col>
+
+                                <Col sm={6}>
+                                    <ExibirInputSimples label={'Data de validade'} data={remedio.validade} controlId={"inputDataValidade"} />
                                 </Col>
                             </Row>
 
                             <Row>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Data de validade'} data={remedio.validade} controlId={"inputDataValidade"} />
-                                </Col>
-                                <Col sm={6}>
+                                <Col>
                                     <ExibirInputSimples label={'Classe'} data={remedio.classe} controlId={"classe"} />
                                 </Col>
                             </Row>
@@ -91,20 +98,22 @@ function MedModalVerMais({ props, remedio }) {
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Apresentação'} data={remedio.apresentacao} controlId={"apresentacao"} />
                                 </Col>
-                            </Row>
 
-                            <Row>
-                                <Col>
-                                    <ExibirInputSimples label={'Motivo do descarte'} data={remedio.motivoDescarte} controlId={"motivoDescarte"} />
-                                </Col>
+
 
                             </Row>
+
+
 
                             <Row>
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Tipo de medicamento'} data={remedio.tipo} controlId={"tipoMed"} />
                                 </Col>
+                                <Col sm={6}>
+                                    <ExibirInputSimples label={'Motivo do descarte'} data={remedio.motivoDescarte} controlId={"motivoDescarte"} />
+                                </Col>
                             </Row>
+
                         </Form>
                     </Container>
                 </Modal.Body>
