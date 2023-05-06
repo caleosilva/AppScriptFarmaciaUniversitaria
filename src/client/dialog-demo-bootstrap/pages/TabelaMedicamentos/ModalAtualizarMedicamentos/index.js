@@ -5,14 +5,14 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { Form } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import InputText from '../../../components/InputText';
 import InputDate from '../../../components/InputDate'
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-
-
-
+import { any } from 'prop-types';
 
 
 function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
@@ -23,43 +23,41 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
     const handleShow = () => setShow(true);
 
     // Elementos do formulário:
-    const [validade, setValidade] = useState(remedio.validade); //---DATA
+    // const [validade, setValidade] = useState(remedio.validade); //---DATA
     const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastroPura); //--------------DATA
-    const [validadePura, setValidadePura] = useState(remedio.validadePura); //--------------DATA    
+    // const [validadePura, setValidadePura] = useState(remedio.validadePura); //--------------DATA    
     const [nome, setNome] = useState(remedio.nome);
     const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
-    const [lote, setLote] = useState(remedio.lote);
-    const [origem, setOrigem] = useState(remedio.origem);
-    const [fabricante, setFabricante] = useState(remedio.fabricante);
+    // const [lote, setLote] = useState(remedio.lote);
+    // const [origem, setOrigem] = useState(remedio.origem);
+    // const [fabricante, setFabricante] = useState(remedio.fabricante);
     const [classe, setClasse] = useState(remedio.classe); //--------------SELECT
-    const [tipo, setTipo] = useState(remedio.tipo); //---------------------SELECT
+    // const [tipo, setTipo] = useState(remedio.tipo); //---------------------SELECT
     const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
     const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
-    const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte); //-SELECT
+    // const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte); //-SELECT
 
     const salvarAlteracoes = (event) => {
         event.preventDefault();
 
         // Cria um objeto com os dados atualizados do medicamento
+        var chaveGeral = remedio.chaveGeral;
         const medicamento = {
+            chaveGeral,
             dataCadastro,
             nome,
             principioAtivo,
-            lote,
-            origem,
             classe,
-            tipo,
-            validade,
-            fabricante,
             tarja,
-            apresentacao,
-            motivoDescarte,
-            'index': remedio.index
+            apresentacao
         }
 
         serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
+            console.log(sucesso)
             if (sucesso) {
-                setData([medicamento, ...data])
+                // setData([medicamento, ...data])
+                console.log("Informações atualizadas")
+
             } else {
                 console.log("Não foi possível atualizar")
             }
@@ -68,6 +66,12 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
 
     }
 
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Atualizar informações
+        </Tooltip>
+    )
+
 
     useEffect(() => {
         setLista(listaDrop)
@@ -75,7 +79,12 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
 
     return (
         <>
-            <Button variant="outline-secondary" onClick={handleShow}>
+            <OverlayTrigger
+                placement="left"
+                delay={{ show: 400, hide: 250 }}
+                overlay={renderTooltip}
+            >
+                <Button variant="outline-secondary" onClick={handleShow}>
                 <img
                     alt=""
                     src="/img/icones/edit.svg"
@@ -84,6 +93,9 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                     className="d-inline-block align-top"
                 />{' '}
             </Button>
+            </OverlayTrigger>
+
+            
 
             <Modal
                 dialogClassName='modal-dialog-scrollable'
@@ -108,23 +120,26 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                                     <InputDate label={"Data do cadastro"} controlId={"inputDataCadastro"} value={dataCadastro?.substr(0, 10)} setData={setDataCadastro} />
                                 </Col>
                                 <Col sm={6}>
-                                    <InputText label={"Lote"} controlId={"inputLoteMed"} value={lote} data={lote} setData={setLote} />
+                                    <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={nome} data={nome} setData={setNome} />
                                 </Col>
+                                {/* <Col sm={6}>
+                                    <InputText label={"Lote"} controlId={"inputLoteMed"} value={lote} data={lote} setData={setLote} />
+                                </Col> */}
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={nome} data={nome} setData={setNome} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Princípio ativo e dosagem"} controlId={"inputPrincMed"} value={principioAtivo} data={principioAtivo} setData={setPrincipioAtivo} />
+                                    <InputText label={"Princípio ativo"} controlId={"inputPrincMed"} value={principioAtivo} data={principioAtivo} setData={setPrincipioAtivo} />
                                 </Col>
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <InputText label={"Origem do medicamento"} controlId={"inputOrigemMed"} value={origem} data={origem} setData={setOrigem} />
                                 </Col>
@@ -138,7 +153,7 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                                 <Col sm={6}>
                                     <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={validadePura?.substr(0, 10)} setData={setValidadePura} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <Row>
                                 <Col>
@@ -156,14 +171,14 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                                 </Col>
                             </Row>
 
-                            <Row className='mt-3'>
+                            {/* <Row className='mt-3'>
                                 <Col sm={6}>
                                     <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
                                 </Col>
                                 <Col sm={6}>
                                     <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte} lista={lista ? lista[4] : []} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <div className='mt-3 mb-3 d-flex justify-content-around'>
                                 <Button variant="outline-secondary" onClick={handleClose}>

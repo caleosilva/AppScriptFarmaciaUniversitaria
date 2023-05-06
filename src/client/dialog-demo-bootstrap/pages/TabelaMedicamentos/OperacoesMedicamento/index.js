@@ -4,16 +4,18 @@ import Button from 'react-bootstrap/Button';
 
 import MedModalVerMais from '../ModalVerMaisMedicamentos';
 import MedModalAtualizar from '../ModalAtualizarMedicamentos';
-import ModalEstoque from '../ModalEstoque';
+import ModalEntradaEstoque from '../ModalEntradaEstoque';
+import ModalSaidaEstoque from '../ModalSaidaEstoque';
 
-function GrupoBotao({remedio, listaDD, data, setData}) {
+function OperacoesMedicamento({remedio, listaDD, data, setData}) {
     return (
         <ButtonGroup aria-label="Basic example">
+            <ModalEntradaEstoque/>
+            <ModalSaidaEstoque/>
             <MedModalVerMais remedio={remedio}/>
             <MedModalAtualizar remedio={remedio} listaDrop={listaDD} data={data} setData={setData}/>
-            <ModalEstoque></ModalEstoque>
         </ButtonGroup>
     )
 }
 
-export default GrupoBotao;
+export default OperacoesMedicamento;

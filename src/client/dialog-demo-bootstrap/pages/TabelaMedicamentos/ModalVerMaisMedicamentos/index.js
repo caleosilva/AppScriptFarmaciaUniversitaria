@@ -6,6 +6,9 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { Form } from 'react-bootstrap';
 
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
 import BotaoDark from '../../../components/BotaoDark';
 import BotaoSecondary from '../../../components/BotaoSecondary';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
@@ -16,17 +19,29 @@ function MedModalVerMais({ props, remedio }) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Ver mais informações
+        </Tooltip>
+    );
+
     return (
         <>
-            <Button variant="outline-secondary" onClick={handleShow}>
-                <img
-                    alt=""
-                    src="/img/icones/expand_content.svg"
-                    width="25"
-                    height="25"
-                    className="d-inline-block align-top"
-                />{' '}
-            </Button>
+            <OverlayTrigger
+                placement="left"
+                delay={{ show: 400, hide: 250 }}
+                overlay={renderTooltip}
+            >
+                <Button variant="outline-secondary" onClick={handleShow}>
+                    <img
+                        alt=""
+                        src="/img/icones/expand_content.svg"
+                        width="25"
+                        height="25"
+                        className="d-inline-block align-top"
+                    />{' '}
+                </Button>
+            </OverlayTrigger>
 
             <Modal
                 dialogClassName='modal-dialog-scrollable'
@@ -48,23 +63,25 @@ function MedModalVerMais({ props, remedio }) {
                     <Container>
                         <Form>
                             <Row>
-
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Data do cadastro'} data={remedio.dataCadastro} controlId={"inputDataCadastro"} />
                                 </Col>
                                 <Col sm={6}>
-                                    <ExibirInputSimples label={'Lote'} data={remedio.lote} controlId={"inputLoteMed"} />
+                                    <ExibirInputSimples label={'Nome do medicamento'} data={remedio.nome} controlId={"inputNomeMed"} />
                                 </Col>
+                                {/* <Col sm={6}>
+                                    <ExibirInputSimples label={'Lote'} data={remedio.lote} controlId={"inputLoteMed"} />
+                                </Col> */}
                             </Row>
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <ExibirInputSimples label={'Nome do medicamento'} data={remedio.nome} controlId={"inputNomeMed"} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
-                            <Row>
+                            {/* <Row>
                                 <Col>
-                                    <ExibirInputSimples label={'Princípio ativo e dosagem'} data={remedio.principioAtivo} controlId={"inputPrincMed"} />
+                                    <ExibirInputSimples label={'Princípio ativo'} data={remedio.principioAtivo} controlId={"inputPrincMed"} />
                                 </Col>
                             </Row>
 
@@ -72,9 +89,9 @@ function MedModalVerMais({ props, remedio }) {
                                 <Col>
                                     <ExibirInputSimples label={'Origem do medicamento'} data={remedio.origem} controlId={"inputOrigemMed"} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
-                            <Row>
+                            {/* <Row>
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Fabricante'} data={remedio.fabricante} controlId={"inputFabrivanteMed"} />
                                 </Col>
@@ -82,7 +99,7 @@ function MedModalVerMais({ props, remedio }) {
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Data de validade'} data={remedio.validade} controlId={"inputDataValidade"} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <Row>
                                 <Col>
@@ -98,21 +115,18 @@ function MedModalVerMais({ props, remedio }) {
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Apresentação'} data={remedio.apresentacao} controlId={"apresentacao"} />
                                 </Col>
-
-
-
                             </Row>
 
 
 
-                            <Row>
+                            {/* <Row>
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Tipo de medicamento'} data={remedio.tipo} controlId={"tipoMed"} />
                                 </Col>
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Motivo do descarte'} data={remedio.motivoDescarte} controlId={"motivoDescarte"} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                         </Form>
                     </Container>

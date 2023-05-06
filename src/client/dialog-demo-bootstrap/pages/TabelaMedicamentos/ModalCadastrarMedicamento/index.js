@@ -25,17 +25,17 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
 
     // Elementos do formulário:
     const [classe, setClasse] = useState(''); //-----------------SELECT
-    const [tipo, setTipo] = useState(''); //---------------------SELECT 
+    // const [tipo, setTipo] = useState(''); //---------------------SELECT 
     const [tarja, setTarja] = useState(''); //-------------------SELECT
     const [apresentacao, setApresentacao] = useState(''); //-----SELECT
-    const [motivoDescarte, setMotivoDescarte] = useState(''); //-SELECT
+    // const [motivoDescarte, setMotivoDescarte] = useState(''); //-SELECT
     const [dataCadastro, setDataCadastro] = useState(''); //--------------DATA
-    const [validade, setValidade] = useState(); //------------------------DATA
+    // const [validade, setValidade] = useState(); //------------------------DATA
     const [nome, setNome] = useState('');
     const [principioAtivo, setPrincipioAtivo] = useState('');
-    const [lote, setLote] = useState('');
-    const [origem, setOrigem] = useState('');
-    const [fabricante, setFabricante] = useState('');
+    // const [lote, setLote] = useState('');
+    // const [origem, setOrigem] = useState('');
+    // const [fabricante, setFabricante] = useState('');
 
 
     const cadastrarMed = (event) => {
@@ -43,18 +43,13 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
 
         // Cria um objeto com os dados do medicamento
         const medicamento = {
+            'chaveGeral': (nome + '#' + principioAtivo).toString().toLowerCase(),
             dataCadastro,
             nome,
             principioAtivo,
-            lote,
-            origem,
             classe,
-            tipo,
-            validade,
-            fabricante,
             tarja,
-            apresentacao,
-            motivoDescarte
+            apresentacao
         }
 
         // Verifica se ele não existe para poder finalizar o cadastro
@@ -69,19 +64,9 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                 setDataCadastro('');
                 setNome('');
                 setPrincipioAtivo('');
-                setLote('');
-                setOrigem('');
                 setClasse('');
-                setTipo('');
-                setValidade('');
-                setFabricante('');
                 setTarja('');
                 setApresentacao('');
-                setMotivoDescarte('');
-
-                // const [show, setShow] = useState(false);
-                // <AlertaPositivo/>
-
             } else {
                 console.log("Medicamento já existe na tabela")
             }
@@ -120,36 +105,42 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                                 <Col sm={6}>
                                     <InputDate label={"Data do cadastro"} placeholder={"DD/MM/AAAA"} controlId={"inputDataCadastro"} name={"dataCadastro"} data={dataCadastro} setData={setDataCadastro} />
                                 </Col>
+
                                 <Col sm={6}>
-                                    <InputText label={"Lote"} placeholder={"ABC123"} controlId={"inputLoteMed"} name={"lote"} data={lote} setData={setLote} />
+                                    <InputText label={"Nome do medicamento"} placeholder={""} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome} />
                                 </Col>
+
+                                {/* <Col sm={6}>
+                                    <InputText label={"Fabricante"} placeholder={"Ex: EMS"} controlId={"inputFabrivanteMed"} name={"fabricante"} data={fabricante} setData={setFabricante} />
+                                </Col> */}
+
+                                {/* <Col sm={6}>
+                                    <InputText label={"Lote"} placeholder={"ABC123"} controlId={"inputLoteMed"} name={"lote"} data={lote} setData={setLote} />
+                                </Col> */}
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <InputText label={"Nome do medicamento"} placeholder={"Nome"} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <Row>
                                 <Col>
-                                    <InputText label={"Princípio ativo e dosagem"} placeholder={"50mg de ..."} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo} />
+                                    <InputText label={"Princípio ativo"} placeholder={""} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo} />
                                 </Col>
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <InputText label={"Origem do medicamento"} placeholder={"Ex: Doação"} controlId={"inputOrigemMed"} name={"origem"} data={origem} setData={setOrigem} />
                                 </Col>
-                            </Row>
+                            </Row> */}
 
                             <Row>
-                                <Col sm={6}>
-                                    <InputText label={"Fabricante"} placeholder={"Ex: EMS"} controlId={"inputFabrivanteMed"} name={"fabricante"} data={fabricante} setData={setFabricante} />
-                                </Col>
-                                <Col sm={6}>
+                                {/* <Col sm={6}>
                                     <InputDate label={"Data de validade"} placeholder={"DD/MM/AAAA"} controlId={"inputDataValidade"} name={"validade"} data={validade} setData={setValidade} />
-                                </Col>
+                                </Col> */}
                             </Row>
 
                             <Row className='mb-3'>
@@ -169,14 +160,14 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                                 </Col>
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <Col sm={6}>
                                     <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
                                 </Col>
                                 <Col sm={6}>
                                     <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte} lista={lista ? lista[4] : []} />
                                 </Col>
-                            </Row>
+                            </Row> */}
                         </Container>
 
                         <div className='mt-3 d-flex justify-content-around'>
@@ -190,8 +181,6 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                         </div>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
             </Modal>
         </>
     );

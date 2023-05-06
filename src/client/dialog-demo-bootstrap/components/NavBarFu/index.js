@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const NavBarFU = () => {
   const rotas = [{
     label: 'Home',
-    to: '/home'
+    to: '/'
   }, {
     label: 'Medicamentos',
     to: '/medicamentos'
@@ -23,7 +23,7 @@ const NavBarFU = () => {
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed='top'>
       <Container fluid>
         <Navbar.Brand>
-          <Link to={'/home'} style={{ textDecoration: 'none', color: 'white' }}>
+          <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
             <img
               src="/img/logoFarmacia.png"
               width="30"

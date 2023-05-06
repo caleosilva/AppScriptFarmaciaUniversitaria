@@ -8,7 +8,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 
-import InputBuscar from '../../components/InputBuscar' // TENHO QUE REFATORAR PARA UTILIZAR ISSO AQ
+// import InputBuscar from '../../components/InputBuscar' // TENHO QUE REFATORAR PARA UTILIZAR ISSO AQ
 import MedModalCadastrar from './ModalCadastrarMedicamento';
 import OperacoesMedicamento from './OperacoesMedicamento'
 import { serverFunctions } from '../../../utils/serverFunctions';
@@ -35,11 +35,11 @@ function TabelaMedicamentos() {
                 <Card.Header>
 
                     <Navbar>
-                        <Container d-flex className='justify-content-around'>
+                        <Container className='justify-content-around' fluid>
                             <Navbar.Brand href="">Medicamentos</Navbar.Brand>
                             <InputGroup className='buscar'>
                                 <Form.Control
-                                    placeholder={"Digite o nome do medicamento a ser buscado"}
+                                    placeholder={"Busque pelo nome, princípio ativo ou dosagem"}
                                     aria-label={"Nome do medicamento"}
                                     aria-describedby="basic-addon2"
                                     value={busca}
@@ -66,9 +66,9 @@ function TabelaMedicamentos() {
                         <thead>
                             <tr>
                                 <th style={{ width: '20%' }} >Nome</th>
-                                <th style={{ width: '40%' }} >Princípio ativo e dosagem</th>
-                                <th style={{ width: '30%' }} >Apresentação</th>
-                                <th style={{ width: '10%' }} >Operações</th>
+                                <th style={{ width: '40%' }} >Princípio ativo</th>
+                                <th style={{ width: '20%' }} >Apresentação</th>
+                                <th style={{ width: '20%' }} >Operações</th>
                             </tr>
                         </thead>
                         <tbody>
