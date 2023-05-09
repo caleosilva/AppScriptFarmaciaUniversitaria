@@ -79,13 +79,13 @@ function MedModalVerMais({ props, remedio }) {
                                 </Col>
                             </Row> */}
 
-                            {/* <Row>
+                            <Row>
                                 <Col>
                                     <ExibirInputSimples label={'Princípio ativo'} data={remedio.principioAtivo} controlId={"inputPrincMed"} />
                                 </Col>
                             </Row>
 
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <ExibirInputSimples label={'Origem do medicamento'} data={remedio.origem} controlId={"inputOrigemMed"} />
                                 </Col>

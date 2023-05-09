@@ -55,7 +55,10 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
         serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
             console.log(sucesso)
             if (sucesso) {
-                // setData([medicamento, ...data])
+                
+                data[sucesso - 2] = medicamento;
+
+                setData([...data])
                 console.log("Informações atualizadas")
 
             } else {

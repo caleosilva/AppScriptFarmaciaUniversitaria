@@ -20,6 +20,7 @@ function TabelaMedicamentos() {
     const [data, setData] = useState(null);
     useEffect(() => {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
+        // forceUpdate();
     }, []);
 
     const [infoDD, setInfoDD] = useState(null)
@@ -39,7 +40,7 @@ function TabelaMedicamentos() {
                             <Navbar.Brand href="">Medicamentos</Navbar.Brand>
                             <InputGroup className='buscar'>
                                 <Form.Control
-                                    placeholder={"Busque pelo nome, princípio ativo ou dosagem"}
+                                    placeholder={"Busque pelo nome ou princípio ativo"}
                                     aria-label={"Nome do medicamento"}
                                     aria-describedby="basic-addon2"
                                     value={busca}
@@ -72,21 +73,23 @@ function TabelaMedicamentos() {
                             </tr>
                         </thead>
                         <tbody>
-                            {data ? data.filter((item) => {
-                                return busca.toLowerCase() === ''
-                                    ? item
-                                    : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
-                                    item.principioAtivo.toLowerCase().includes(busca.toLowerCase())
-                            }).map((remedio, index) =>
-                                <tr key={index}>
-                                    <td>{remedio.nome}</td>
-                                    <td>{remedio.principioAtivo}</td>
-                                    <td>{remedio.apresentacao}</td>
-                                    <td>
-                                        <OperacoesMedicamento remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
-                                    </td>
-                                </tr>
-                            ) : ''}
+                            <>
+                                {data ? data.filter((item) => {
+                                    return busca.toLowerCase() === ''
+                                        ? item
+                                        : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
+                                        item.principioAtivo.toLowerCase().includes(busca.toLowerCase())
+                                }).map((remedio, index) =>
+                                    <tr key={index}>
+                                        <td>{remedio.nome}</td>
+                                        <td>{remedio.principioAtivo}</td>
+                                        <td>{remedio.apresentacao}</td>
+                                        <td>
+                                            <OperacoesMedicamento remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
+                                        </td>
+                                    </tr>
+                                ) : ''}
+                            </>
                         </tbody>
                     </Table>
                 </Card.Body>

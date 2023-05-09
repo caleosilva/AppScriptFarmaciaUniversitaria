@@ -11,8 +11,10 @@ export default function AppRouter() {
             <Router>
                 <NavBarFU />
                 <Routes>
-                    <Route path='/' element={<Home />} />
-                    <Route path='/medicamentos' element={<TabelaMedicamentos />}/>
+                    <Route path='/*' element={<Home />}/>
+                    <Route path='/medicamentos' element={<TabelaMedicamentos />} />
+
+                    {/* <Route path='/' element={<Home />} /> */}
                 </Routes>
             </Router>
         </main>
