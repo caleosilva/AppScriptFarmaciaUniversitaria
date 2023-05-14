@@ -123,8 +123,8 @@ const clientConfig = ({ isDevClientWrapper }) => ({
             options: {
               plugins: [
                 !isProd &&
-                  !isDevClientWrapper &&
-                  require.resolve('react-refresh/babel'),
+                !isDevClientWrapper &&
+                require.resolve('react-refresh/babel'),
               ].filter(Boolean),
             },
           },
@@ -142,8 +142,8 @@ const clientConfig = ({ isDevClientWrapper }) => ({
           options: {
             plugins: [
               !isProd &&
-                !isDevClientWrapper &&
-                require.resolve('react-refresh/babel'),
+              !isDevClientWrapper &&
+              require.resolve('react-refresh/babel'),
             ].filter(Boolean),
           },
         },
@@ -177,6 +177,7 @@ const DynamicCdnWebpackPluginConfig = {
     // "name" should match the package being imported
     // "var" is important to get right -- this should be the exposed global. Look up "webpack externals" for info.
     switch (packageName) {
+      
       case 'react-transition-group':
         return {
           name: packageName,
@@ -196,9 +197,8 @@ const DynamicCdnWebpackPluginConfig = {
           name: packageName,
           var: 'MaterialUI',
           version: packageVersion,
-          url: `https://unpkg.com/@mui/material@${packageVersion}/umd/material-ui.${
-            isProd ? 'production.min.js' : 'development.js'
-          }`,
+          url: `https://unpkg.com/@mui/material@${packageVersion}/umd/material-ui.${isProd ? 'production.min.js' : 'development.js'
+            }`,
         };
       case '@emotion/react':
         return {

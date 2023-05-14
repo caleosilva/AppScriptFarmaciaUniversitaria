@@ -23,19 +23,20 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
     const handleShow = () => setShow(true);
 
     // Elementos do formulário:
-    // const [validade, setValidade] = useState(remedio.validade); //---DATA
-    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastroPura); //--------------DATA
-    // const [validadePura, setValidadePura] = useState(remedio.validadePura); //--------------DATA    
-    const [nome, setNome] = useState(remedio.nome);
-    const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
+    // const [validade, setValidade] = useState(remedio.validade);
+    // const [validadePura, setValidadePura] = useState(remedio.validadePura);
     // const [lote, setLote] = useState(remedio.lote);
     // const [origem, setOrigem] = useState(remedio.origem);
-    // const [fabricante, setFabricante] = useState(remedio.fabricante);
+    // const [fabricante, setFabricante] = useState(remedio.fabricante);   
+    // const [tipo, setTipo] = useState(remedio.tipo);
+    // const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte);
+
+    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastroPura); //--------------DATA
+    const [nome, setNome] = useState(remedio.nome);
+    const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
     const [classe, setClasse] = useState(remedio.classe); //--------------SELECT
-    // const [tipo, setTipo] = useState(remedio.tipo); //---------------------SELECT
     const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
     const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
-    // const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte); //-SELECT
 
     const salvarAlteracoes = (event) => {
         event.preventDefault();
@@ -55,18 +56,13 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
         serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
             console.log(sucesso)
             if (sucesso) {
-                
-                data[sucesso - 2] = medicamento;
-
+                data[sucesso - 2] = medicamento
                 setData([...data])
                 console.log("Informações atualizadas")
-
             } else {
                 console.log("Não foi possível atualizar")
             }
-
         })
-
     }
 
     const renderTooltip = (props) => (
@@ -88,17 +84,17 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                <img
-                    alt=""
-                    src="/img/icones/edit.svg"
-                    width="25"
-                    height="25"
-                    className="d-inline-block align-top"
-                />{' '}
-            </Button>
+                    <img
+                        alt=""
+                        src="/img/icones/edit.svg"
+                        width="25"
+                        height="25"
+                        className="d-inline-block align-top"
+                    />{' '}
+                </Button>
             </OverlayTrigger>
 
-            
+
 
             <Modal
                 dialogClassName='modal-dialog-scrollable'
@@ -119,10 +115,7 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                     <Container>
                         <Form onSubmit={salvarAlteracoes}>
                             <Row>
-                                <Col sm={6}>
-                                    <InputDate label={"Data do cadastro"} controlId={"inputDataCadastro"} value={dataCadastro?.substr(0, 10)} setData={setDataCadastro} />
-                                </Col>
-                                <Col sm={6}>
+                                <Col>
                                     <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={nome} data={nome} setData={setNome} />
                                 </Col>
                                 {/* <Col sm={6}>
