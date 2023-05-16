@@ -20,6 +20,12 @@ import {
   updateRowMedicamentos
 } from './medicamentos'
 
+// Imports referentes ao Estoque
+import {
+  queryChaveMedicamentoGeral
+} from './estoque'
+
+
 // Public functions must be exported as named exports
 export {
   deleteSheet, setActiveSheet, doGet, onOpen, openDialogBootstrap, getSheetsData,
@@ -28,5 +34,7 @@ export {
   getInformacoesMedicamentos,
   appendRowMedicamentos,
   updateRowMedicamentos,
-  encontrarMedicamentoTabelaMedicamentos
+  encontrarMedicamentoTabelaMedicamentos,
+
+  queryChaveMedicamentoGeral
 };

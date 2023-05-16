@@ -11,7 +11,7 @@ function OperacoesMedicamento({remedio, listaDD, data, setData}) {
     return (
         <ButtonGroup aria-label="Basic example">
             <ModalEntradaEstoque/>
-            <ModalSaidaEstoque/>
+            <ModalSaidaEstoque remedio={remedio}/>
             <MedModalVerMais remedio={remedio}/>
             <MedModalAtualizar remedio={remedio} listaDrop={listaDD} data={data} setData={setData}/>
         </ButtonGroup>

@@ -21,8 +21,8 @@ function ModalEntradaEstoque({ props, data, setData }) {
     const handleShow = () => setShow(true);
 
     const opcaoEntrada = ['Doação', 'Ajuste de estoque']
-
     const [opSelect, setOpSelect] = useState('');
+
     const [opLote, setOpLote] = useState('');
     const [opDosagem, setOpDosagem] = useState('');
     const [opValidade, setOpValidade] = useState('');
@@ -91,19 +91,11 @@ function ModalEntradaEstoque({ props, data, setData }) {
                         <hr />
 
                         <Row>
-                            <Col sm={3}>
-                                <InputSelect label={"Lote"} name={"lote"} data={opSelect} setData={setOpSelect} lista={opcaoEntrada} />
+                            <Col sm={8}>
+                                <InputSelect label={"Identifique e selecione o medicamento"} name={"informacoes"} data={opSelect} setData={setOpSelect} lista={opcaoEntrada} />
                             </Col>
 
-                            <Col sm={3}>
-                                <InputSelect label={"Dosagem"} name={"dosagem"} data={opSelect} setData={setOpSelect} lista={opcaoEntrada} />
-                            </Col>
-
-                            <Col sm={3}>
-                                <InputSelect label={"Validade"} name={"Validade"} data={opSelect} setData={setOpSelect} lista={opcaoEntrada} />
-                            </Col>
-
-                            <Col sm={3}>
+                            <Col sm={4}>
                                 <InputText label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} />
                             </Col>
                         </Row>

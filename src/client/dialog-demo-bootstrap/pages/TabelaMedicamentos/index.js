@@ -20,7 +20,6 @@ function TabelaMedicamentos() {
     const [data, setData] = useState(null);
     useEffect(() => {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
-        // forceUpdate();
     }, []);
 
     const [infoDD, setInfoDD] = useState(null)

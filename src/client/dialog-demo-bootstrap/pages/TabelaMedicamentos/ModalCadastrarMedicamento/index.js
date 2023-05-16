@@ -4,25 +4,25 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
+import { Form } from 'react-bootstrap';
 
 import InputText from '../../../components/InputText';
-import InputDate from '../../../components/InputDate'
 import InputSelect from '../../../components/InputSelect';
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import { Form } from 'react-bootstrap';
 
 function MedModalCadastrar({ props, data, setData, listaDD }) {
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    // Controle ao cliclar em cadastrar
+    // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
     const [isLoading, setLoading] = useState(false);
+
+    // Mensagem de erro:
+    const [mensagem, setMensagem] = useState(false);
+
 
     // Carrega os dados do DropDown
     const [lista, setLista] = useState();
@@ -72,7 +72,26 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
     //     }).catch(alert);
     // }
 
+    // Cuida de abrir e fechar o modal:
+
+    const handleClose = () => {
+        setDataCadastro('');
+        setNome('');
+        setPrincipioAtivo('');
+        setClasse('');
+        setTarja('');
+        setApresentacao('');
+
+        setShow(false)
+    };
+    const handleShow = () => setShow(true);
+
+    const [show, setShow] = useState(false);
+
+
+    // Realiza o cadastro
     useEffect(() => {
+        // setMensagem(false);
 
         // Cria um objeto com os dados do medicamento
         const medicamento = {
@@ -103,15 +122,18 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                     setApresentacao('');
 
                     setLoading(false);
+                    setMensagem(false);
                     handleClose();
                 } else {
+                    setLoading(false);
+                    setMensagem(true);
                     console.log("Medicamento já existe na tabela")
                 }
             }).catch(alert);
         }
     }, [isLoading]);
 
-
+    // Carrega as informações do dropdown
     useEffect(() => {
         setLista(listaDD)
     }, [listaDD]);
@@ -168,6 +190,20 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                                     <InputSelect required={true} label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista ? lista[3] : []} />
                                 </Col>
                             </Row>
+
+                            <Row className='mb-3'>
+                                {mensagem &&
+                                    <Col>
+                                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                                            <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
+                                            <p>
+                                                Já existe um medicamento cadastrado com o nome e o princípio ativo inserido.
+                                            </p>
+                                        </Alert>
+                                    </Col>
+                                }
+                            </Row>
+
                         </Container>
 
                         <div className='mt-3 d-flex justify-content-around'>
