@@ -9,14 +9,15 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
 import InputText from '../../../components/InputText';
-import InputDate from '../../../components/InputDate'
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import { any } from 'prop-types';
+import MedicamentoGeral from '../../../classes/MedicamentoGeral'
 
 
-function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
-    const [lista, setLista] = useState();
+function MedModalAtualizar({ remedio, listaDrop, data, setData }: 
+    { remedio: MedicamentoGeral, listaDrop: string[][], data: Array<MedicamentoGeral>, setData: Function}) {
+
+    const [lista, setLista] = useState([[]]);
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -31,7 +32,7 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
     // const [tipo, setTipo] = useState(remedio.tipo);
     // const [motivoDescarte, setMotivoDescarte] = useState(remedio.motivoDescarte);
 
-    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastroPura); //--------------DATA
+    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastro); //--------------DATA
     const [nome, setNome] = useState(remedio.nome);
     const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
     const [classe, setClasse] = useState(remedio.classe); //--------------SELECT
@@ -43,26 +44,29 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
 
         // Cria um objeto com os dados atualizados do medicamento
         var chaveGeral = remedio.chaveGeral;
-        const medicamento = {
-            chaveGeral,
-            dataCadastro,
-            nome,
-            principioAtivo,
-            classe,
-            tarja,
-            apresentacao
-        }
 
-        serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
-            console.log(sucesso)
-            if (sucesso) {
-                data[sucesso - 2] = medicamento
-                setData([...data])
-                console.log("Informações atualizadas")
-            } else {
-                console.log("Não foi possível atualizar")
-            }
-        })
+        // const medicamento = new MedicamentoGeral(chaveGeral,dataCadastro, nome, principioAtivo, classe, tarja, apresentacao)
+
+        // const medicamento = {
+        //     chaveGeral,
+        //     dataCadastro,
+        //     nome,
+        //     principioAtivo,
+        //     classe,
+        //     tarja,
+        //     apresentacao
+        // }
+
+        // serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
+        //     console.log(sucesso)
+        //     if (sucesso) {
+        //         data[sucesso - 2] = medicamento
+        //         setData([...data])
+        //         console.log("Informações atualizadas")
+        //     } else {
+        //         console.log("Não foi possível atualizar")
+        //     }
+        // })
     }
 
     const renderTooltip = (props) => (
@@ -103,7 +107,6 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                 backdrop="static"
                 keyboard={false}
 
-                {...props}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -116,65 +119,32 @@ function MedModalAtualizar({ props, remedio, listaDrop, data, setData }) {
                         <Form onSubmit={salvarAlteracoes}>
                             <Row>
                                 <Col>
-                                    <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={nome} data={nome} setData={setNome} />
-                                </Col>
-                                {/* <Col sm={6}>
-                                    <InputText label={"Lote"} controlId={"inputLoteMed"} value={lote} data={lote} setData={setLote} />
-                                </Col> */}
-                            </Row>
-
-                            {/* <Row>
-                                <Col>
-                                    <InputText label={"Nome do medicamento"} controlId={"inputNomeMed"} value={nome} data={nome} setData={setNome} />
-                                </Col>
-                            </Row> */}
-
-                            <Row>
-                                <Col>
-                                    <InputText label={"Princípio ativo"} controlId={"inputPrincMed"} value={principioAtivo} data={principioAtivo} setData={setPrincipioAtivo} />
-                                </Col>
-                            </Row>
-
-                            {/* <Row>
-                                <Col>
-                                    <InputText label={"Origem do medicamento"} controlId={"inputOrigemMed"} value={origem} data={origem} setData={setOrigem} />
+                                    type, label, placeholder, controlId, name, data, setData, required
+                                    <InputText required={true} type={"text"} placeholder='' name={"nome"} label={"Nome do medicamento"} controlId={"inputNomeMed"} data={nome} setData={setNome} />
                                 </Col>
                             </Row>
 
                             <Row>
-                                <Col sm={6}>
-                                    <InputText label={"Fabricante"} controlId={"inputFabrivanteMed"} value={fabricante} data={fabricante} setData={setFabricante} />
+                                <Col>
+                                    <InputText required={true} type={"text"} placeholder='' name={"principioAtivo"} label={"Princípio ativo"} controlId={"inputPrincMed"} data={principioAtivo} setData={setPrincipioAtivo} />
                                 </Col>
-
-                                <Col sm={6}>
-                                    <InputDate label={"Data de validade"} controlId={"inputDataValidade"} value={validadePura?.substr(0, 10)} setData={setValidadePura} />
-                                </Col>
-                            </Row> */}
+                            </Row>
 
                             <Row>
                                 <Col>
-                                    <InputSelect label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
+                                    <InputSelect required={true} label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
                                 </Col>
                             </Row>
 
                             <Row className='mt-3'>
                                 <Col sm={6}>
-                                    <InputSelect label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista ? lista[2] : []} />
+                                    <InputSelect required={true} label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista ? lista[2] : []} />
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputSelect label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista ? lista[3] : []} />
+                                    <InputSelect required={true} label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista ? lista[3] : []} />
                                 </Col>
                             </Row>
-
-                            {/* <Row className='mt-3'>
-                                <Col sm={6}>
-                                    <InputSelect label={"Tipo de medicamento"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
-                                </Col>
-                                <Col sm={6}>
-                                    <InputSelect label={"Motivo do descarte"} name={"motivoDescarte"} data={motivoDescarte} setData={setMotivoDescarte} lista={lista ? lista[4] : []} />
-                                </Col>
-                            </Row> */}
 
                             <div className='mt-3 mb-3 d-flex justify-content-around'>
                                 <Button variant="outline-secondary" onClick={handleClose}>

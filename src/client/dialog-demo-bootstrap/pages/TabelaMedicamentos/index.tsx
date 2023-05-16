@@ -56,7 +56,18 @@ function TabelaMedicamentos() {
                                 </InputGroup.Text>
                             </InputGroup>
 
-                            <MedModalCadastrar listaDD={infoDD} data={data} setData={setData} cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)} />
+                            <MedModalCadastrar
+                                listaDD={infoDD}
+                                data={data}
+                                setData={setData}
+                            />
+
+                            {/* <MedModalCadastrar
+                                listaDD={infoDD}
+                                data={data}
+                                setData={setData}
+                                cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}
+                            /> */}
                         </Container>
                     </Navbar>
 

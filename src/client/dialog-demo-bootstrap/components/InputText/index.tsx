@@ -3,17 +3,17 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 
 
+// value para defaultValue={value} retirado
+function InputText({ type, label, placeholder, controlId, name, data, setData, required }:
+  { type: string, label: string, placeholder: string, controlId: string, name: string, data: string, setData: Function, required: boolean }) {
 
-
-function InputText({ label, placeholder, controlId, value, name, data, setData, required}) {
   return (
     <Form.Group className="mb-3" controlId={controlId}>
       <Form.Label className='labelInputConfig'>{label}</Form.Label>
       <Form.Control
-        type="text"
+        type={type}
         required={required}
         placeholder={placeholder}
-        defaultValue={value}
         name={name}
         value={data}
         onChange={(e) => setData(e.target.value)} />

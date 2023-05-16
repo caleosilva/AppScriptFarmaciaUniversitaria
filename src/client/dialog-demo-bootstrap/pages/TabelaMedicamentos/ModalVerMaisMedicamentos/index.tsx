@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import { Form } from 'react-bootstrap';
-
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import BotaoDark from '../../../components/BotaoDark';
-import BotaoSecondary from '../../../components/BotaoSecondary';
+import React, { useState } from 'react';
+
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 
-function MedModalVerMais({ props, remedio }) {
+
+export default function MedModalVerMais({remedio}: {remedio: MedicamentoGeral}) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -50,7 +49,6 @@ function MedModalVerMais({ props, remedio }) {
                 backdrop="static"
                 keyboard={false}
 
-                {...props}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -140,5 +138,3 @@ function MedModalVerMais({ props, remedio }) {
         </>
     );
 }
-
-export default MedModalVerMais;

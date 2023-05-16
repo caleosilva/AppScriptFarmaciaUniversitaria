@@ -9,12 +9,14 @@ import { Form } from 'react-bootstrap';
 
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
+import { serverFunctions } from '../../../../utils/serverFunctions';
+import MedicamentoGeral from '../../../classes/MedicamentoGeral'
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { serverFunctions } from '../../../../utils/serverFunctions';
 
-function MedModalCadastrar({ props, data, setData, listaDD }) {
+
+function MedModalCadastrar({data, setData, listaDD }: {data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][]}) {
 
     // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
@@ -25,7 +27,7 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
 
 
     // Carrega os dados do DropDown
-    const [lista, setLista] = useState();
+    const [lista, setLista] = useState([[]]);
 
     // Elementos do formulário:
     const [classe, setClasse] = useState(''); //-----------------SELECT
@@ -87,7 +89,6 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
     const handleShow = () => setShow(true);
 
     const [show, setShow] = useState(false);
-
 
     // Realiza o cadastro
     useEffect(() => {
@@ -151,7 +152,6 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                 backdrop="static"
                 keyboard={false}
 
-                {...props}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -164,13 +164,13 @@ function MedModalCadastrar({ props, data, setData, listaDD }) {
                         <Container>
                             <Row>
                                 <Col>
-                                    <InputText required={true} label={"Nome do medicamento"} placeholder={""} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome} />
+                                    <InputText type={"text"} required={true} label={"Nome do medicamento"} placeholder={""} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col>
-                                    <InputText required={true} label={"Princípio ativo"} placeholder={""} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo} />
+                                    <InputText type={"text"} required={true} label={"Princípio ativo"} placeholder={""} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo} />
                                 </Col>
                             </Row>
 
