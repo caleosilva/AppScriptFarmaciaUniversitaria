@@ -1,4 +1,4 @@
-import MedicamentoGeral from '../client/dialog-demo-bootstrap/classes/MedicamentoGeral'
+import MedicamentoGeral from '../models/MedicamentoGeral';
 
 const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 
@@ -37,17 +37,27 @@ export const getMedicamentos = () => {
         var dataCadastro = new Date(data[i][1]);
         var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
 
-        const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
-        // const remedio = {
-        //     "chaveGeral": data[i][0],
-        //     "dataCadastroPura": data[i][1],
-        //     "dataCadastro": dataCadastroFormatada,
-        //     "nome": data[i][2],
-        //     "principioAtivo": data[i][3],
-        //     "tarja": data[i][4],
-        //     "classe": data[i][5],
-        //     "apresentacao": data[i][6]
-        // }
+        // const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
+
+        // this.chaveGeral = chaveGeral;
+        // this.dataCadastro = dataCadastro;
+        // this.dataCadastroFormatada = dataCadastroFormatada;
+        // this.nome = nome;
+        // this.principioAtivo = principioAtivo;
+        // this.tarja = tarja;
+        // this.classe = classe;
+        // this.apresentacao = apresentacao;
+
+        const remedio = {
+            "chaveGeral": data[i][0],
+            "dataCadastro": data[i][1],
+            "dataCadastroFormatada": dataCadastroFormatada,
+            "nome": data[i][2],
+            "principioAtivo": data[i][3],
+            "classe": data[i][4],
+            "tarja": data[i][5],
+            "apresentacao": data[i][6]
+        }
         informacoes.push(remedio)
     }
 
@@ -85,7 +95,7 @@ export const getInformacoesMedicamentos = () => {
     }
     informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDescarte)
     return JSON.stringify(informacoes);
-}   
+}
 
 export const encontrarMedicamentoTabelaMedicamentos = (chaveDeBusca) => {
     var sql = "select * where A = '" + chaveDeBusca + "'";
@@ -94,22 +104,22 @@ export const encontrarMedicamentoTabelaMedicamentos = (chaveDeBusca) => {
     if (dados[0][0] === '#N/A') {
         return false;
     } else {
+        // var remedio = new MedicamentoGeral(data[0][0], data[0][1], data[0][2], data[0][3], data[0][4], data[0][5], data[0][6]);
         var informacoes = [];
 
         for (let i = 0; i < dados.length; i++) {
-            const remedio = new MedicamentoGeral(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
-            // var data = {
-            //     chaveGeral: dados[i][0],
-            //     dataCadastro: dados[i][1],
-            //     nome: dados[i][2],
-            //     principioAtivo: dados[i][3],
-            //     tarja: dados[i][4],
-            //     classe: dados[i][5],
-            //     apresentacao: dados[i][6]
-            // }
+            // var remedio = new MedicamentoGeral(data[i][0], data[i][1], data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
+            var remedio = {
+                chaveGeral: dados[i][0],
+                dataCadastro: dados[i][1],
+                nome: dados[i][2],
+                principioAtivo: dados[i][3],
+                tarja: dados[i][4],
+                classe: dados[i][5],
+                apresentacao: dados[i][6]
+            }
             informacoes.push(remedio)
         }
-
         return informacoes;
     }
 }
@@ -121,10 +131,12 @@ export const appendRowMedicamentos = (medicamento) => {
 
     // Verificando se o medicamento existe:
     var codigo = medicamento.chaveGeral;
-    if(encontrarMedicamentoTabelaMedicamentos(codigo)){
+
+    if (encontrarMedicamentoTabelaMedicamentos(codigo)) {
         return false;
     } else {
         var dataCadastro = getDateToday();
+        ws.ins
         ws.appendRow([
             medicamento.chaveGeral,
             dataCadastro,

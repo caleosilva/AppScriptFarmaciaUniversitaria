@@ -28,6 +28,9 @@ export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
         var informacoes = [];
 
         for (let i = 0; i < dados.length; i++) {
+            // var infoValidade = new Date(data[i][4]);
+            // var validadeFormatada = (infoValidade.getUTCDate()) + "-" + (infoValidade.getMonth() + 1) + "-" + infoValidade.getFullYear();
+
             var data = {
                 chaveMedicamentoGeral: dados[i][0],
                 chaveEspecifica: dados[i][1],
@@ -38,9 +41,9 @@ export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
                 origem: dados[i][6],
                 tipo: dados[i][7],
                 fabricante: dados[i][8],
-                motivoDescarte: dados[i][9],
-
+                motivoDescarte: dados[i][9]
             }
+            
             informacoes.push(data)
         }
 

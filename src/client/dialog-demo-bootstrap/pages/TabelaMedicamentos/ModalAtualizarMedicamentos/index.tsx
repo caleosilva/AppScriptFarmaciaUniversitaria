@@ -11,8 +11,8 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import MedicamentoGeral from '../../../classes/MedicamentoGeral'
 
+import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
 
 function MedModalAtualizar({ remedio, listaDrop, data, setData }: 
     { remedio: MedicamentoGeral, listaDrop: string[][], data: Array<MedicamentoGeral>, setData: Function}) {
@@ -119,7 +119,6 @@ function MedModalAtualizar({ remedio, listaDrop, data, setData }:
                         <Form onSubmit={salvarAlteracoes}>
                             <Row>
                                 <Col>
-                                    type, label, placeholder, controlId, name, data, setData, required
                                     <InputText required={true} type={"text"} placeholder='' name={"nome"} label={"Nome do medicamento"} controlId={"inputNomeMed"} data={nome} setData={setNome} />
                                 </Col>
                             </Row>

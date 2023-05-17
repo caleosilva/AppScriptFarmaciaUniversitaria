@@ -1,16 +1,16 @@
 // import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
-import Row from 'react-bootstrap/Row';
 import Alert from 'react-bootstrap/Alert';
 import { Form } from 'react-bootstrap';
 
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import MedicamentoGeral from '../../../classes/MedicamentoGeral'
+import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -108,7 +108,7 @@ function MedModalCadastrar({data, setData, listaDD }: {data: Array<MedicamentoGe
         if (isLoading) {
             // Verifica se ele não existe para poder finalizar o cadastro
             serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-                console.log("Sucesso " + sucesso)
+                console.log("Sucesso: " + sucesso)
 
                 if (sucesso) {
                     // Atualiza a tabela:
@@ -130,7 +130,7 @@ function MedModalCadastrar({data, setData, listaDD }: {data: Array<MedicamentoGe
                     setMensagem(true);
                     console.log("Medicamento já existe na tabela")
                 }
-            }).catch(alert);
+            }).catch((e) => console.log(e.stack));
         }
     }, [isLoading]);
 

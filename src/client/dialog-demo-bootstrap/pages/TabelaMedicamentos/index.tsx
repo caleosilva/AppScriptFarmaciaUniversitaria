@@ -19,7 +19,8 @@ function TabelaMedicamentos() {
 
     const [data, setData] = useState(null);
     useEffect(() => {
-        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
+        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)); console.log("Geral: " + JSON.parse(string)) }).catch(alert);
+
     }, []);
 
     const [infoDD, setInfoDD] = useState(null)
@@ -32,6 +33,7 @@ function TabelaMedicamentos() {
     return (
         <section className='margemNavBar ms-5 me-5'>
             <Card>
+
                 <Card.Header>
 
                     <Navbar>
@@ -89,8 +91,9 @@ function TabelaMedicamentos() {
                                         ? item
                                         : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
                                         item.principioAtivo.toLowerCase().includes(busca.toLowerCase())
-                                }).map((remedio, index) =>
-                                    <tr key={index}>
+                                }).map((remedio, index) => {
+                                    {console.log("Remedio: ", remedio)}
+                                    return <tr key={index}>
                                         <td>{remedio.nome}</td>
                                         <td>{remedio.principioAtivo}</td>
                                         <td>{remedio.apresentacao}</td>
@@ -98,7 +101,7 @@ function TabelaMedicamentos() {
                                             <OperacoesMedicamento remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
                                         </td>
                                     </tr>
-                                ) : ''}
+                                }) : ''}
                             </>
                         </tbody>
                     </Table>

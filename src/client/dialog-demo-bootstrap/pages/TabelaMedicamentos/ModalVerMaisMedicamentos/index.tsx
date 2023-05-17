@@ -10,13 +10,16 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import React, { useState } from 'react';
 
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
+import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
 
-
-export default function MedModalVerMais({remedio}: {remedio: MedicamentoGeral}) {
+// Mudar de ANY para Medicamento Geral
+export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral }) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    // console.log("Dados1: " + remedio)
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -25,7 +28,9 @@ export default function MedModalVerMais({remedio}: {remedio: MedicamentoGeral}) 
     );
 
     return (
+
         <>
+            {console.log(remedio)}
             <OverlayTrigger
                 placement="left"
                 delay={{ show: 400, hide: 250 }}
@@ -62,43 +67,18 @@ export default function MedModalVerMais({remedio}: {remedio: MedicamentoGeral}) 
                         <Form>
                             <Row>
                                 <Col sm={6}>
-                                    <ExibirInputSimples label={'Data do cadastro'} data={remedio.dataCadastro} controlId={"inputDataCadastro"} />
+                                    <ExibirInputSimples label={'Data do cadastro'} data={remedio.dataCadastroFormatada} controlId={"inputDataCadastro"} />
                                 </Col>
                                 <Col sm={6}>
                                     <ExibirInputSimples label={'Nome do medicamento'} data={remedio.nome} controlId={"inputNomeMed"} />
                                 </Col>
-                                {/* <Col sm={6}>
-                                    <ExibirInputSimples label={'Lote'} data={remedio.lote} controlId={"inputLoteMed"} />
-                                </Col> */}
                             </Row>
-                            {/* <Row>
-                                <Col>
-                                    <ExibirInputSimples label={'Nome do medicamento'} data={remedio.nome} controlId={"inputNomeMed"} />
-                                </Col>
-                            </Row> */}
 
                             <Row>
                                 <Col>
                                     <ExibirInputSimples label={'Princípio ativo'} data={remedio.principioAtivo} controlId={"inputPrincMed"} />
                                 </Col>
                             </Row>
-
-                            {/* <Row>
-                                <Col>
-                                    <ExibirInputSimples label={'Origem do medicamento'} data={remedio.origem} controlId={"inputOrigemMed"} />
-                                </Col>
-                            </Row> */}
-
-                            {/* <Row>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Fabricante'} data={remedio.fabricante} controlId={"inputFabrivanteMed"} />
-                                </Col>
-
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Data de validade'} data={remedio.validade} controlId={"inputDataValidade"} />
-                                </Col>
-                            </Row> */}
-
                             <Row>
                                 <Col>
                                     <ExibirInputSimples label={'Classe'} data={remedio.classe} controlId={"classe"} />
@@ -114,17 +94,6 @@ export default function MedModalVerMais({remedio}: {remedio: MedicamentoGeral}) 
                                     <ExibirInputSimples label={'Apresentação'} data={remedio.apresentacao} controlId={"apresentacao"} />
                                 </Col>
                             </Row>
-
-
-
-                            {/* <Row>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Tipo de medicamento'} data={remedio.tipo} controlId={"tipoMed"} />
-                                </Col>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Motivo do descarte'} data={remedio.motivoDescarte} controlId={"motivoDescarte"} />
-                                </Col>
-                            </Row> */}
 
                         </Form>
                     </Container>
