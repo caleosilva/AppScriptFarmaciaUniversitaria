@@ -18,7 +18,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 
-function MedModalCadastrar({ data, setData, listaDD }: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][] }) {
+export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral}: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
 
     // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
@@ -32,6 +32,18 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     const [lista, setLista] = useState([[]]);
 
     // Elementos do formulário:
+    const [lote, setLote] = useState('');
+    const [dosagem, setDosagem] = useState('');
+    const [validade, setValidade] = useState('');
+    const [quantidade, setQuantidade] = useState('');//
+    const [origem, setOrigem] = useState('');
+    const [tipo, setTipo] = useState(''); //-----------------SELECT
+    const [fabricante, setFabricante] = useState('');
+    const [motivoDescarte, setMotivoDescarte] = useState('');//-----------------SELECT
+    //DATA DE ENTRADA DEVE SER PEGA NO BACK
+
+
+
     const [classe, setClasse] = useState(''); //-----------------SELECT
     const [tarja, setTarja] = useState(''); //-------------------SELECT
     const [apresentacao, setApresentacao] = useState(''); //-----SELECT
@@ -39,53 +51,16 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     const [nome, setNome] = useState('');
     const [principioAtivo, setPrincipioAtivo] = useState('');
 
-
-
-    // const cadastrarMed = (event) => {
-    //     event.preventDefault();
-
-    //     // Cria um objeto com os dados do medicamento
-    //     const medicamento = {
-    //         'chaveGeral': (nome + '#' + principioAtivo).toString().toLowerCase().replace(/\s+/g, ''),
-    //         dataCadastro,
-    //         nome,
-    //         principioAtivo,
-    //         classe,
-    //         tarja,
-    //         apresentacao
-    //     }
-
-    //     // Verifica se ele não existe para poder finalizar o cadastro
-    //     serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-    //         console.log("Sucesso " + sucesso)
-
-    //         if (sucesso) {
-    //             // Atualiza a tabela:
-    //             setData([...data, medicamento])
-
-    //             // Limpa os formulários
-    //             setDataCadastro('');
-    //             setNome('');
-    //             setPrincipioAtivo('');
-    //             setClasse('');
-    //             setTarja('');
-    //             setApresentacao('');
-
-    //             handleClose();
-    //         } else {
-    //             console.log("Medicamento já existe na tabela")
-    //         }
-    //     }).catch(alert);
-    // }
-
     // Cuida de abrir e fechar o modal:
 
     const handleClose = () => {
-        setNome('');
-        setPrincipioAtivo('');
-        setClasse('');
-        setTarja('');
-        setApresentacao('');
+        setLote('')
+        setDosagem('')
+        setValidade('')
+        setOrigem('')
+        setTipo('')
+        setFabricante('')
+        setMotivoDescarte('')
 
         setShow(false)
     };
@@ -95,77 +70,59 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if(classe != '' && tarja != '' && apresentacao != '' && nome != '' && principioAtivo != ''){
+        if (lote != '' && dosagem != '' && validade != '' && origem != '' && tipo != '' && fabricante != '' && motivoDescarte != '' && quantidade != '') {
             setIsFormValid(true);
-        }else{
+        } else {
             setIsFormValid(false);
         }
-    }, [classe, tarja, apresentacao, nome, principioAtivo]);
+    }, [lote, dosagem, validade, origem, tipo, fabricante, motivoDescarte, quantidade]);
 
     // Realiza o cadastro
     useEffect(() => {
 
+        var dataValidade = new Date(validade);
+        var validadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
+
         // Cria um objeto com os dados do medicamento
-        const medicamento = {
-            'chaveGeral': (nome + '#' + principioAtivo).toString().toLowerCase().replace(/\s+/g, ''),
-            nome,
-            principioAtivo,
-            classe,
-            tarja,
-            apresentacao
+        const medicamentoEspecifico = {
+            chaveMedicamentoGeral,
+            'chaveEspecifica': (lote + '#' + dosagem + '#' + validade).toString().toLowerCase().replace(/\s+/g, ''),
+            lote, 
+            dosagem, 
+            validadeFormatada, 
+            quantidade,
+            origem, 
+            tipo, 
+            fabricante, 
+            motivoDescarte
         }
 
-        if (isLoading) {
-            // Verifica se ele não existe para poder finalizar o cadastro
-            // try {
-            //     serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-            //         if (sucesso) {
-            //             // Atualiza a tabela:
-            //             setData([...data, medicamento])
 
-            //             // Limpa os formulários
-            //             setDataCadastro('');
-            //             setNome('');
-            //             setPrincipioAtivo('');
-            //             setClasse('');
-            //             setTarja('');
-            //             setApresentacao('');
+        // if (isLoading) {
+        //     serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
+        //         console.log("Sucesso: " + sucesso)
 
-            //             setLoading(false);
-            //             setMensagem(false);
-            //             handleClose();
-            //         }
-            //     });
+        //         if (sucesso) {
+        //             // Atualiza a tabela:
+        //             setData([...data, medicamento])
 
-            // } catch (ErroMedicamentoGeralExistente) {
-            //     setLoading(false);
-            //     setMensagem(true);
-            // }
+        //             // Limpa os formulários
+        //             setNome('');
+        //             setPrincipioAtivo('');
+        //             setClasse('');
+        //             setTarja('');
+        //             setApresentacao('');
 
-            serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-                console.log("Sucesso: " + sucesso)
-
-                if (sucesso) {
-                    // Atualiza a tabela:
-                    setData([...data, medicamento])
-
-                    // Limpa os formulários
-                    setNome('');
-                    setPrincipioAtivo('');
-                    setClasse('');
-                    setTarja('');
-                    setApresentacao('');
-
-                    setLoading(false);
-                    setMensagem(false);
-                    handleClose();
-                } else {
-                    setLoading(false);
-                    setMensagem(true);
-                    console.log("Medicamento já existe na tabela")
-                }
-            }).catch((e) => console.log(e.stack));
-        }
+        //             setLoading(false);
+        //             setMensagem(false);
+        //             handleClose();
+        //         } else {
+        //             setLoading(false);
+        //             setMensagem(true);
+        //             console.log("Medicamento já existe na tabela")
+        //         }
+        //     }).catch((e) => console.log(e.stack));
+        // }
     }, [isLoading]);
 
     // Carrega as informações do dropdown
@@ -176,7 +133,7 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     return (
         <>
             <Button variant="outline-secondary" onClick={handleShow}>
-                Cadastrar medicamento
+                Cadastrar nova doação
             </Button>
 
             <Modal
@@ -265,5 +222,3 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
         </>
     );
 }
-
-export default MedModalCadastrar;

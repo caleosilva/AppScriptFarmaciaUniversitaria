@@ -22,7 +22,8 @@ import {
 
 // Imports referentes ao Estoque
 import {
-  queryChaveMedicamentoGeral
+  queryChaveMedicamentoGeral,
+  buscaBinariaCompleta
 } from './estoque'
 
 
@@ -36,5 +37,6 @@ export {
   updateRowMedicamentos,
   encontrarMedicamentoTabelaMedicamentos,
 
-  queryChaveMedicamentoGeral
+  queryChaveMedicamentoGeral,
+  buscaBinariaCompleta
 };
