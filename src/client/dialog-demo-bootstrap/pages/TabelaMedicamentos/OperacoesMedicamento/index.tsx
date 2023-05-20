@@ -19,7 +19,6 @@ export default function OperacoesMedicamento({ remedio, listaDD, data, setData }
     { remedio: MedicamentoGeral, listaDD: string[][], data: Array<MedicamentoGeral>, setData: Function }) {
 
     const navigate = useNavigate();
-    const dados = { id: 1, name: 'John' };
 
     const handleNavigateEstoque = () => {
         navigate('/estoque', { state: { remedio } })

@@ -11,6 +11,10 @@ import {
   doGet,
 } from './sheets';
 
+import {
+  getInformacoesSelect
+} from './geral'
+
 // Imports referentes aos Medicamentos:
 import {
   encontrarMedicamentoTabelaMedicamentos,
@@ -23,13 +27,17 @@ import {
 // Imports referentes ao Estoque
 import {
   queryChaveMedicamentoGeral,
-  buscaBinariaCompleta
+  buscaBinariaCompleta,
+  queryMedicamentoEspecifico,
+  appendRowMedicamentoEspecifico
 } from './estoque'
 
 
 // Public functions must be exported as named exports
 export {
   deleteSheet, setActiveSheet, doGet, onOpen, openDialogBootstrap, getSheetsData,
+
+  getInformacoesSelect,
 
   getMedicamentos,
   getInformacoesMedicamentos,
@@ -38,5 +46,7 @@ export {
   encontrarMedicamentoTabelaMedicamentos,
 
   queryChaveMedicamentoGeral,
-  buscaBinariaCompleta
+  buscaBinariaCompleta,
+  queryMedicamentoEspecifico,
+  appendRowMedicamentoEspecifico
 };

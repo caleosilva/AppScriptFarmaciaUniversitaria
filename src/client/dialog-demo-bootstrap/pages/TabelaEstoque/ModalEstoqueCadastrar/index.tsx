@@ -16,9 +16,10 @@ import ErroMedicamentoGeralExistente from '../../../../../erros/ErroMedicamentoG
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import InputPositiveNumber from '../../../components/InputPositiveNumber';
 
 
-export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral}: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
+export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
 
     // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
@@ -26,7 +27,6 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
     // Mensagem de erro:
     const [mensagem, setMensagem] = useState(false);
-
 
     // Carrega os dados do DropDown
     const [lista, setLista] = useState([[]]);
@@ -39,28 +39,18 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     const [origem, setOrigem] = useState('');
     const [tipo, setTipo] = useState(''); //-----------------SELECT
     const [fabricante, setFabricante] = useState('');
-    const [motivoDescarte, setMotivoDescarte] = useState('');//-----------------SELECT
-    //DATA DE ENTRADA DEVE SER PEGA NO BACK
-
-
-
-    const [classe, setClasse] = useState(''); //-----------------SELECT
-    const [tarja, setTarja] = useState(''); //-------------------SELECT
-    const [apresentacao, setApresentacao] = useState(''); //-----SELECT
-    const [dataCadastro, setDataCadastro] = useState(''); //--------------DATA
-    const [nome, setNome] = useState('');
-    const [principioAtivo, setPrincipioAtivo] = useState('');
+    const [motivoDoacao, setMotivoDoacao] = useState('');//-----------------SELECT
 
     // Cuida de abrir e fechar o modal:
-
     const handleClose = () => {
         setLote('')
         setDosagem('')
         setValidade('')
+        setQuantidade('')
         setOrigem('')
         setTipo('')
         setFabricante('')
-        setMotivoDescarte('')
+        setMotivoDoacao('')
 
         setShow(false)
     };
@@ -70,12 +60,12 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (lote != '' && dosagem != '' && validade != '' && origem != '' && tipo != '' && fabricante != '' && motivoDescarte != '' && quantidade != '') {
+        if (lote != '' && dosagem != '' && validade != '' && origem != '' && tipo != '' && fabricante != '' && motivoDoacao != '' && quantidade != '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
-    }, [lote, dosagem, validade, origem, tipo, fabricante, motivoDescarte, quantidade]);
+    }, [lote, dosagem, validade, origem, tipo, fabricante, motivoDoacao, quantidade]);
 
     // Realiza o cadastro
     useEffect(() => {
@@ -83,46 +73,55 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
         var dataValidade = new Date(validade);
         var validadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
 
+        var dataHoje = new Date();
+        var dataHojeFormatada = (dataHoje.getUTCDate()) + "-" + (dataHoje.getMonth() + 1) + "-" + dataHoje.getFullYear();
+
         // Cria um objeto com os dados do medicamento
         const medicamentoEspecifico = {
             chaveMedicamentoGeral,
-            'chaveEspecifica': (lote + '#' + dosagem + '#' + validade).toString().toLowerCase().replace(/\s+/g, ''),
-            lote, 
-            dosagem, 
-            validadeFormatada, 
+            'chaveMedicamentoEspecifica': (lote + '#' + dosagem + '#' + validade).toString().toLowerCase().replace(/\s+/g, ''),
+            lote,
+            dosagem,
+            validadeFormatada,
             quantidade,
-            origem, 
-            tipo, 
-            fabricante, 
-            motivoDescarte
+            origem,
+            tipo,
+            fabricante,
+            motivoDoacao,
+            dataHojeFormatada
         }
 
 
-        // if (isLoading) {
-        //     serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-        //         console.log("Sucesso: " + sucesso)
+        if (isLoading) {
+            serverFunctions.appendRowMedicamentoEspecifico(medicamentoEspecifico).then((sucesso) => {
+                console.log("Sucesso: " + sucesso)
 
-        //         if (sucesso) {
-        //             // Atualiza a tabela:
-        //             setData([...data, medicamento])
+                if (sucesso) {
+                    console.log("Sucesso real: " + sucesso);
 
-        //             // Limpa os formulários
-        //             setNome('');
-        //             setPrincipioAtivo('');
-        //             setClasse('');
-        //             setTarja('');
-        //             setApresentacao('');
+                    // Atualiza a tabela:
+                    setData([...data, medicamentoEspecifico]);
 
-        //             setLoading(false);
-        //             setMensagem(false);
-        //             handleClose();
-        //         } else {
-        //             setLoading(false);
-        //             setMensagem(true);
-        //             console.log("Medicamento já existe na tabela")
-        //         }
-        //     }).catch((e) => console.log(e.stack));
-        // }
+                    // Limpa os formulários
+                    setLote('');
+                    setDosagem('');
+                    setValidade('');
+                    setQuantidade('');
+                    setOrigem('');
+                    setTipo('');
+                    setFabricante('');
+                    setMotivoDoacao('');
+
+                    setLoading(false);
+                    setMensagem(false);
+                    handleClose();
+                } else {
+                    setLoading(false);
+                    setMensagem(true);
+                    console.log("Medicamento específico já existe na tabela")
+                }
+            }).catch((e) => console.log(e.stack));
+        }
     }, [isLoading]);
 
     // Carrega as informações do dropdown
@@ -155,30 +154,53 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                         <Container>
                             <Row>
                                 <Col>
-                                    <InputText type={"text"} required={true} label={"Nome do medicamento"} placeholder={""} controlId={"inputNomeMed"} name={"nome"} data={nome} setData={setNome} />
+                                    <InputText type={"text"} required={true} label={"Doador"} placeholder={"Informe o nome,CPF ou CNPJ e selecione um doador"} controlId={"inputDoador"} name={"doador"} data={dosagem} setData={setDosagem} />
+                                </Col>
+                            </Row>
+
+                            <hr/>
+
+                            <Row>
+                                <Col>
+                                    <InputText type={"text"} required={true} label={"Dosagem"} placeholder={""} controlId={"inputDosagem"} name={"dosagem"} data={dosagem} setData={setDosagem} />
                                 </Col>
                             </Row>
 
                             <Row>
-                                <Col>
-                                    <InputText type={"text"} required={true} label={"Princípio ativo"} placeholder={""} controlId={"inputPrincMed"} name={"principioAtivo"} data={principioAtivo} setData={setPrincipioAtivo} />
+                                <Col sm={6}>
+                                    <InputText type={"text"} required={true} label={"Lote"} placeholder={""} controlId={"inputLote"} name={"lote"} data={lote} setData={setLote} />
+                                </Col>
+
+                                <Col sm={6}>
+                                    <InputText type={"date"} required={true} label={"Validade"} placeholder={""} controlId={"inputValidade"} name={"validade"} data={validade} setData={setValidade} />
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col sm={6}>
+                                    <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} />
+                                    {/* <InputText type={"number"} required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} /> */}
+                                </Col>
+
+                                <Col sm={6}>
+                                    <InputText type={"text"} required={true} label={"Fabricante"} placeholder={""} controlId={"inputFabricante"} name={"fabricante"} data={fabricante} setData={setFabricante} />
                                 </Col>
                             </Row>
 
                             <Row className='mb-3'>
 
                                 <Col>
-                                    <InputSelect required={true} label={"Classe"} name={"classe"} data={classe} setData={setClasse} lista={lista ? lista[0] : []} />
+                                    <InputSelect required={true} label={"Origem"} name={"origem"} data={origem} setData={setOrigem} lista={lista ? lista[5] : []} />
                                 </Col>
                             </Row>
 
                             <Row className='mb-3'>
                                 <Col sm={6}>
-                                    <InputSelect required={true} label={"Tarja"} name={"tarja"} data={tarja} setData={setTarja} lista={lista ? lista[2] : []} />
+                                    <InputSelect required={true} label={"Tipo"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputSelect required={true} label={"Apresentação"} name={"apresentacao"} data={apresentacao} setData={setApresentacao} lista={lista ? lista[3] : []} />
+                                    <InputSelect required={true} label={"Motivo da doação"} name={"motivoDoacao"} data={motivoDoacao} setData={setMotivoDoacao} lista={lista ? lista[4] : []} />
                                 </Col>
                             </Row>
 

@@ -6,6 +6,7 @@ import { Form } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 import { useEffect, useState } from 'react';
@@ -17,6 +18,7 @@ import { serverFunctions } from '../../../utils/serverFunctions';
 import MedicamentoGeral from '../../../../models/MedicamentoGeral';
 import OperacoesEstoque from './OperacoesEstoque';
 import '../style.css';
+import ModalEstoqueCadastrar from './ModalEstoqueCadastrar';
 
 export default function TabelaEstoque() {
 
@@ -31,50 +33,63 @@ export default function TabelaEstoque() {
     }
 
     function renderTable() {
-        if (data) {
+        if (data == null) {
             return (
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th style={{ width: '20%' }} >Lote</th>
-                            <th style={{ width: '20%' }} >Dosagem</th>
-                            <th style={{ width: '20%' }} >Validade</th>
-                            <th style={{ width: '20%' }} >Quantidade</th>
-                            <th style={{ width: '20%' }} >Operações</th>
+                <div className='d-flex justify-content-center'>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </div>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <>
-                            {data ? data.filter((item) => {
-                                return busca.toLowerCase() === ''
-                                    ? item
-                                    : item.lote.toLowerCase().includes(busca.toLowerCase()) ||
-                                    item.dosagem.toLowerCase().includes(busca.toLowerCase())
-
-                            }).map((medicamento, index) =>
-                                <tr key={index}>
-                                    <td>{medicamento.lote}</td>
-                                    <td>{medicamento.dosagem}</td>
-                                    <td>{medicamento.validade}</td>
-                                    <td>{medicamento.quantidade}</td>
-                                    <td>
-                                        <p>+ -</p>
-                                    </td>
-
-                                </tr>
-                            ) : ''}
-                        </>
-                    </tbody>
-                </Table>
             )
-
-        } else {
+        } else if (data == false) {
             return (
                 <Alert key={"infoTabela"} variant={"dark"}>
                     Não há doações registradas para esse medicamento!
                 </Alert>
             )
+        } else {
+            return (
+                <>
+                    <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th style={{ width: '20%' }} >Lote</th>
+                                <th style={{ width: '20%' }} >Dosagem</th>
+                                <th style={{ width: '20%' }} >Validade</th>
+                                <th style={{ width: '20%' }} >Quantidade</th>
+                                <th style={{ width: '20%' }} >Operações</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <>
+                                {data ? data.filter((item) => {
+                                    return busca.toLowerCase() === ''
+                                        ? item
+                                        : item.lote.toLowerCase().includes(busca.toLowerCase()) ||
+                                        item.dosagem.toLowerCase().includes(busca.toLowerCase())
+
+                                }).map((medicamento, index) =>
+
+                                    <tr key={index}>
+
+                                        <td>{medicamento.lote}</td>
+                                        <td>{medicamento.dosagem}</td>
+                                        <td>{medicamento.validadeFormatada}</td>
+                                        <td>{medicamento.quantidade}</td>
+                                        <td>
+                                            <p>+ -</p>
+                                        </td>
+
+                                    </tr>
+                                ) : ''}
+                            </>
+                        </tbody>
+                    </Table>
+                </>
+            )
+
         }
     }
 
@@ -92,10 +107,14 @@ export default function TabelaEstoque() {
     }, []);
 
     useEffect(() => {
-        serverFunctions.getInformacoesMedicamentos().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
+        serverFunctions.getInformacoesSelect().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
     }, []);
 
+    { console.log("data: ", data) }
+
+
     return (
+
 
         <section className='margemNavBar ms-5 me-5'>
 
@@ -104,7 +123,7 @@ export default function TabelaEstoque() {
 
                     <Navbar>
                         <Container className='justify-content-around' fluid>
-                            <Navbar.Brand href="">Estoque de {infoMedicamentoGeral.nome}</Navbar.Brand>
+                            <Navbar.Brand href="">Controle de estoque</Navbar.Brand>
 
                             <InputGroup className='buscar'>
                                 <Form.Control
@@ -125,7 +144,8 @@ export default function TabelaEstoque() {
                                 </InputGroup.Text>
                             </InputGroup>
 
-                            <Button variant="outline-secondary">Cadastrar nova doação</Button>{' '}
+                            <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} />
+                            {/* <Button variant="outline-secondary">Cadastrar nova doação</Button>{' '} */}
                             <Button variant="dark" onClick={handleBack}>Voltar</Button>{' '}
 
                         </Container>
@@ -134,6 +154,9 @@ export default function TabelaEstoque() {
 
                 </Card.Header>
                 <Card.Body>
+                    <div className='d-flex justify-content-center'>
+                        <p><strong>Medicamento selecionado:</strong> {infoMedicamentoGeral.nome}, {infoMedicamentoGeral.principioAtivo}, {infoMedicamentoGeral.apresentacao} </p>
+                    </div>
                     {renderTable()}
                 </Card.Body>
             </Card>

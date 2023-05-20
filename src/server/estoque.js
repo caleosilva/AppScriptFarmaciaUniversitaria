@@ -13,12 +13,47 @@ const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
 
     var pushQuery = tempSheet.getRange(1, 1).setFormula(Query);
     var pullResult = tempSheet.getDataRange().getValues();
-
     currentDoc.deleteSheet(tempSheet);
+
     return pullResult;
 }
 
-// Preciso exportar isso aqui?
+const ordenarPlanilha = (nomeDaAba, colunaBase) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomeDaAba);
+    var range = ws.getDataRange().offset(1, 0); // começa na segunda linha
+    range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
+}
+
+export const queryMedicamentoEspecifico = (chaveDeBusca) => {
+    var sql = "select * where B = '" + chaveDeBusca + "'";
+    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'K', sql)
+
+    if (dados[0][0] === '#N/A') {
+        return false;
+    } else {
+        var informacoes = [];
+
+        for (let i = 0; i < dados.length; i++) {
+            var remedio = {
+                chaveMedicamentoGeral: dados[i][0],
+                chaveMedicamentoEspecifica: dados[i][1],
+                lote: dados[i][2],
+                dosagem: dados[i][3],
+                validade: dados[i][4],
+                quantidade: dados[i][5],
+                origem: dados[i][6],
+                tipo: dados[i][7],
+                fabricante: dados[i][8],
+                motivoDoacao: dados[i][9],
+                dataEntrada: dados[i][10]
+            }
+            informacoes.push(remedio)
+        }
+        return informacoes;
+    }
+}
+
 export const buscaBinariaCompleta = (sheetId, nomePlanilha, valorBuscado, colBusca) => {
     var ss = SpreadsheetApp.openById(sheetId);
     var ws = ss.getSheetByName(nomePlanilha);
@@ -68,15 +103,15 @@ export const buscaBinariaCompleta = (sheetId, nomePlanilha, valorBuscado, colBus
 export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
     var sql = "select * where A = '" + chaveDeBusca + "'";
     var dados = realizarQuery('MedicamentoEspecifico', 'A', 'J', sql)
-    
+
     if (dados[0][0] === '#N/A') {
         return false;
     } else {
         var informacoes = [];
 
         for (let i = 0; i < dados.length; i++) {
-            // var infoValidade = new Date(data[i][4]);
-            // var validadeFormatada = (infoValidade.getUTCDate()) + "-" + (infoValidade.getMonth() + 1) + "-" + infoValidade.getFullYear();
+            let infoValidade = new Date(dados[i][4]);
+            let validadeFormatada = (infoValidade.getUTCDate()) + "-" + (infoValidade.getMonth() + 1) + "-" + infoValidade.getFullYear();
 
             var data = {
                 chaveMedicamentoGeral: dados[i][0],
@@ -84,16 +119,47 @@ export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
                 lote: dados[i][2],
                 dosagem: dados[i][3],
                 validade: dados[i][4],
+                validadeFormatada,
                 quantidade: dados[i][5],
                 origem: dados[i][6],
                 tipo: dados[i][7],
                 fabricante: dados[i][8],
                 motivoDescarte: dados[i][9]
             }
-            
+
             informacoes.push(data)
         }
 
         return JSON.stringify(informacoes);
+    }
+}
+
+export const appendRowMedicamentoEspecifico = (medicamento) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("MedicamentoEspecifico");
+
+    // Verificando se o medicamento existe:
+    var codigo = medicamento.chaveMedicamentoEspecifica;
+
+    if (queryMedicamentoEspecifico(codigo)) {
+        // throw new ErroMedicamentoGeralExistente("O medicamento já está cadastrado!");
+        return false;
+    } else {
+        ws.appendRow([
+            medicamento.chaveMedicamentoGeral,
+            medicamento.chaveMedicamentoEspecifica,
+            medicamento.lote, 
+            medicamento.dosagem, 
+            medicamento.validadeFormatada, 
+            medicamento.quantidade,
+            medicamento.origem, 
+            medicamento.tipo, 
+            medicamento.fabricante, 
+            medicamento.motivoDoacao,
+            medicamento.dataHojeFormatada
+        ]);
+        ordenarPlanilha("MedicamentoEspecifico", 1)
+        return true;
     }
 }

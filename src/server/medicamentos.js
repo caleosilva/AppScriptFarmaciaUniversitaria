@@ -243,7 +243,7 @@ export const updateRowMedicamentos = (medicamento) => {
     var dataCadastro = new Date(medicamento.dataCadastro);
     var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
 
-    var novaChaveGeral = (medicamento.nome + '#' + medicamento.principioAtivo).toString().toLowerCase().replace(/\s+/g, '');
+    var novaChaveGeral = (medicamento.nome + '#' + medicamento.principioAtivo + '#' + medicamento.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
 
     // Verifica se a nova chave (se for o caso) já existe:
     if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {

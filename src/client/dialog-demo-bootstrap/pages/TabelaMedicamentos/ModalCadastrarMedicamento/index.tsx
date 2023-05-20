@@ -107,7 +107,7 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
 
         // Cria um objeto com os dados do medicamento
         const medicamento = {
-            'chaveGeral': (nome + '#' + principioAtivo).toString().toLowerCase().replace(/\s+/g, ''),
+            'chaveGeral': (nome + '#' + principioAtivo + '#' + apresentacao).toString().toLowerCase().replace(/\s+/g, ''),
             nome,
             principioAtivo,
             classe,
