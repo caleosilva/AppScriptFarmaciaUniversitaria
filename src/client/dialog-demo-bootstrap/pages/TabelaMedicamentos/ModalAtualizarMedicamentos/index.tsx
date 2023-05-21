@@ -81,7 +81,7 @@ function MedModalAtualizar({ remedio, listaDrop, data, setData }:
                     handleClose();
                     console.log("Informações atualizadas")
                 } else {
-                    setMensagem(true);
+                    setMensagem(true);  
                     setLoading(false);
                     console.log("Não foi possível atualizar")
                 }
@@ -89,36 +89,6 @@ function MedModalAtualizar({ remedio, listaDrop, data, setData }:
 
         }
     }, [isLoading]);
-
-    // const salvarAlteracoes = (event) => {
-    //     event.preventDefault();
-
-    //     // Cria um objeto com os dados atualizados do medicamento
-    //     var chaveGeral = remedio.chaveGeral;
-
-    //     // const medicamento = new MedicamentoGeral(chaveGeral,dataCadastro, nome, principioAtivo, classe, tarja, apresentacao)
-
-    //     // const medicamento = {
-    //     //     chaveGeral,
-    //     //     dataCadastro,
-    //     //     nome,
-    //     //     principioAtivo,
-    //     //     classe,
-    //     //     tarja,
-    //     //     apresentacao
-    //     // }
-
-    //     // serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
-    //     //     console.log(sucesso)
-    //     //     if (sucesso) {
-    //     //         data[sucesso - 2] = medicamento
-    //     //         setData([...data])
-    //     //         console.log("Informações atualizadas")
-    //     //     } else {
-    //     //         console.log("Não foi possível atualizar")
-    //     //     }
-    //     // })
-    // }
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>

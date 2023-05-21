@@ -39,45 +39,6 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     const [nome, setNome] = useState('');
     const [principioAtivo, setPrincipioAtivo] = useState('');
 
-
-
-    // const cadastrarMed = (event) => {
-    //     event.preventDefault();
-
-    //     // Cria um objeto com os dados do medicamento
-    //     const medicamento = {
-    //         'chaveGeral': (nome + '#' + principioAtivo).toString().toLowerCase().replace(/\s+/g, ''),
-    //         dataCadastro,
-    //         nome,
-    //         principioAtivo,
-    //         classe,
-    //         tarja,
-    //         apresentacao
-    //     }
-
-    //     // Verifica se ele não existe para poder finalizar o cadastro
-    //     serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-    //         console.log("Sucesso " + sucesso)
-
-    //         if (sucesso) {
-    //             // Atualiza a tabela:
-    //             setData([...data, medicamento])
-
-    //             // Limpa os formulários
-    //             setDataCadastro('');
-    //             setNome('');
-    //             setPrincipioAtivo('');
-    //             setClasse('');
-    //             setTarja('');
-    //             setApresentacao('');
-
-    //             handleClose();
-    //         } else {
-    //             console.log("Medicamento já existe na tabela")
-    //         }
-    //     }).catch(alert);
-    // }
-
     // Cuida de abrir e fechar o modal:
 
     const handleClose = () => {

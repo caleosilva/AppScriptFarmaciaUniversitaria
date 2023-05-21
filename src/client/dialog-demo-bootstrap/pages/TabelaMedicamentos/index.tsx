@@ -57,7 +57,6 @@ function TabelaMedicamentos() {
                                         : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
                                         item.principioAtivo.toLowerCase().includes(busca.toLowerCase())
                                 }).map((remedio, index) => {
-                                    { console.log("Remedio: ", remedio) }
                                     return <tr key={index}>
                                         <td>{remedio.nome}</td>
                                         <td>{remedio.principioAtivo}</td>
@@ -76,7 +75,7 @@ function TabelaMedicamentos() {
     }
 
     useEffect(() => {
-        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)); console.log("Geral: " + JSON.parse(string)) }).catch(alert);
+        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string))}).catch(alert);
 
     }, []);
 

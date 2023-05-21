@@ -29,7 +29,9 @@ import {
   queryChaveMedicamentoGeral,
   buscaBinariaCompleta,
   queryMedicamentoEspecifico,
-  appendRowMedicamentoEspecifico
+  appendRowMedicamentoEspecifico,
+  adicionarQuantidadeEstoque,
+  atualizarQuantidadeEstoque
 } from './estoque'
 
 
@@ -48,5 +50,7 @@ export {
   queryChaveMedicamentoGeral,
   buscaBinariaCompleta,
   queryMedicamentoEspecifico,
-  appendRowMedicamentoEspecifico
+  appendRowMedicamentoEspecifico,
+  adicionarQuantidadeEstoque,
+  atualizarQuantidadeEstoque
 };

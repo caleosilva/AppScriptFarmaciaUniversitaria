@@ -1,4 +1,3 @@
-// import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -76,10 +75,12 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
         var dataHoje = new Date();
         var dataHojeFormatada = (dataHoje.getUTCDate()) + "-" + (dataHoje.getMonth() + 1) + "-" + dataHoje.getFullYear();
 
+        var chaveMedicamentoEspecifica = (lote + '#' + dosagem + '#' + validade).toString().toLowerCase().replace(/\s+/g, '');
+
         // Cria um objeto com os dados do medicamento
         const medicamentoEspecifico = {
             chaveMedicamentoGeral,
-            'chaveMedicamentoEspecifica': (lote + '#' + dosagem + '#' + validade).toString().toLowerCase().replace(/\s+/g, ''),
+            chaveMedicamentoEspecifica,
             lote,
             dosagem,
             validadeFormatada,
@@ -88,7 +89,8 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
             tipo,
             fabricante,
             motivoDoacao,
-            dataHojeFormatada
+            dataHojeFormatada,
+            'chaveGeral': chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifica
         }
 
 
@@ -154,7 +156,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                         <Container>
                             <Row>
                                 <Col>
-                                    <InputText type={"text"} required={true} label={"Doador"} placeholder={"Informe o nome,CPF ou CNPJ e selecione um doador"} controlId={"inputDoador"} name={"doador"} data={dosagem} setData={setDosagem} />
+                                    <InputText type={"text"} required={true} label={"Doador"} placeholder={"Informe o nome, CPF ou CNPJ e selecione um doador"} controlId={"inputDoador"} name={"doador"} data={dosagem} setData={setDosagem} />
                                 </Col>
                             </Row>
 
@@ -178,8 +180,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} />
-                                    {/* <InputText type={"number"} required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} /> */}
+                                    <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999}/>
                                 </Col>
 
                                 <Col sm={6}>
@@ -210,7 +211,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                                         <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
                                             <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
                                             <p>
-                                                Já existe um medicamento cadastrado com o nome e o princípio ativo inserido.
+                                                Já existe um medicamento cadastrado com a dosagem, lote e validade inserida.
                                             </p>
                                         </Alert>
                                     </Col>
@@ -224,12 +225,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                                 Cancelar
                             </Button>
 
-                            {/* <Button type="submit" variant="dark" >
-                                Cadastrar
-                            </Button> */}
-
                             <Button
-
                                 type="submit"
                                 variant="dark"
                                 disabled={isLoading || !isFormValid}

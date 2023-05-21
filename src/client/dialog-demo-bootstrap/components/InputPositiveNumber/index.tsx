@@ -4,12 +4,12 @@ import React from 'react';
 
 
 // value para defaultValue={value} retirado
-export default function InputPositiveNumber({ label, placeholder, controlId, name, data, setData, required }:
-  { label: string, placeholder: string, controlId: string, name: string, data: string, setData: Function, required: boolean }) {
+export default function InputPositiveNumber({ label, placeholder, controlId, name, data, setData, required, max }:
+  { label: string, placeholder: string, controlId: string, name: string, data: string, setData: Function, required: boolean, max: number }) {
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    if (inputValue === '' || parseFloat(inputValue) >= 0) {
+    if (inputValue === '' || (parseFloat(inputValue) > 0 && parseFloat(inputValue) <= max)) {
       setData(inputValue);
     }
   }

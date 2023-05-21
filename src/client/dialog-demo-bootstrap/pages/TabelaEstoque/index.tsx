@@ -8,11 +8,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
-
 import { useEffect, useState } from 'react';
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-
 
 import { serverFunctions } from '../../../utils/serverFunctions';
 import MedicamentoGeral from '../../../../models/MedicamentoGeral';
@@ -21,7 +19,6 @@ import '../style.css';
 import ModalEstoqueCadastrar from './ModalEstoqueCadastrar';
 
 export default function TabelaEstoque() {
-
     // Carrega a informação da página anterior
     const location = useLocation();
     const infoMedicamentoGeral = location.state.remedio;
@@ -50,44 +47,39 @@ export default function TabelaEstoque() {
             )
         } else {
             return (
-                <>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th style={{ width: '20%' }} >Lote</th>
-                                <th style={{ width: '20%' }} >Dosagem</th>
-                                <th style={{ width: '20%' }} >Validade</th>
-                                <th style={{ width: '20%' }} >Quantidade</th>
-                                <th style={{ width: '20%' }} >Operações</th>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th style={{ width: '20%' }} >Lote</th>
+                            <th style={{ width: '20%' }} >Validade</th>
+                            <th style={{ width: '20%' }} >Dosagem</th>
+                            <th style={{ width: '20%' }} >Quantidade</th>
+                            <th style={{ width: '20%' }} >Operações</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <>
-                                {data ? data.filter((item) => {
-                                    return busca.toLowerCase() === ''
-                                        ? item
-                                        : item.lote.toLowerCase().includes(busca.toLowerCase()) ||
-                                        item.dosagem.toLowerCase().includes(busca.toLowerCase())
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <>
+                            {data ? data.filter((item) => {
+                                return busca.toLowerCase() === ''
+                                    ? item
+                                    : item.lote.toLowerCase().includes(busca.toLowerCase()) ||
+                                    item.dosagem.toLowerCase().includes(busca.toLowerCase())
 
-                                }).map((medicamento, index) =>
-
-                                    <tr key={index}>
-
-                                        <td>{medicamento.lote}</td>
-                                        <td>{medicamento.dosagem}</td>
-                                        <td>{medicamento.validadeFormatada}</td>
-                                        <td>{medicamento.quantidade}</td>
-                                        <td>
-                                            <p>+ -</p>
-                                        </td>
-
-                                    </tr>
-                                ) : ''}
-                            </>
-                        </tbody>
-                    </Table>
-                </>
+                            }).map((medicamento, index) =>
+                                <tr key={index}>
+                                    <td>{medicamento.lote}</td>
+                                    <td>{medicamento.validadeFormatada}</td>
+                                    <td>{medicamento.dosagem}</td>
+                                    <td>{medicamento.quantidade}</td>
+                                    <td>
+                                        <OperacoesEstoque remedio={medicamento} />
+                                    </td>
+                                </tr>
+                            ) : ''}
+                        </>
+                    </tbody>
+                </Table>
             )
 
         }
@@ -98,6 +90,7 @@ export default function TabelaEstoque() {
     // Server:
     const [data, setData] = useState(null);
     const [infoDD, setInfoDD] = useState(null)
+
 
     useEffect(() => {
         serverFunctions.queryChaveMedicamentoGeral(infoMedicamentoGeral.chaveGeral).then(string => {
@@ -110,17 +103,11 @@ export default function TabelaEstoque() {
         serverFunctions.getInformacoesSelect().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
     }, []);
 
-    { console.log("data: ", data) }
-
-
     return (
-
-
         <section className='margemNavBar ms-5 me-5'>
 
             <Card>
                 <Card.Header>
-
                     <Navbar>
                         <Container className='justify-content-around' fluid>
                             <Navbar.Brand href="">Controle de estoque</Navbar.Brand>
@@ -150,8 +137,6 @@ export default function TabelaEstoque() {
 
                         </Container>
                     </Navbar>
-
-
                 </Card.Header>
                 <Card.Body>
                     <div className='d-flex justify-content-center'>

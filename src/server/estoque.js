@@ -25,9 +25,36 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
 }
 
+const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomePlanilha);
+
+    var values = ws.getRange(2, colBusca, ws.getLastRow() - 1, 1).getValues();
+    var lowerBound = 0;
+    var upperBound = values.length - 1;
+
+    while (lowerBound <= upperBound) {
+        var middle = Math.floor((lowerBound + upperBound) / 2);
+        var value = values[middle][0];
+
+        if (value == valorBuscado) {
+            var linhaReal = middle + 2
+            var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+
+            return {linha: linhaReal, data: info}
+
+        } else if (value < valorBuscado) {
+            lowerBound = middle + 1;
+        } else {
+            upperBound = middle - 1;
+        }
+    }
+    return false;
+}
+
 export const queryMedicamentoEspecifico = (chaveDeBusca) => {
     var sql = "select * where B = '" + chaveDeBusca + "'";
-    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'K', sql)
+    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql)
 
     if (dados[0][0] === '#N/A') {
         return false;
@@ -102,7 +129,7 @@ export const buscaBinariaCompleta = (sheetId, nomePlanilha, valorBuscado, colBus
 
 export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
     var sql = "select * where A = '" + chaveDeBusca + "'";
-    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'J', sql)
+    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql)
 
     if (dados[0][0] === '#N/A') {
         return false;
@@ -124,9 +151,10 @@ export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
                 origem: dados[i][6],
                 tipo: dados[i][7],
                 fabricante: dados[i][8],
-                motivoDescarte: dados[i][9]
+                motivoDoacao: dados[i][9],
+                dataEntrada: dados[i][10],
+                chaveGeral: dados[i][11]
             }
-
             informacoes.push(data)
         }
 
@@ -146,6 +174,7 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
         // throw new ErroMedicamentoGeralExistente("O medicamento já está cadastrado!");
         return false;
     } else {
+        let chaveGeral = medicamento.chaveMedicamentoGeral + medicamento.chaveMedicamentoEspecifica;
         ws.appendRow([
             medicamento.chaveMedicamentoGeral,
             medicamento.chaveMedicamentoEspecifica,
@@ -157,9 +186,52 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
             medicamento.tipo, 
             medicamento.fabricante, 
             medicamento.motivoDoacao,
-            medicamento.dataHojeFormatada
+            medicamento.dataHojeFormatada,
+            chaveGeral
         ]);
-        ordenarPlanilha("MedicamentoEspecifico", 1)
+        ordenarPlanilha("MedicamentoEspecifico", 12)
         return true;
     }
+}
+
+export const adicionarQuantidadeEstoque = (medicamento, quantidadeAdicionada) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("MedicamentoEspecifico");
+
+    // Encontrando o medicamento:
+    var codigo = medicamento.chaveGeral;
+    var dados = buscaBinariaSimples("MedicamentoEspecifico", codigo, 12)
+
+    if (dados){
+        var novaQuantidade = parseInt(medicamento.quantidade) + parseInt(quantidadeAdicionada);
+        ws.getRange("F" + parseInt(dados.linha)).setValue(novaQuantidade);
+        return true
+    }
+
+    return false;
+}
+
+export const atualizarQuantidadeEstoque = (medicamento, quantidadeInput, adicionar) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("MedicamentoEspecifico");
+
+    // Encontrando o medicamento:
+    var codigo = medicamento.chaveGeral;
+    var dados = buscaBinariaSimples("MedicamentoEspecifico", codigo, 12)
+
+    if (dados){
+        if(adicionar){
+            var novaQuantidade = parseInt(medicamento.quantidade) + parseInt(quantidadeInput);
+            ws.getRange("F" + parseInt(dados.linha)).setValue(novaQuantidade);
+        } else{
+            var novaQuantidade = parseInt(medicamento.quantidade) - parseInt(quantidadeInput);
+            ws.getRange("F" + parseInt(dados.linha)).setValue(novaQuantidade);
+        }
+        // Adicionar as informações na aba estoque:
+        return true;
+    }
+
+    return false;
 }
