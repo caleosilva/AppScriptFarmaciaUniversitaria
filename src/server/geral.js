@@ -4,7 +4,7 @@ const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 export const getInformacoesSelect = () => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("InformacoesMedicamentos");
-    var data = ws.getRange(2, 1, ws.getLastRow() - 1, 9).getValues();
+    var data = ws.getRange(2, 1, ws.getLastRow() - 1, ws.getLastColumn()).getValues();
 
     var informacoes = [];
 
@@ -20,6 +20,10 @@ export const getInformacoesSelect = () => {
     let sexo = []
     let estadoCivil = []
     let tipoPaciente = []
+
+    let opcaoEntradaMedicamento = []
+    let opcaoSaidaMedicamento = []
+
 
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].length; j++) {
@@ -43,9 +47,13 @@ export const getInformacoesSelect = () => {
                 estadoCivil.push(data[i][j]);
             } else if (data[i][j].length > 0 && j == 9) {
                 tipoPaciente.push(data[i][j]);
+            } else if (data[i][j].length > 0 && j == 10) {
+                opcaoEntradaMedicamento.push(data[i][j]);
+            } else if (data[i][j].length > 0 && j == 11) {
+                opcaoSaidaMedicamento.push(data[i][j]);
             }
         }
     }
-    informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDoacao, origemMedicamento, tipoDoador, sexo, estadoCivil, tipoPaciente)
+    informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDoacao, origemMedicamento, tipoDoador, sexo, estadoCivil, tipoPaciente, opcaoEntradaMedicamento, opcaoSaidaMedicamento)
     return JSON.stringify(informacoes);
 }

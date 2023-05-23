@@ -15,8 +15,8 @@ import ModalTabelaEstoque from '../../TabelaEstoque'
 
 
 
-export default function OperacoesMedicamento({ remedio, listaDD, data, setData }:
-    { remedio: MedicamentoGeral, listaDD: string[][], data: Array<MedicamentoGeral>, setData: Function }) {
+export default function OperacoesMedicamento({ remedio, index, listaDD, data, setData }:
+    { remedio: MedicamentoGeral, index: number, listaDD: string[][], data: Array<MedicamentoGeral>, setData: Function }) {
 
     const navigate = useNavigate();
 
@@ -57,9 +57,8 @@ export default function OperacoesMedicamento({ remedio, listaDD, data, setData }
 
 
             {renderEstoque()}
-            {/* <ModalTabelaEstoque remedio={remedio} /> */}
             <MedModalVerMais remedio={remedio} />
-            <MedModalAtualizar remedio={remedio} listaDrop={listaDD} data={data} setData={setData} />
+            <MedModalAtualizar remedio={remedio} index={index} listaDrop={listaDD} data={data} setData={setData} />
         </ButtonGroup>
     )
 }

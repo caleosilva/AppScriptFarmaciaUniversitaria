@@ -29,6 +29,37 @@ export default function TabelaEstoque() {
         navigate(-1);
     }
 
+    const [busca, setBusca] = useState('');
+
+    // Server:
+    const [data, setData] = useState(null);
+    const [infoDD, setInfoDD] = useState(null)
+    const [doadores, setDoadores] = useState(null);
+
+
+    useEffect(() => {
+        serverFunctions.queryChaveMedicamentoGeral(infoMedicamentoGeral.chaveGeral).then(string => {
+            setData(JSON.parse(string));
+        }).catch(alert);
+
+    }, []);
+
+    useEffect(() => {
+        serverFunctions.getInformacoesSelect().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
+    }, []);
+
+    useEffect(() => {
+        serverFunctions.getDoadores().then(string => { setDoadores(JSON.parse(string)) }).catch(alert);
+    }, []);
+
+    // useEffect(() => {
+    //     serverFunctions.queryChaveMedicamentoGeral(infoMedicamentoGeral.chaveGeral).then(string => {
+    //         setData(JSON.parse(string));
+    //     }).catch(alert);
+
+    //     renderTable();
+    // }, [data]);
+
     function renderTable() {
         if (data == null) {
             return (
@@ -73,7 +104,7 @@ export default function TabelaEstoque() {
                                     <td>{medicamento.dosagem}</td>
                                     <td>{medicamento.quantidade}</td>
                                     <td>
-                                        <OperacoesEstoque remedio={medicamento} />
+                                        <OperacoesEstoque remedio={medicamento} listaDD={infoDD} doadores={doadores} data={data} setData={setData}/>
                                     </td>
                                 </tr>
                             ) : ''}
@@ -84,24 +115,6 @@ export default function TabelaEstoque() {
 
         }
     }
-
-    const [busca, setBusca] = useState('');
-
-    // Server:
-    const [data, setData] = useState(null);
-    const [infoDD, setInfoDD] = useState(null)
-
-
-    useEffect(() => {
-        serverFunctions.queryChaveMedicamentoGeral(infoMedicamentoGeral.chaveGeral).then(string => {
-            setData(JSON.parse(string));
-        }).catch(alert);
-
-    }, []);
-
-    useEffect(() => {
-        serverFunctions.getInformacoesSelect().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
-    }, []);
 
     return (
         <section className='margemNavBar ms-5 me-5'>

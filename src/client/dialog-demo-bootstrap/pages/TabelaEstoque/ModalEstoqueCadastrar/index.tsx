@@ -20,6 +20,8 @@ import InputPositiveNumber from '../../../components/InputPositiveNumber';
 
 export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
 
+    // A OPÇÃO PADRÃO DE ENTRADA DEVE SER DOAÇÃO--------------------------
+
     // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
     const [isLoading, setLoading] = useState(false);
@@ -149,7 +151,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                 centered
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Cadastro de medicamento</Modal.Title>
+                    <Modal.Title>Cadastro de doação</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

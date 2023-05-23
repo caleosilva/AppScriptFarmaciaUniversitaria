@@ -144,35 +144,31 @@ export const getMedicamentos = () => {
 
     var informacoes = [];
 
-    for (i = 0; i < data.length; i++) {
-        var dataCadastro = new Date(data[i][1]);
-        var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
+    if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+            var dataCadastro = new Date(data[i][1]);
+            var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
 
-        // const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
+            // const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
 
-        // this.chaveGeral = chaveGeral;
-        // this.dataCadastro = dataCadastro;
-        // this.dataCadastroFormatada = dataCadastroFormatada;
-        // this.nome = nome;
-        // this.principioAtivo = principioAtivo;
-        // this.tarja = tarja;
-        // this.classe = classe;
-        // this.apresentacao = apresentacao;
-
-        const remedio = {
-            "chaveGeral": data[i][0],
-            "dataCadastro": data[i][1],
-            "dataCadastroFormatada": dataCadastroFormatada,
-            "nome": data[i][2],
-            "principioAtivo": data[i][3],
-            "classe": data[i][4],
-            "tarja": data[i][5],
-            "apresentacao": data[i][6]
+            const remedio = {
+                "chaveGeral": data[i][0],
+                "dataCadastro": data[i][1],
+                "dataCadastroFormatada": dataCadastroFormatada,
+                "nome": data[i][2],
+                "principioAtivo": data[i][3],
+                "classe": data[i][4],
+                "tarja": data[i][5],
+                "apresentacao": data[i][6]
+            }
+            informacoes.push(remedio)
         }
-        informacoes.push(remedio)
+
+        return JSON.stringify(informacoes);
     }
 
-    return JSON.stringify(informacoes);
+    return false;
+
 };
 
 export const getInformacoesMedicamentos = () => {

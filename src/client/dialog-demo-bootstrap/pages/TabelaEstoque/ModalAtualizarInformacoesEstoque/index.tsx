@@ -8,12 +8,12 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
 
-import { serverFunctions } from '../../../utils/serverFunctions';
+import { serverFunctions } from '../../../../utils/serverFunctions';
 
 
 import React, { useState, useEffect } from 'react';
 
-export default function ModalExemplo({ info }: { info: any }) {
+export default function ModalExemplo({ remedio, listaDD }: { remedio: any, listaDD: string[][] }) {
 
     // CRIAR OS USESTATE
 
@@ -31,7 +31,7 @@ export default function ModalExemplo({ info }: { info: any }) {
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
-            Registrar entrada
+            Atualizar informações
         </Tooltip>
     );
 
@@ -68,7 +68,7 @@ export default function ModalExemplo({ info }: { info: any }) {
                 <Button variant="outline-secondary" onClick={handleShow}>
                     <img
                         alt=""
-                        src="/img/icones/add.svg"
+                        src="/img/icones/edit.svg"
                         width="25"
                         height="25"
                         className="d-inline-block align-top"
@@ -92,7 +92,7 @@ export default function ModalExemplo({ info }: { info: any }) {
                     <Modal.Title>Entrada de estoque</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Funcoes para entrada</p>
+                    <p>Funcoes para edição</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <div className='mt-3 mb-3 d-flex justify-content-around'>

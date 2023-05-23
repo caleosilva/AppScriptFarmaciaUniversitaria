@@ -13,11 +13,12 @@ import Alert from 'react-bootstrap/Alert';
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
+import formatarData from '../../../functions.js';
 
 import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
 
-function MedModalAtualizar({ remedio, listaDrop, data, setData }:
-    { remedio: MedicamentoGeral, listaDrop: string[][], data: Array<MedicamentoGeral>, setData: Function }) {
+function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
+    { remedio: MedicamentoGeral, index: number, listaDrop: string[][], data: Array<MedicamentoGeral>, setData: Function }) {
 
     const [lista, setLista] = useState([[]]);
 
@@ -39,7 +40,15 @@ function MedModalAtualizar({ remedio, listaDrop, data, setData }:
 
         setShow(false);
     };
-    const handleShow = () => setShow(true);
+    
+    const handleShow = () => {
+        setNome(remedio.nome);
+        setPrincipioAtivo(remedio.principioAtivo);
+        setClasse(remedio.classe);
+        setTarja(remedio.tarja);
+        setApresentacao(remedio.apresentacao);
+        
+        setShow(true)};
 
     // Controle ao clicar em atualizar
     const handleClick = () => setLoading(true);
@@ -71,11 +80,15 @@ function MedModalAtualizar({ remedio, listaDrop, data, setData }:
             tarja,
             apresentacao
         }
+        
         if (isLoading) {
 
             serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
                 console.log("Sucesso: " + sucesso)
                 if (sucesso) {
+
+                    setData([...data]);
+
                     setMensagem(false);
                     setLoading(false);
                     handleClose();

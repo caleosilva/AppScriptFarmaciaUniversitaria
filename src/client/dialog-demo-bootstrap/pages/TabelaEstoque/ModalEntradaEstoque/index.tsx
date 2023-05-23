@@ -10,17 +10,29 @@ import Alert from 'react-bootstrap/Alert';
 import React, { useState, useEffect } from 'react';
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
 import { serverFunctions } from '../../../../utils/serverFunctions';
+import InputText from '../../../components/InputText';
+import InputSelect from '../../../components/InputSelect';
+import InputDataList from '../InputDataList';
+import InputSelectDoador from '../InputSelectDoador';
+import { any } from 'prop-types';
 
 
-export default function ModalEntradaEstoque({ remedio }: { remedio: any }) {
+export default function ModalEntradaEstoque({ remedio, listaDD, doadores}: { remedio: any, listaDD: string[][], doadores: [{}] }) {
 
     const [quantidade, setQuantidade] = useState('');
+    const [doador, setDoador] = useState('');
+
+    const [opcaoEntrada, setOpcaoEntrada] = useState('');
+    const [lista, setLista] = useState([[]]);
+
 
     const [mensagem, setMensagem] = useState(false);
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
+        setDoador('');
+        setOpcaoEntrada('');
         setQuantidade('');
         setShow(false);
     };
@@ -36,17 +48,34 @@ export default function ModalEntradaEstoque({ remedio }: { remedio: any }) {
         </Tooltip>
     );
 
+    function renderDoador() {
+        if (opcaoEntrada === 'Doação') {
+            return (
+                
+                <Col SM={8}>
+                    {/* <InputDataList label={"Doador"} placeholder={"Informe o nome, CPF ou CNPJ e selecione o doador"} controlId={"inputDoador"} data={doador} setData={setDoador} options={doadores} listaId='listaDoadores'/> */}
+
+                    <InputSelectDoador required={true} label={"Opção de entrada"} name={"opcEntrada"} data={doador} setData={setDoador} lista={doadores}/>
+
+                    <p>{doador}</p>
+
+                </Col>
+            )
+        }
+    }
+
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (quantidade != '') {
+        if (quantidade != '' && opcaoEntrada === "Doação" && doador != '') {
+            setIsFormValid(true);
+        } else if (quantidade != '' && opcaoEntrada != 'Doação' && opcaoEntrada != '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
-    }, [quantidade]);
+    }, [quantidade, opcaoEntrada, doador]);
 
     useEffect(() => {
-        // Cria o objeto o
 
         if (isLoading) {
 
@@ -72,7 +101,11 @@ export default function ModalEntradaEstoque({ remedio }: { remedio: any }) {
         }
     }, [isLoading]);
 
+    useEffect(() => {
+        setLista(listaDD)
+    }, [listaDD]);
 
+    console.log("Na entrada: ", doadores)
 
 
     return (
@@ -111,8 +144,16 @@ export default function ModalEntradaEstoque({ remedio }: { remedio: any }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Container>
+                        <Row className='mb-3'>
+                            <Col sm={4}>
+                                <InputSelect required={true} label={"Opção de entrada"} name={"opcEntrada"} data={opcaoEntrada} setData={setOpcaoEntrada} lista={lista ? lista[10] : []} />
+                            </Col>
+
+                            {renderDoador()}
+                        </Row>
+
                         <Row>
-                            <Col>
+                            <Col sm={4}>
                                 <Row>
                                     <p>Quantidade atual no estoque</p>
                                 </Row>

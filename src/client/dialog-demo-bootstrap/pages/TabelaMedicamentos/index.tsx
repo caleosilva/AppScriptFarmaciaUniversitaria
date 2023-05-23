@@ -34,7 +34,7 @@ function TabelaMedicamentos() {
         } else if (data == false) {
             return (
                 <Alert key={"infoTabela"} variant={"dark"}>
-                    Não há doações registradas para esse medicamento!
+                    Não há medicamentos cadastrados!
                 </Alert>
             )
         } else {
@@ -62,7 +62,7 @@ function TabelaMedicamentos() {
                                         <td>{remedio.principioAtivo}</td>
                                         <td>{remedio.apresentacao}</td>
                                         <td>
-                                            <OperacoesMedicamento remedio={remedio} listaDD={infoDD} data={data} setData={setData} />
+                                            <OperacoesMedicamento remedio={remedio} index={index} listaDD={infoDD} data={data} setData={setData} />
                                         </td>
                                     </tr>
                                 }) : ''}
@@ -75,13 +75,20 @@ function TabelaMedicamentos() {
     }
 
     useEffect(() => {
-        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string))}).catch(alert);
+        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)); console.log(JSON.parse(string))}).catch(alert);
 
     }, []);
 
     useEffect(() => {
         serverFunctions.getInformacoesSelect().then(string => { setInfoDD(JSON.parse(string)) }).catch(alert);
     }, []);
+
+    useEffect(() => {
+        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string))}).catch(alert);
+        renderTable();
+    }, [data]);
+
+
 
     const [busca, setBusca] = useState('');
 
@@ -118,13 +125,6 @@ function TabelaMedicamentos() {
                                 data={data}
                                 setData={setData}
                             />
-
-                            {/* <MedModalCadastrar
-                                listaDD={infoDD}
-                                data={data}
-                                setData={setData}
-                                cadastrarMedicamento={medicamento => adicionarNovoMedicamento(medicamento)}
-                            /> */}
                         </Container>
                     </Navbar>
 

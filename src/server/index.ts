@@ -34,6 +34,10 @@ import {
   atualizarQuantidadeEstoque
 } from './estoque'
 
+// Import referente aos Doadores
+import {
+  getDoadores
+} from './doadores'
 
 // Public functions must be exported as named exports
 export {
@@ -52,5 +56,7 @@ export {
   queryMedicamentoEspecifico,
   appendRowMedicamentoEspecifico,
   adicionarQuantidadeEstoque,
-  atualizarQuantidadeEstoque
+  atualizarQuantidadeEstoque,
+
+  getDoadores
 };

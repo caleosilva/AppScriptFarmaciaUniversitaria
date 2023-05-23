@@ -9,18 +9,26 @@ import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
+import InputText from '../../../components/InputText';
+import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 
 
-export default function ModalSaidaEstoque({ remedio }: { remedio: any }) {
+export default function ModalSaidaEstoque({ remedio, listaDD }: { remedio: any, listaDD: string[][] }) {
 
     const [quantidade, setQuantidade] = useState('');
+    const [paciente, setPaciente] = useState('');
+
+    const [opcaoSaida, setOpcaoSaida] = useState('');
+    const [lista, setLista] = useState([[]]);
 
     const [mensagem, setMensagem] = useState(false);
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
+        setPaciente('');
+        setOpcaoSaida('');
         setQuantidade('');
         setShow(false);
     };
@@ -36,14 +44,26 @@ export default function ModalSaidaEstoque({ remedio }: { remedio: any }) {
         </Tooltip>
     );
 
+    function renderPaciente() {
+        if (opcaoSaida === 'Paciente') {
+            return (
+                <Col SM={8}>
+                    <InputText type={"text"} required={true} label={"Paciente"} placeholder={"Informe o nome, CPF ou CNPJ e selecione o paciente"} controlId={"inputPaciente"} name={"paciente"} data={paciente} setData={setPaciente} />
+                </Col>
+            )
+        }
+    }
+
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (quantidade != '') {
+        if (quantidade != '' && opcaoSaida === "Paciente" && paciente != '') {
+            setIsFormValid(true);
+        } else if (quantidade != '' && opcaoSaida != 'Paciente' && opcaoSaida != '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
-    }, [quantidade]);
+    }, [quantidade, opcaoSaida, paciente]);
 
     useEffect(() => {
         // Cria o objeto o
@@ -70,7 +90,9 @@ export default function ModalSaidaEstoque({ remedio }: { remedio: any }) {
         }
     }, [isLoading]);
 
-
+    useEffect(() => {
+        setLista(listaDD)
+    }, [listaDD]);
 
 
     return (
@@ -109,8 +131,17 @@ export default function ModalSaidaEstoque({ remedio }: { remedio: any }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Container>
+                        <Row className='mb-3'>
+                            <Col sm={4}>
+                                <InputSelect required={true} label={"Opção de entrada"} name={"opcEntrada"} data={opcaoSaida} setData={setOpcaoSaida} lista={lista ? lista[11] : []} />
+                            </Col>
+                            {renderPaciente()}
+                        </Row>
+
+                        {/* <hr /> */}
+
                         <Row>
-                            <Col>
+                            <Col sm={4}>
                                 <Row>
                                     <p>Quantidade atual no estoque</p>
                                 </Row>
