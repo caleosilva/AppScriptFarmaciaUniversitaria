@@ -52,13 +52,9 @@ export default function TabelaEstoque() {
         serverFunctions.getDoadores().then(string => { setDoadores(JSON.parse(string)) }).catch(alert);
     }, []);
 
-    // useEffect(() => {
-    //     serverFunctions.queryChaveMedicamentoGeral(infoMedicamentoGeral.chaveGeral).then(string => {
-    //         setData(JSON.parse(string));
-    //     }).catch(alert);
-
-    //     renderTable();
-    // }, [data]);
+    useEffect(() => {
+        renderTable();
+    }, [data]);
 
     function renderTable() {
         if (data == null) {
@@ -104,7 +100,7 @@ export default function TabelaEstoque() {
                                     <td>{medicamento.dosagem}</td>
                                     <td>{medicamento.quantidade}</td>
                                     <td>
-                                        <OperacoesEstoque remedio={medicamento} listaDD={infoDD} doadores={doadores} data={data} setData={setData}/>
+                                        <OperacoesEstoque remedio={medicamento} listaDD={infoDD} doadores={doadores} data={data} setData={setData} index={index}/>
                                     </td>
                                 </tr>
                             ) : ''}
@@ -145,7 +141,7 @@ export default function TabelaEstoque() {
                             </InputGroup>
 
                             <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} />
-                            {/* <Button variant="outline-secondary">Cadastrar nova doação</Button>{' '} */}
+
                             <Button variant="dark" onClick={handleBack}>Voltar</Button>{' '}
 
                         </Container>

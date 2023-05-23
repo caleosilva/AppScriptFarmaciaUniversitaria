@@ -14,7 +14,7 @@ import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 
 
-export default function ModalSaidaEstoque({ remedio, listaDD }: { remedio: any, listaDD: string[][] }) {
+export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: { remedio: any, listaDD: string[][], data: Array<any>, setData: Function}) {
 
     const [quantidade, setQuantidade] = useState('');
     const [paciente, setPaciente] = useState('');
@@ -75,7 +75,8 @@ export default function ModalSaidaEstoque({ remedio, listaDD }: { remedio: any, 
 
                 if (sucesso) {
                     // Atualiza a tabela:
-                    // setData([...data, medicamentoEspecifico]);
+                    remedio.quantidade = parseInt(remedio.quantidade) - parseInt(quantidade);
+                    setData([...data]);
 
                     setLoading(false);
                     setMensagem(false);

@@ -7,12 +7,12 @@ import ModalVerMaisEstoque from '../ModalVerMaisEstoque';
 import ModalAtualizarInformacoesEstoque from '../ModalAtualizarInformacoesEstoque';
 
 
-export default function OperacoesEstoque({ remedio, listaDD, doadores, data, setData}: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function }){
+export default function OperacoesEstoque({ remedio, listaDD, doadores, data, setData, index}: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function, index: number }){
 
     return (
         <ButtonGroup aria-label="Basic example">
-            <ModalEntradaEstoque remedio={remedio} listaDD={listaDD} doadores={doadores}/>
-            <ModalSaidaEstoque remedio={remedio} listaDD={listaDD}/>
+            <ModalEntradaEstoque remedio={remedio} listaDD={listaDD} doadores={doadores} data={data} setData={setData}/>
+            <ModalSaidaEstoque remedio={remedio} listaDD={listaDD} data={data} setData={setData}/>
             <ModalVerMaisEstoque remedio={remedio}/>
             <ModalAtualizarInformacoesEstoque remedio={remedio} listaDD={listaDD}/>
         </ButtonGroup>

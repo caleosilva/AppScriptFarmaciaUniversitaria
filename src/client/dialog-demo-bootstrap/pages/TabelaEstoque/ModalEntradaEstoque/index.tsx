@@ -17,7 +17,7 @@ import InputSelectDoador from '../InputSelectDoador';
 import { any } from 'prop-types';
 
 
-export default function ModalEntradaEstoque({ remedio, listaDD, doadores}: { remedio: any, listaDD: string[][], doadores: [{}] }) {
+export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, setData }: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function}) {
 
     const [quantidade, setQuantidade] = useState('');
     const [doador, setDoador] = useState('');
@@ -51,14 +51,8 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores}: { rem
     function renderDoador() {
         if (opcaoEntrada === 'Doação') {
             return (
-                
                 <Col SM={8}>
-                    {/* <InputDataList label={"Doador"} placeholder={"Informe o nome, CPF ou CNPJ e selecione o doador"} controlId={"inputDoador"} data={doador} setData={setDoador} options={doadores} listaId='listaDoadores'/> */}
-
-                    <InputSelectDoador required={true} label={"Opção de entrada"} name={"opcEntrada"} data={doador} setData={setDoador} lista={doadores}/>
-
-                    <p>{doador}</p>
-
+                    <InputSelectDoador required={true} label={"Opção de entrada"} name={"opcEntrada"} data={doador} setData={setDoador} lista={doadores} />
                 </Col>
             )
         }
@@ -86,7 +80,8 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores}: { rem
                     console.log("Sucesso real add: " + sucesso);
 
                     // Atualiza a tabela:
-                    // setData([...data, medicamentoEspecifico]);
+                    remedio.quantidade = parseInt(remedio.quantidade) + parseInt(quantidade);
+                    setData([...data]);
 
                     setLoading(false);
                     setMensagem(false);
@@ -105,7 +100,8 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores}: { rem
         setLista(listaDD)
     }, [listaDD]);
 
-    console.log("Na entrada: ", doadores)
+
+
 
 
     return (
