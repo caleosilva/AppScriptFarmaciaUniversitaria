@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import { InputGroup } from 'react-bootstrap';
+import { Col, InputGroup } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { Form } from 'react-bootstrap';
@@ -7,6 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
+import Row from 'react-bootstrap/Row';
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+
 
 import { useEffect, useState } from 'react';
 import React from 'react'
@@ -81,7 +84,7 @@ export default function TabelaEstoque() {
                             <th style={{ width: '20%' }} >Validade</th>
                             <th style={{ width: '20%' }} >Dosagem</th>
                             <th style={{ width: '20%' }} >Quantidade</th>
-                            <th style={{ width: '20%' }} >Operações</th>
+                            <th style={{ width: '10%' }} >Operações</th>
 
                         </tr>
                     </thead>
@@ -100,7 +103,7 @@ export default function TabelaEstoque() {
                                     <td>{medicamento.dosagem}</td>
                                     <td>{medicamento.quantidade}</td>
                                     <td>
-                                        <OperacoesEstoque remedio={medicamento} listaDD={infoDD} doadores={doadores} data={data} setData={setData} index={index}/>
+                                        <OperacoesEstoque remedio={medicamento} listaDD={infoDD} doadores={doadores} data={data} setData={setData} index={index} />
                                     </td>
                                 </tr>
                             ) : ''}
@@ -117,8 +120,22 @@ export default function TabelaEstoque() {
 
             <Card>
                 <Card.Header>
+
+                    <Breadcrumb>
+                        <Breadcrumb.Item onClick={handleBack} >
+                            <h6>
+                                Medicamentos
+                            </h6>
+
+                        </Breadcrumb.Item>
+                        <Breadcrumb.Item active style={{minWidth: '80vh'}} >
+                                <h6>{infoMedicamentoGeral.nome}, {infoMedicamentoGeral.principioAtivo}, {infoMedicamentoGeral.apresentacao}</h6>
+
+                        </Breadcrumb.Item>
+                    </Breadcrumb>
+
                     <Navbar>
-                        <Container className='justify-content-around' fluid>
+                        <Container fluid>
                             <Navbar.Brand href="">Controle de estoque</Navbar.Brand>
 
                             <InputGroup className='buscar'>
@@ -130,27 +147,18 @@ export default function TabelaEstoque() {
                                     onChange={(ev) => setBusca(ev.target.value)}
                                 />
                                 <InputGroup.Text>
-                                    <img
-                                        alt=""
-                                        src="/img/icones/search.svg"
-                                        width="25"
-                                        height="25"
-                                        className="d-inline-block align-top"
-                                    />{' '}
+                                    <i className="bi bi-search"></i>
                                 </InputGroup.Text>
                             </InputGroup>
 
                             <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} />
 
-                            <Button variant="dark" onClick={handleBack}>Voltar</Button>{' '}
 
                         </Container>
                     </Navbar>
                 </Card.Header>
                 <Card.Body>
-                    <div className='d-flex justify-content-center'>
-                        <p><strong>Medicamento selecionado:</strong> {infoMedicamentoGeral.nome}, {infoMedicamentoGeral.principioAtivo}, {infoMedicamentoGeral.apresentacao} </p>
-                    </div>
+
                     {renderTable()}
                 </Card.Body>
             </Card>

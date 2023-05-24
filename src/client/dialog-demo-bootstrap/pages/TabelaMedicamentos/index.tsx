@@ -46,7 +46,7 @@ function TabelaMedicamentos() {
                                 <th style={{ width: '20%' }} >Nome</th>
                                 <th style={{ width: '40%' }} >Princípio ativo</th>
                                 <th style={{ width: '20%' }} >Apresentação</th>
-                                <th style={{ width: '20%' }} >Operações</th>
+                                <th style={{ width: '10%' }} >Operações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,7 +75,7 @@ function TabelaMedicamentos() {
     }
 
     useEffect(() => {
-        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)); console.log(JSON.parse(string))}).catch(alert);
+        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)); console.log(JSON.parse(string)) }).catch(alert);
 
     }, []);
 
@@ -84,7 +84,7 @@ function TabelaMedicamentos() {
     }, []);
 
     useEffect(() => {
-        serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string))}).catch(alert);
+        // serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string))}).catch(alert);
         renderTable();
     }, [data]);
 
@@ -99,7 +99,7 @@ function TabelaMedicamentos() {
                 <Card.Header>
 
                     <Navbar>
-                        <Container className='justify-content-around' fluid>
+                        <Container fluid>
                             <Navbar.Brand href="">Medicamentos</Navbar.Brand>
                             <InputGroup className='buscar'>
                                 <Form.Control
@@ -110,13 +110,8 @@ function TabelaMedicamentos() {
                                     onChange={(ev) => setBusca(ev.target.value)}
                                 />
                                 <InputGroup.Text>
-                                    <img
-                                        alt=""
-                                        src="/img/icones/search.svg"
-                                        width="25"
-                                        height="25"
-                                        className="d-inline-block align-top"
-                                    />{' '}
+                                    <i className="bi bi-search"></i>
+
                                 </InputGroup.Text>
                             </InputGroup>
 

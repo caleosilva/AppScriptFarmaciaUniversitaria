@@ -14,7 +14,7 @@ import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 
 
-export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: { remedio: any, listaDD: string[][], data: Array<any>, setData: Function}) {
+export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: { remedio: any, listaDD: string[][], data: Array<any>, setData: Function }) {
 
     const [quantidade, setQuantidade] = useState('');
     const [paciente, setPaciente] = useState('');
@@ -105,13 +105,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                    <img
-                        alt=""
-                        src="/img/icones/remove.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    <i className="bi bi-dash-circle"></i>
                 </Button>
             </OverlayTrigger>
 

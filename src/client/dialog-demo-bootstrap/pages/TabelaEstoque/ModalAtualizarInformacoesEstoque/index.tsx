@@ -66,13 +66,7 @@ export default function ModalExemplo({ remedio, listaDD }: { remedio: any, lista
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                    <img
-                        alt=""
-                        src="/img/icones/edit.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    <i className="bi bi-pencil-square"></i>
                 </Button>
             </OverlayTrigger>
 

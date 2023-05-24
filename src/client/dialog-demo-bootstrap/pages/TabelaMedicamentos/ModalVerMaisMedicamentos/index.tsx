@@ -34,13 +34,7 @@ export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                    <img
-                        alt=""
-                        src="/img/icones/expand_content.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    <i className="bi bi-arrows-angle-expand"></i>
                 </Button>
             </OverlayTrigger>
 

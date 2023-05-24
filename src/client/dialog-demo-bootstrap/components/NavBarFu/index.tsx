@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import React from 'react';
-  import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const NavBarFU = () => {
   const rotas = [{
@@ -19,13 +19,15 @@ const NavBarFU = () => {
     to: '/pacientes'
   }];
 
+  const imgUrl = 'https://drive.google.com/uc?export=view&id=16w37OmWjBmHXN8aWdYud1wQYAJt__jnP';
+  
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed='top'>
       <Container fluid>
         <Navbar.Brand>
           <Link to={'/'} style={{ textDecoration: 'none', color: 'white' }}>
             <img
-              src="/img/logoFarmacia.png"
+              src={imgUrl}
               width="30"
               height="30"
               className="d-inline-block align-top me-2"

@@ -13,7 +13,10 @@ import Alert from 'react-bootstrap/Alert';
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import formatarData from '../../../functions.js';
+
+// import formatarData from '../../../functions.js';
+import gerarObjetoEstiloMedicamentoGeral from '../../../Functions/gerarObjetoEstiloMedicamentoGeral.js';
+import formatarData from '../../../Functions/formatarData.js';
 
 import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
 
@@ -40,15 +43,16 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
         setShow(false);
     };
-    
+
     const handleShow = () => {
         setNome(remedio.nome);
         setPrincipioAtivo(remedio.principioAtivo);
         setClasse(remedio.classe);
         setTarja(remedio.tarja);
         setApresentacao(remedio.apresentacao);
-        
-        setShow(true)};
+
+        setShow(true)
+    };
 
     // Controle ao clicar em atualizar
     const handleClick = () => setLoading(true);
@@ -59,42 +63,61 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if(classe != '' && tarja != '' && apresentacao != '' && nome != '' && principioAtivo != ''){
+        if (classe != '' && tarja != '' && apresentacao != '' && nome != '' && principioAtivo != '') {
             setIsFormValid(true);
-        } else{
+        } else {
             setIsFormValid(false);
         }
     }, [classe, tarja, apresentacao, nome, principioAtivo]);
-
 
     useEffect(() => {
         // Cria um objeto com os dados atualizados do medicamento
         var chaveGeral = remedio.chaveGeral;
 
+        var dataCadastroFormatada = formatarData(dataCadastro);
+
         const medicamento = {
             chaveGeral,
             dataCadastro,
+            dataCadastroFormatada,
             nome,
             principioAtivo,
             classe,
             tarja,
             apresentacao
         }
-        
+
+        console.log("Medicamento antes de enviar: ", medicamento)
+
+
         if (isLoading) {
 
             serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
                 console.log("Sucesso: " + sucesso)
+                console.log("Medicamento: ", medicamento)
                 if (sucesso) {
 
+                    // Atualiza a tabela:
+                    // console.log("Remedio antes: ", remedio);
+                    // console.log("Data antes: ", data);
+
+                    var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamento);
+                    console.log("Novos dados: ", novosDados);
+
+                    data[index] = novosDados;
                     setData([...data]);
+
+                    // console.log("-----------------------------")
+                    // console.log("Remedio depois: ", remedio);
+                    // console.log("Data depois: ", data);
+
 
                     setMensagem(false);
                     setLoading(false);
                     handleClose();
                     console.log("Informações atualizadas")
                 } else {
-                    setMensagem(true);  
+                    setMensagem(true);
                     setLoading(false);
                     console.log("Não foi possível atualizar")
                 }
@@ -122,13 +145,7 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                    <img
-                        alt=""
-                        src="/img/icones/edit.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    <i className="bi bi-pencil-square"></i>
                 </Button>
             </OverlayTrigger>
 

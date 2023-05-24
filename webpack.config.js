@@ -177,7 +177,11 @@ const DynamicCdnWebpackPluginConfig = {
     // "name" should match the package being imported
     // "var" is important to get right -- this should be the exposed global. Look up "webpack externals" for info.
     switch (packageName) {
-      
+
+      case 'react-router-dom':
+        return null;
+      case 'react-router':
+        return null;
       case 'react-transition-group':
         return {
           name: packageName,

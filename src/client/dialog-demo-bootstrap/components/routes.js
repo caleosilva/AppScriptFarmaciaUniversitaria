@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import { Link, Route } from "wouter";
-
 
 import NavBarFU from './NavBarFu';
 import TabelaMedicamentos from '../pages/TabelaMedicamentos';
@@ -13,9 +11,6 @@ import TabelaEstoque from '../pages/TabelaEstoque';
 export default function AppRouter() {
     return (
         <main>
-
-            {/* <Route path="/"><Home /></Route>
-            <Route path="/medicamentos"><TabelaMedicamentos /></Route> */}
 
             <Router>
                 <NavBarFU />

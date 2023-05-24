@@ -17,7 +17,7 @@ import InputSelectDoador from '../InputSelectDoador';
 import { any } from 'prop-types';
 
 
-export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, setData }: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function}) {
+export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, setData }: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function }) {
 
     const [quantidade, setQuantidade] = useState('');
     const [doador, setDoador] = useState('');
@@ -113,13 +113,7 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                    <img
-                        alt=""
-                        src="/img/icones/add.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    <i className="bi bi-plus-circle"></i>
                 </Button>
             </OverlayTrigger>
 

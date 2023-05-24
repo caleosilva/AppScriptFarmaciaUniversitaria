@@ -24,7 +24,7 @@ export default function OperacoesMedicamento({ remedio, index, listaDD, data, se
         navigate('/estoque', { state: { remedio } })
     }
 
-    function renderEstoque() {
+    function renderOpcaoEstoque() {
 
         const renderTooltip = (props) => (
             <Tooltip id="button-tooltip" {...props}>
@@ -39,13 +39,8 @@ export default function OperacoesMedicamento({ remedio, index, listaDD, data, se
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={()=> {handleNavigateEstoque()}}>
-                    <img
-                        alt=""
-                        src="/img/icones/inventory.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                <i className="bi bi-archive-fill"></i>
+
                 </Button>
             </OverlayTrigger>
         )
@@ -53,10 +48,7 @@ export default function OperacoesMedicamento({ remedio, index, listaDD, data, se
 
     return (
         <ButtonGroup aria-label="Basic example">
-
-
-
-            {renderEstoque()}
+            {renderOpcaoEstoque()}
             <MedModalVerMais remedio={remedio} />
             <MedModalAtualizar remedio={remedio} index={index} listaDrop={listaDD} data={data} setData={setData} />
         </ButtonGroup>

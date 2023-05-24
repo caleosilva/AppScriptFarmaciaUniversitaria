@@ -40,13 +40,8 @@ export default function ModalExemplo({ remedio }: { remedio: any }) {
                 overlay={renderTooltip}
             >
                 <Button variant="outline-secondary" onClick={handleShow}>
-                    <img
-                        alt=""
-                        src="/img/icones/expand_content.svg"
-                        width="25"
-                        height="25"
-                        className="d-inline-block align-top"
-                    />{' '}
+                    <i className="bi bi-arrows-angle-expand"></i>
+
                 </Button>
             </OverlayTrigger>
 
@@ -69,47 +64,47 @@ export default function ModalExemplo({ remedio }: { remedio: any }) {
                     <Container>
                         <Row>
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Lote"} data={remedio.lote} controlId={"exibirLote"}/>
+                                <ExibirInputSimples label={"Lote"} data={remedio.lote} controlId={"exibirLote"} />
                             </Col>
 
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Dosagem"} data={remedio.dosagem} controlId={"exibirDosagem"}/>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col sm={6}>
-                                <ExibirInputSimples label={"Data de entrada"} data={dataEntradaFormatada} controlId={"exibirDataEntrada"}/>
-                            </Col>
-
-                            <Col sm={6}>
-                                <ExibirInputSimples label={"Validade"} data={remedio.validadeFormatada} controlId={"exibirValidade"}/>
+                                <ExibirInputSimples label={"Dosagem"} data={remedio.dosagem} controlId={"exibirDosagem"} />
                             </Col>
                         </Row>
 
                         <Row>
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Quantidade disponível"} data={remedio.quantidade} controlId={"exibirQuantidade"}/>
+                                <ExibirInputSimples label={"Data de entrada"} data={dataEntradaFormatada} controlId={"exibirDataEntrada"} />
                             </Col>
 
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Origem do medicamento"} data={remedio.origem} controlId={"exibirOrigem"}/>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col sm={6}>
-                                <ExibirInputSimples label={"Tipo"} data={remedio.tipo} controlId={"exibirTipo"}/>
-                            </Col>
-
-                            <Col sm={6}>
-                                <ExibirInputSimples label={"Fabricante"} data={remedio.fabricante} controlId={"exibirFabricante"}/>
+                                <ExibirInputSimples label={"Validade"} data={remedio.validadeFormatada} controlId={"exibirValidade"} />
                             </Col>
                         </Row>
 
                         <Row>
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Motivo da doação"} data={remedio.motivoDoacao} controlId={"exibirMotivo"}/>
+                                <ExibirInputSimples label={"Quantidade disponível"} data={remedio.quantidade} controlId={"exibirQuantidade"} />
+                            </Col>
+
+                            <Col sm={6}>
+                                <ExibirInputSimples label={"Origem do medicamento"} data={remedio.origem} controlId={"exibirOrigem"} />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={6}>
+                                <ExibirInputSimples label={"Tipo"} data={remedio.tipo} controlId={"exibirTipo"} />
+                            </Col>
+
+                            <Col sm={6}>
+                                <ExibirInputSimples label={"Fabricante"} data={remedio.fabricante} controlId={"exibirFabricante"} />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={6}>
+                                <ExibirInputSimples label={"Motivo da doação"} data={remedio.motivoDoacao} controlId={"exibirMotivo"} />
                             </Col>
                         </Row>
                     </Container>
