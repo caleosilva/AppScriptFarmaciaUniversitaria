@@ -235,3 +235,46 @@ export const atualizarQuantidadeEstoque = (medicamento, quantidadeInput, adicion
 
     return false;
 }
+
+export const updateRowEstoque = (medicamento) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("MedicamentoEspecifico");
+
+    // Formatanto a data e pegando novo código
+    var validade = new Date(medicamento.validade);
+    var validadeFormatada = (validade.getUTCDate()) + "-" + (validade.getMonth() + 1) + "-" + validade.getFullYear();
+
+    var dataEntrada = new Date(medicamento.dataEntrada);
+    var dataEntradaFormatada = (dataEntrada.getUTCDate()) + "-" + (dataEntrada.getMonth() + 1) + "-" + dataEntrada.getFullYear();
+
+    var novaChaveMedicamentoEspecifica = (medicamento.lote + '#' + medicamento.dosagem + '#' + medicamento.validadeFormatada);
+    var novaChaveGeral = medicamento.chaveGeral + '#' + novaChaveMedicamentoEspecifica;
+
+    // Verifica se a nova chave (se for o caso) já existe:
+    if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {
+        // Chave encontrada, não é possível atualizar os dados com esse nome e princípio ativo:
+        return false;
+    } else {
+        // Chave não for encontrada, é possível atualizar os dados:
+        var novosDados = [medicamento.chaveGeral, novaChaveMedicamentoEspecifica, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
+
+        var chaveGeralOriginal = medicamento.chaveGeral;
+
+        // Acha a linha que os dados originais estão:
+        var dadosEditar = buscaBinariaSimples('MedicamentoEspecifico', chaveGeralOriginal, 12);
+
+        // return dadosEditar;
+
+        if (dadosEditar.linha) {
+            // Atualiza e ordena a tabela Medicamentos
+            ws.getRange('A' + dadosEditar.linha + ':L' + dadosEditar.linha).setValues([novosDados]);
+            ordenarPlanilha('MedicamentoEspecifico', 12);
+
+            // AINDA É NECESSÁRIO EDITAR NAS OUTRAS TABELAS CASO NECESSÁRIO
+            return dadosEditar;
+        }
+
+    }
+
+    return null;
+}

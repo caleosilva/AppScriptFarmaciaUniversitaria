@@ -209,27 +209,27 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
                                 }
                             </Row>
 
-                            <div className='mt-3 mb-3 d-flex justify-content-around'>
-                                <Button variant="outline-secondary" onClick={handleClose}>
-                                    Cancelar
-                                </Button>
 
-                                {/* <Button type="submit" variant="dark" onClick={handleClose}>
-                                    Salvar alterações
-                                </Button> */}
-
-                                <Button
-                                    type="submit"
-                                    variant="dark"
-                                    disabled={isLoading || !isFormValid}
-                                    onClick={!isLoading ? handleClick : null}
-                                >
-                                    {isLoading ? 'Salvando...' : 'Salvar'}
-                                </Button>
-                            </div>
                         </Form>
                     </Container>
                 </Modal.Body>
+
+                <Modal.Footer>
+                    <div className='mt-3 mb-3'>
+                        <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
+                            Cancelar
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            variant="dark"
+                            disabled={isLoading || !isFormValid}
+                            onClick={!isLoading ? handleClick : null}
+                        >
+                            {isLoading ? 'Salvando...' : 'Salvar'}
+                        </Button>
+                    </div>
+                </Modal.Footer>
             </Modal>
         </>
     );

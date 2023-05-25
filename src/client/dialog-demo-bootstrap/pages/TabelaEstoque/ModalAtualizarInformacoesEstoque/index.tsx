@@ -9,18 +9,42 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
 
 import { serverFunctions } from '../../../../utils/serverFunctions';
+import InputText from '../../../components/InputText';
+import InputDate from '../../../components/InputDate';
+import InputSelect from '../../../components/InputSelect';
 
 
 import React, { useState, useEffect } from 'react';
 
-export default function ModalExemplo({ remedio, listaDD }: { remedio: any, listaDD: string[][] }) {
+export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { remedio: any, listaDD: string[][] }) {
 
     // CRIAR OS USESTATE
+    const [lista, setLista] = useState([[]]);
+
+    const [lote, setLote] = useState(remedio.lote);
+    const [dosagem, setDosagem] = useState(remedio.dosagem);
+    const [validade, setValidade] = useState(remedio.validade);
+    const [quantidade, setQuantidade] = useState(remedio.quantidade);
+    const [origem, setOrigem] = useState(remedio.origem);
+    const [tipo, setTipo] = useState(remedio.tipo);
+
+    const [fabricante, setFabricante] = useState(remedio.fabricante);
+    const [motivoDoacao, setMotivoDoacao] = useState(remedio.motivoDoacao);
+    const [dataEntrada, setDataEntrada] = useState(remedio.dataEntrada);
+
 
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
-        // SETAR COMO '' OS USESTATE
+        setLote(remedio.lote);
+        setDosagem(remedio.dosagem);
+        setValidade(remedio.validade);
+        setOrigem(remedio.origem)
+        setTipo(remedio.tipo);
+        setFabricante(remedio.fabricante);
+        setMotivoDoacao(remedio.motivoDoacao);
+        setDataEntrada(remedio.dataEntrada);
+
         setShow(false)
     };
     const handleShow = () => setShow(true);
@@ -45,7 +69,20 @@ export default function ModalExemplo({ remedio, listaDD }: { remedio: any, lista
     }, []);
 
     useEffect(() => {
-        // Cria o objeto o
+        var medicamento = {
+            'chaveMedicamentoGeral': remedio.chaveMedicamentoGeral,
+            'chaveMedicamentoEspecifica': remedio.chaveMedicamentoEspecifica,
+            lote,
+            dosagem,
+            validade,
+            quantidade,
+            origem,
+            tipo,
+            fabricante,
+            motivoDoacao,
+            dataEntrada,
+            'chaveGeral': remedio.chaveGeral
+        }
 
         if (isLoading) {
 
@@ -54,6 +91,9 @@ export default function ModalExemplo({ remedio, listaDD }: { remedio: any, lista
         }
     }, [isLoading]);
 
+    useEffect(() => {
+        setLista(listaDD);
+    }, [listaDD]);
 
 
 
@@ -83,14 +123,58 @@ export default function ModalExemplo({ remedio, listaDD }: { remedio: any, lista
             >
 
                 <Modal.Header closeButton>
-                    <Modal.Title>Entrada de estoque</Modal.Title>
+                    <Modal.Title>Edição de informações</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>Funcoes para edição</p>
+                    <Container>
+                        <Row>
+                            <Col sm={6}>
+                                <InputText required={true} type={"text"} placeholder='' name={"lote"} label={"Lote"} controlId={"inputLote"} data={lote} setData={setLote} />
+                            </Col>
+
+                            <Col sm={6}>
+                                <InputText required={true} type={"text"} placeholder='' name={"dosagem"} label={"Dosagem"} controlId={"inputDosagem"} data={dosagem} setData={setDosagem} />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={6}>
+                                <InputText required={true} type={"text"} placeholder='' name={"fabricante"} label={"Fabricante"} controlId={"inputFabricante"} data={fabricante} setData={setFabricante} />
+                            </Col>
+
+                            <Col sm={6}>
+                                <InputDate label={"Data de validade"} controlId={"inputDataValidade"} name={"inputDataValidade"} data={validade} setData={setValidade} />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={6}>
+                                <InputSelect required={true} label={"Origem"} name={"origem"} data={origem} setData={setOrigem} lista={listaDD ? listaDD[5] : []} />
+
+                            </Col>
+
+                            <Col sm={6}>
+                                <InputSelect required={true} label={"Tipo"} name={"tipo"} data={tipo} setData={setTipo} lista={listaDD ? listaDD[1] : []} />
+
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={6}>
+                                <InputSelect required={true} label={"Motivo da doação"} name={"motivoDoacao"} data={motivoDoacao} setData={setMotivoDoacao} lista={listaDD ? listaDD[4] : []} />
+
+                            </Col>
+
+                            <Col sm={6}>
+                                <InputDate label={"Data de entrada"} controlId={"inputDataEntrada"} name={"inputDataEntrada"} data={dataEntrada} setData={setDataEntrada} />
+                            </Col>
+                        </Row>
+                    </Container>
+
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className='mt-3 mb-3 d-flex justify-content-around'>
-                        <Button variant="outline-secondary" onClick={handleClose}>
+                    <div className='mt-3 mb-3'>
+                        <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
                             Cancelar
                         </Button>
 
