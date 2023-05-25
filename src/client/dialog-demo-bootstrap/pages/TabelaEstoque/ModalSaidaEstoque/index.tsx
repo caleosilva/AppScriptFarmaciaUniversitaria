@@ -126,16 +126,30 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                 </Modal.Header>
                 <Modal.Body>
                     <Container>
-                        <Row className='mb-3'>
-                            <Col sm={4}>
-                                <InputSelect required={true} label={"Opção de entrada"} name={"opcEntrada"} data={opcaoSaida} setData={setOpcaoSaida} lista={lista ? lista[11] : []} />
+
+                        <Row>
+                            <Col sm={5}>
+                                <Alert key="warning" variant="warning">
+                                    <p>Em estoque: <strong>{remedio.quantidade}</strong></p>
+                                </Alert>
                             </Col>
+                        </Row>
+
+                        <Row>
+                            <Col sm={5}>
+                                <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
+                            </Col>
+                        </Row>
+
+                        <Row className='mb-3'>
+                            <Col sm={5}>
+                                <InputSelect required={true} label={"Opção de saída"} name={"opcSaida"} data={opcaoSaida} setData={setOpcaoSaida} lista={lista ? lista[11] : []} />
+                            </Col>
+
                             {renderPaciente()}
                         </Row>
 
-                        {/* <hr /> */}
-
-                        <Row>
+                        {/* <Row>
                             <Col sm={4}>
                                 <Row>
                                     <p>Quantidade atual no estoque</p>
@@ -148,7 +162,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                             <Col>
                                 <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
                             </Col>
-                        </Row>
+                        </Row> */}
 
                         <Row className='mb-3 mt-2'>
                             {mensagem &&

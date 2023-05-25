@@ -2,11 +2,17 @@ import Form from 'react-bootstrap/Form';
 import React, { useState } from 'react';
 
 
-
-// const InputSelect = ({ label, name, data, setData, required, lista}) => {
-
 export default function InputSelect({ label, name, data, setData, required, lista }:
     { label: string, name: string, data: any, setData: Function, required: boolean, lista: [any] }) {
+
+    const labelIndentificadora = (op: any) => {
+        if (op.cpf === 'null'){
+            return `${op.nome}, ${op.cnpj}`;
+        } else {
+            return `${op.nome}, ${op.cpf}`;
+        }
+    }
+
     return (
         <section className='mb-3'>
             <Form.Label >{label}</Form.Label>
@@ -19,8 +25,11 @@ export default function InputSelect({ label, name, data, setData, required, list
 
                 <option></option>
 
-                {lista?.map((option, index) =>
-                    <option key={index} value={option.chaveDoador} label={option.nome}/>
+                {lista?.map((op, index) =>
+                    
+                    <option key={index} value={op.chaveDoador}>
+                        {labelIndentificadora(op)}
+                    </option>
 
                 )}
             </Form.Select>
