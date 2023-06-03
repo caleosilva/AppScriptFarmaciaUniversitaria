@@ -3,7 +3,7 @@ const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 
 export const getInformacoesSelect = () => {
     var ss = SpreadsheetApp.openById(idSheet);
-    var ws = ss.getSheetByName("InformacoesMedicamentos");
+    var ws = ss.getSheetByName("InformacoesSelect");
     var data = ws.getRange(2, 1, ws.getLastRow() - 1, ws.getLastColumn()).getValues();
 
     var informacoes = [];

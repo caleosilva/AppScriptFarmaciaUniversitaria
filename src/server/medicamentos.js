@@ -140,7 +140,7 @@ export const encontrarMedicamentoTabelaMedicamentos = (chaveDeBusca) => {
 export const getMedicamentos = () => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("Medicamentos");
-    var data = ws.getRange(2, 1, ws.getLastRow() - 1, 7).getValues();
+    var data = ws.getRange(2, 1, ws.getLastRow() - 1, ws.getLastColumn()).getValues();
 
     var informacoes = [];
 
@@ -159,7 +159,9 @@ export const getMedicamentos = () => {
                 "principioAtivo": data[i][3],
                 "classe": data[i][4],
                 "tarja": data[i][5],
-                "apresentacao": data[i][6]
+                "apresentacao": data[i][6],
+                "quantidadeTotal": data[i][7],
+                "validadeMaisProxima": data[i][8]
             }
             informacoes.push(remedio)
         }

@@ -44,9 +44,13 @@ function TabelaMedicamentos() {
                         <thead>
                             <tr>
                                 <th style={{ width: '20%' }} >Nome</th>
-                                <th style={{ width: '40%' }} >Princípio ativo</th>
+                                <th style={{ width: '20%' }} >Princípio ativo</th>
                                 <th style={{ width: '20%' }} >Apresentação</th>
+                                <th style={{ width: '15%' }} >Quantidade total</th>
+                                <th style={{ width: '15%' }} >Validade mais próxima</th>
                                 <th style={{ width: '10%' }} >Operações</th>
+
+
                             </tr>
                         </thead>
                         <tbody>
@@ -57,14 +61,7 @@ function TabelaMedicamentos() {
                                         : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
                                         item.principioAtivo.toLowerCase().includes(busca.toLowerCase())
                                 }).map((remedio, index) => {
-                                    return <tr key={index}>
-                                        <td>{remedio.nome}</td>
-                                        <td>{remedio.principioAtivo}</td>
-                                        <td>{remedio.apresentacao}</td>
-                                        <td>
-                                            <OperacoesMedicamento remedio={remedio} index={index} listaDD={infoDD} data={data} setData={setData} />
-                                        </td>
-                                    </tr>
+                                    return renderInformacoes(remedio, index);
                                 }) : ''}
                             </>
                         </tbody>
@@ -72,6 +69,30 @@ function TabelaMedicamentos() {
                 </>
             )
         }
+    }
+
+    function renderInformacoes(remedio, index) {
+
+        var validade = remedio.validadeMaisProxima;
+        var validadeFormatada = '-';
+
+        if (validade !== '-'){
+            var novaData = new Date(validade);
+            validadeFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
+        }
+        
+        return (
+            <tr key={index}>
+                <td>{remedio.nome}</td>
+                <td>{remedio.principioAtivo}</td>
+                <td>{remedio.apresentacao}</td>
+                <td>{remedio.quantidadeTotal}</td>
+                <td>{validadeFormatada}</td>
+                <td>
+                    <OperacoesMedicamento remedio={remedio} index={index} listaDD={infoDD} data={data} setData={setData} />
+                </td>
+            </tr>
+        )
     }
 
     useEffect(() => {
