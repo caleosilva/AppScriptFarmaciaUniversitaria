@@ -87,7 +87,6 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
             apresentacao
         }
 
-        console.log("Medicamento antes de enviar: ", medicamento)
 
 
         if (isLoading) {

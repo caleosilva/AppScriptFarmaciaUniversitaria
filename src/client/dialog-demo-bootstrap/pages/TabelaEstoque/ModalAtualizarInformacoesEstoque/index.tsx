@@ -34,6 +34,8 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
 
 
     const [show, setShow] = useState(false);
+    const [mensagem, setMensagem] = useState(false);
+
 
     const handleClose = () => {
         setLote(remedio.lote);
@@ -84,9 +86,32 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
             'chaveGeral': remedio.chaveGeral
         }
 
+        console.log("Antes: ", medicamento)
+
         if (isLoading) {
 
-            // chama a função do server
+            serverFunctions.updateRowEstoque(medicamento).then((sucesso) => {
+                console.log("Sucesso: " + sucesso);
+                console.log("Medicamento: ", medicamento);
+                if (sucesso) {
+
+                    // var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamento);
+                    // console.log("Novos dados: ", novosDados);
+
+                    // data[index] = novosDados;
+                    // setData([...data]);
+
+
+                    setMensagem(false);
+                    setLoading(false);
+                    handleClose();
+                    console.log("Informações atualizadas")
+                } else {
+                    setMensagem(true);
+                    setLoading(false);
+                    console.log("Não foi possível atualizar")
+                }
+            })
 
         }
     }, [isLoading]);
@@ -169,6 +194,19 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
                                 <InputDate label={"Data de entrada"} controlId={"inputDataEntrada"} name={"inputDataEntrada"} data={dataEntrada} setData={setDataEntrada} />
                             </Col>
                         </Row>
+
+                        <Row className='mb-3 mt-3'>
+                                {mensagem &&
+                                    <Col>
+                                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                                            <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
+                                            <p>
+                                                Já existe um medicamento cadastrado com esse lote, dosagem e validade.
+                                            </p>
+                                        </Alert>
+                                    </Col>
+                                }
+                            </Row>
                     </Container>
 
                 </Modal.Body>

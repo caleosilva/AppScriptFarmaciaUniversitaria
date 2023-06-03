@@ -142,7 +142,7 @@ export const queryChaveMedicamentoGeral = (chaveDeBusca) => {
 
             var data = {
                 chaveMedicamentoGeral: dados[i][0],
-                chaveEspecifica: dados[i][1],
+                chaveMedicamentoEspecifica: dados[i][1],
                 lote: dados[i][2],
                 dosagem: dados[i][3],
                 validade: dados[i][4],
@@ -248,7 +248,9 @@ export const updateRowEstoque = (medicamento) => {
     var dataEntradaFormatada = (dataEntrada.getUTCDate()) + "-" + (dataEntrada.getMonth() + 1) + "-" + dataEntrada.getFullYear();
 
     var novaChaveMedicamentoEspecifica = (medicamento.lote + '#' + medicamento.dosagem + '#' + medicamento.validadeFormatada);
-    var novaChaveGeral = medicamento.chaveGeral + '#' + novaChaveMedicamentoEspecifica;
+    var novaChaveGeral = medicamento.chaveMedicamentoGeral + '#' + novaChaveMedicamentoEspecifica;
+
+    // return JSON.stringify(novaChaveGeral);
 
     // Verifica se a nova chave (se for o caso) já existe:
     if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {
@@ -256,14 +258,14 @@ export const updateRowEstoque = (medicamento) => {
         return false;
     } else {
         // Chave não for encontrada, é possível atualizar os dados:
-        var novosDados = [medicamento.chaveGeral, novaChaveMedicamentoEspecifica, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
+        var novosDados = [medicamento.chaveMedicamentoGeral, novaChaveMedicamentoEspecifica, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
 
-        var chaveGeralOriginal = medicamento.chaveGeral;
+        var chaveGeralOriginal = medicamento.chaveMedicamentoGeral;
 
         // Acha a linha que os dados originais estão:
         var dadosEditar = buscaBinariaSimples('MedicamentoEspecifico', chaveGeralOriginal, 12);
 
-        // return dadosEditar;
+        // return JSON.stringify(dadosEditar);
 
         if (dadosEditar.linha) {
             // Atualiza e ordena a tabela Medicamentos
@@ -271,7 +273,7 @@ export const updateRowEstoque = (medicamento) => {
             ordenarPlanilha('MedicamentoEspecifico', 12);
 
             // AINDA É NECESSÁRIO EDITAR NAS OUTRAS TABELAS CASO NECESSÁRIO
-            return dadosEditar;
+            return JSON.stringify(dadosEditar);
         }
 
     }
