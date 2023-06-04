@@ -137,7 +137,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
 
                         <Row>
                             <Col sm={5}>
-                                <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
+                                <InputPositiveNumber required={true} label={"Quantidade a ser retirada"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
                             </Col>
                         </Row>
 
@@ -148,21 +148,6 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
 
                             {renderPaciente()}
                         </Row>
-
-                        {/* <Row>
-                            <Col sm={4}>
-                                <Row>
-                                    <p>Quantidade atual no estoque</p>
-                                </Row>
-                                <Row>
-                                    <p > <strong>{remedio.quantidade}</strong></p>
-                                </Row>
-                            </Col>
-
-                            <Col>
-                                <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
-                            </Col>
-                        </Row> */}
 
                         <Row className='mb-3 mt-2'>
                             {mensagem &&

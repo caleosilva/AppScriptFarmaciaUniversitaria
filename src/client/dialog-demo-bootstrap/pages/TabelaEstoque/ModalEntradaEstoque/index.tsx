@@ -141,7 +141,7 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
 
                         <Row>
                             <Col sm={5}>
-                                <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999} />
+                                <InputPositiveNumber required={true} label={"Quantidade a ser adicionada"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999} />
                             </Col>
                         </Row>
 
