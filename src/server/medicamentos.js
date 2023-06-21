@@ -3,6 +3,20 @@ import ErroMedicamentoGeralExistente from '../erros/ErroMedicamentoGeralExistent
 
 const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 
+const formatarData = (data) => {
+    const caracteres = [...data]
+    const tamanho = caracteres.length;
+
+    if (tamanho <= 10){
+        return data
+    }
+
+    var novaData = new Date(data);
+    var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
+
+    return novaDataFormatada;
+}
+
 const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
 
     var currentDoc = SpreadsheetApp.openById(idSheet)
@@ -221,19 +235,16 @@ export const appendRowMedicamentos = (medicamento) => {
         // throw new ErroMedicamentoGeralExistente("O medicamento já está cadastrado!");
         return false;
     } else {
-        var dataCadastro = getDateToday();
-        let quantidade = 0;
-        let validadeProxima = "-"
         ws.appendRow([
             medicamento.chaveGeral,
-            dataCadastro,
+            medicamento.dataCadastro,
             medicamento.nome,
             medicamento.principioAtivo,
             medicamento.classe,
             medicamento.tarja,
             medicamento.apresentacao,
-            quantidade,
-            validadeProxima
+            medicamento.quantidadeTotal,
+            medicamento.validadeMaisProxima
         ]);
         ordenarPlanilha("Medicamentos", 1)
         return true;
@@ -245,8 +256,8 @@ export const updateRowMedicamentos = (medicamento) => {
     var ws = ss.getSheetByName("Medicamentos");
 
     // Formatanto a data e pegando novo código
-    var dataCadastro = new Date(medicamento.dataCadastro);
-    var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
+    // var dataCadastro = new Date(medicamento.dataCadastro);
+    var dataCadastroFormatada = formatarData(medicamento.dataCadastro)
 
     var novaChaveGeral = (medicamento.nome + '#' + medicamento.principioAtivo + '#' + medicamento.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
 
@@ -282,29 +293,28 @@ export const updateRowMedicamentos = (medicamento) => {
             }
             return posicao;
         }
-
     }
 
-    var novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+    // var novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
 
-    var chaveGeralOriginal = medicamento.chaveGeral;
+    // var chaveGeralOriginal = medicamento.chaveGeral;
 
-    // Busca binária e atualização:
-    var posicao = buscaBinaria('Medicamentos', chaveGeralOriginal, 1, true)
-    // Se achar o medicamento:
-    if (posicao) {
-        // Atualiza na tabela principal
-        ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
+    // // Busca binária e atualização:
+    // var posicao = buscaBinaria('Medicamentos', chaveGeralOriginal, 1, true)
+    // // Se achar o medicamento:
+    // if (posicao) {
+    //     // Atualiza na tabela principal
+    //     ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
 
-        // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
-        if (chaveGeralOriginal !== novaChaveGeral) {
-            // Atualização:
+    //     // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
+    //     if (chaveGeralOriginal !== novaChaveGeral) {
+    //         // Atualização:
 
-            //Ordenação:
-            ordenarPlanilha('Medicamentos', 1)
-        }
-        return posicao;
-    } else {
-        return false;
-    }
+    //         //Ordenação:
+    //         ordenarPlanilha('Medicamentos', 1)
+    //     }
+    //     return posicao;
+    // } else {
+    //     return false;
+    // }
 }

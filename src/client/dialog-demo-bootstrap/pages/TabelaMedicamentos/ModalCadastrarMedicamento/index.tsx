@@ -12,7 +12,7 @@ import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import MedicamentoGeral from '../../../../../models/MedicamentoGeral';
 import ErroMedicamentoGeralExistente from '../../../../../erros/ErroMedicamentoGeralExistente';
-
+import dataHojeFormatada from '../../../Functions/dataHojeFormatada'
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -65,7 +65,14 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     // Realiza o cadastro
     useEffect(() => {
 
+        const dataCadastro = dataHojeFormatada();
+        const chaveGeral = (nome + '#' + principioAtivo + '#' + apresentacao).toString().toLowerCase().replace(/\s+/g, '');
+        const quantidadeTotal = 0;
+        const validadeMaisProxima = "-";
+
         // Cria um objeto com os dados do medicamento
+        const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
+
         const medicamento = {
             'chaveGeral': (nome + '#' + principioAtivo + '#' + apresentacao).toString().toLowerCase().replace(/\s+/g, ''),
             nome,
@@ -74,42 +81,15 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
             tarja,
             apresentacao,
             "quantidadeTotal": "0",
-            "validadeMaisProxima": "-"
+            "validadeMaisProxima": "-",
+            dataCadastro
         }
 
         if (isLoading) {
-            // Verifica se ele não existe para poder finalizar o cadastro
-            // try {
-            //     serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-            //         if (sucesso) {
-            //             // Atualiza a tabela:
-            //             setData([...data, medicamento])
-
-            //             // Limpa os formulários
-            //             setDataCadastro('');
-            //             setNome('');
-            //             setPrincipioAtivo('');
-            //             setClasse('');
-            //             setTarja('');
-            //             setApresentacao('');
-
-            //             setLoading(false);
-            //             setMensagem(false);
-            //             handleClose();
-            //         }
-            //     });
-
-            // } catch (ErroMedicamentoGeralExistente) {
-            //     setLoading(false);
-            //     setMensagem(true);
-            // }
-
-            serverFunctions.appendRowMedicamentos(medicamento).then((sucesso) => {
-                console.log("Sucesso: " + sucesso)
-
+            serverFunctions.appendRowMedicamentos(medicamentoGeral).then((sucesso) => {
                 if (sucesso) {
                     // Atualiza a tabela:
-                    setData([...data, medicamento])
+                    setData([...data, medicamentoGeral])
 
                     // Limpa os formulários
                     setNome('');
@@ -124,7 +104,6 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
                 } else {
                     setLoading(false);
                     setMensagem(true);
-                    console.log("Medicamento já existe na tabela")
                 }
             }).catch((e) => console.log(e.stack));
         }

@@ -11,8 +11,9 @@ import React, { useState } from 'react';
 
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
+import formatarData from '../../../Functions/formatarData';
 
-// Mudar de ANY para Medicamento Geral
+
 export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral }) {
     const [show, setShow] = useState(false);
 
@@ -25,8 +26,45 @@ export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral
         </Tooltip>
     );
 
-    return (
+    function renderFormularioDeExibicao() {
+        const dataCadastroFormatada = formatarData(remedio.dataCadastro);
+        return (
+            <Form>
+                <Row>
+                    <Col sm={6}>
+                        <ExibirInputSimples label={'Data do cadastro'} data={dataCadastroFormatada} controlId={"inputDataCadastro"} />
+                    </Col>
+                    <Col sm={6}>
+                        <ExibirInputSimples label={'Nome do medicamento'} data={remedio.nome} controlId={"inputNomeMed"} />
+                    </Col>
+                </Row>
 
+                <Row>
+                    <Col>
+                        <ExibirInputSimples label={'Princípio ativo'} data={remedio.principioAtivo} controlId={"inputPrincMed"} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ExibirInputSimples label={'Classe'} data={remedio.classe} controlId={"classe"} />
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col sm={6}>
+                        <ExibirInputSimples label={'Tarja'} data={remedio.tarja} controlId={"tarja"} />
+                    </Col>
+
+                    <Col sm={6}>
+                        <ExibirInputSimples label={'Apresentação'} data={remedio.apresentacao} controlId={"apresentacao"} />
+                    </Col>
+                </Row>
+
+            </Form>
+        )
+    }
+
+    return (
         <>
             <OverlayTrigger
                 placement="left"
@@ -55,38 +93,7 @@ export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral
                 </Modal.Header>
                 <Modal.Body>
                     <Container>
-                        <Form>
-                            <Row>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Data do cadastro'} data={remedio.dataCadastroFormatada} controlId={"inputDataCadastro"} />
-                                </Col>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Nome do medicamento'} data={remedio.nome} controlId={"inputNomeMed"} />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col>
-                                    <ExibirInputSimples label={'Princípio ativo'} data={remedio.principioAtivo} controlId={"inputPrincMed"} />
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <ExibirInputSimples label={'Classe'} data={remedio.classe} controlId={"classe"} />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Tarja'} data={remedio.tarja} controlId={"tarja"} />
-                                </Col>
-
-                                <Col sm={6}>
-                                    <ExibirInputSimples label={'Apresentação'} data={remedio.apresentacao} controlId={"apresentacao"} />
-                                </Col>
-                            </Row>
-
-                        </Form>
+                        {renderFormularioDeExibicao()}
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>

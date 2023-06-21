@@ -32,6 +32,11 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
     const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
     const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
 
+    const validadeMaisProxima = remedio.validadeMaisProxima;
+    const quantidadeTotal = remedio.quantidadeTotal;
+    const chaveGeral = remedio.chaveGeral;
+
+
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
@@ -72,53 +77,33 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
     useEffect(() => {
         // Cria um objeto com os dados atualizados do medicamento
-        var chaveGeral = remedio.chaveGeral;
-
         var dataCadastroFormatada = formatarData(dataCadastro);
+        console.log("Atualzar data cadastro: ", dataCadastroFormatada);
 
-        const medicamento = {
-            chaveGeral,
-            dataCadastro,
-            dataCadastroFormatada,
-            nome,
-            principioAtivo,
-            classe,
-            tarja,
-            apresentacao
-        }
+        const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastroFormatada, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
 
 
 
         if (isLoading) {
 
-            serverFunctions.updateRowMedicamentos(medicamento).then((sucesso) => {
+            serverFunctions.updateRowMedicamentos(medicamentoGeral).then((sucesso) => {
                 console.log("Sucesso: " + sucesso)
-                console.log("Medicamento: ", medicamento)
+                console.log("Medicamento: ", medicamentoGeral)
                 if (sucesso) {
 
-                    // Atualiza a tabela:
-                    // console.log("Remedio antes: ", remedio);
-                    // console.log("Data antes: ", data);
-
-                    var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamento);
+                    var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamentoGeral);
                     console.log("Novos dados: ", novosDados);
 
                     data[index] = novosDados;
                     setData([...data]);
 
-                    // console.log("-----------------------------")
-                    // console.log("Remedio depois: ", remedio);
-                    // console.log("Data depois: ", data);
-
 
                     setMensagem(false);
                     setLoading(false);
                     handleClose();
-                    console.log("Informações atualizadas")
                 } else {
                     setMensagem(true);
                     setLoading(false);
-                    console.log("Não foi possível atualizar")
                 }
             })
 
