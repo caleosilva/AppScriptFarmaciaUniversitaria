@@ -72,7 +72,9 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
             principioAtivo,
             classe,
             tarja,
-            apresentacao
+            apresentacao,
+            "quantidadeTotal": "0",
+            "validadeMaisProxima": "-"
         }
 
         if (isLoading) {
