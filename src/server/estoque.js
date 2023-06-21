@@ -81,6 +81,36 @@ export const queryMedicamentoEspecifico = (chaveDeBusca) => {
     }
 }
 
+export const queryAmountIndividualMedicamento = (chaveDeBusca) => {
+
+    const sql = "select A, F where A = '" + chaveDeBusca + "'";
+    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql)
+
+    if (dados[0][0] === '#N/A') {
+        return false;
+    } else {
+        var informacoes = [];
+
+        for (let i = 0; i < dados.length; i++) {
+            var remedio = {
+                chaveMedicamentoGeral: dados[i][0],
+                chaveMedicamentoEspecifica: dados[i][1],
+                lote: dados[i][2],
+                dosagem: dados[i][3],
+                validade: dados[i][4],
+                quantidade: dados[i][5],
+                origem: dados[i][6],
+                tipo: dados[i][7],
+                fabricante: dados[i][8],
+                motivoDoacao: dados[i][9],
+                dataEntrada: dados[i][10]
+            }
+            informacoes.push(remedio)
+        }
+        return informacoes;
+    }
+}
+
 export const buscaBinariaCompleta = (sheetId, nomePlanilha, valorBuscado, colBusca) => {
     var ss = SpreadsheetApp.openById(sheetId);
     var ws = ss.getSheetByName(nomePlanilha);
@@ -170,7 +200,7 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
     // Verificando se o medicamento existe:
     var codigo = medicamento.chaveMedicamentoEspecifica;
 
-    if (queryMedicamentoEspecifico(codigo)) {
+    if (queryMedicamentoEspecifico(codigo, "B")) {
         // throw new ErroMedicamentoGeralExistente("O medicamento já está cadastrado!");
         return false;
     } else {
@@ -190,6 +220,16 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
             chaveGeral
         ]);
         ordenarPlanilha("MedicamentoEspecifico", 12)
+
+        // Atualiza a quantidade:
+        var codigoMed = medicamento.chaveMedicamentoGeral;
+        var wsMed = ss.getSheetByName("Medicamentos");
+        var dadosMed = buscaBinariaSimples("Medicamentos", codigoMed, 1);
+
+        var quantidadeMed = wsMed.getRange("H" + parseInt(dadosMed.linha)).getValue();
+        var novaQuantidadeMed = parseInt(quantidadeMed) + parseInt(medicamento.quantidade);
+        wsMed.getRange("H" + parseInt(dadosMed.linha)).setValue(novaQuantidadeMed);
+
         return true;
     }
 }
@@ -222,12 +262,24 @@ export const atualizarQuantidadeEstoque = (medicamento, quantidadeInput, adicion
     var dados = buscaBinariaSimples("MedicamentoEspecifico", codigo, 12)
 
     if (dados){
+        var codigoMed = medicamento.chaveMedicamentoGeral;
+        var wsMed = ss.getSheetByName("Medicamentos");
+        var dadosMed = buscaBinariaSimples("Medicamentos", codigoMed, 1);
+
         if(adicionar){
             var novaQuantidade = parseInt(medicamento.quantidade) + parseInt(quantidadeInput);
             ws.getRange("F" + parseInt(dados.linha)).setValue(novaQuantidade);
+
+            var quantidadeMed = wsMed.getRange("H" + parseInt(dadosMed.linha)).getValue();
+            var novaQuantidadeMed = parseInt(quantidadeMed) + parseInt(quantidadeInput);
+            wsMed.getRange("H" + parseInt(dadosMed.linha)).setValue(novaQuantidadeMed);
         } else{
             var novaQuantidade = parseInt(medicamento.quantidade) - parseInt(quantidadeInput);
             ws.getRange("F" + parseInt(dados.linha)).setValue(novaQuantidade);
+
+            var quantidadeMed = wsMed.getRange("H" + parseInt(dadosMed.linha)).getValue();
+            var novaQuantidadeMed = parseInt(quantidadeMed) - parseInt(quantidadeInput);
+            wsMed.getRange("H" + parseInt(dadosMed.linha)).setValue(novaQuantidadeMed);
         }
         // Adicionar as informações na aba estoque:
         return true;
