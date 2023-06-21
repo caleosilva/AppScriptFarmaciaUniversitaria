@@ -14,7 +14,7 @@ import ExibirInputSimples from '../../../components/ExibirInputSimples';
 
 import React, { useState, useEffect } from 'react';
 
-export default function ModalExcluir({ remedio }: { remedio: any }) {
+export default function ModalExcluir({ remedio, data, setData, index}: { remedio: any, data: Array<any>, setData: Function, index: number}) {
 
     // CRIAR OS USESTATE
     const [mensagem, setMensagem] = useState(false);
@@ -46,11 +46,26 @@ export default function ModalExcluir({ remedio }: { remedio: any }) {
     }, []);
 
     useEffect(() => {
-        // Cria o objeto o
 
         if (isLoading) {
+            console.log("Remedio: ", remedio)
+            serverFunctions.removeRowEstoque(remedio).then((sucesso) => {
+                console.log("Sucesso add: " + sucesso)
 
-            // chama a função do server
+                if (sucesso) {
+                    // Atualiza a tabela:
+                    const novaLista = data.filter((item, posicao) => posicao !== index);
+                    setData(novaLista);
+
+                    setLoading(false);
+                    setMensagem(false);
+                    handleClose();
+                } else {
+                    setLoading(false);
+                    setMensagem(true);
+                    console.log("Não foi possível excluir")
+                }
+            }).catch((e) => console.log(e.stack));
 
         }
     }, [isLoading]);
@@ -64,7 +79,25 @@ export default function ModalExcluir({ remedio }: { remedio: any }) {
                         <Alert variant="warning">
                             <Alert.Heading>Atenção!</Alert.Heading>
                             <p>
-                                O medicamento escolhido ainda possui estoque. 
+                                O medicamento escolhido ainda possui estoque.
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+        }
+    }
+
+    function renderAlertaErro() {
+        if (mensagem) {
+            return (
+                <Row>
+                    <Col>
+                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                            <Alert.Heading>Erro!</Alert.Heading>
+                            <hr />
+                            <p>
+                                Não foi possível excluir o medicamento.
                             </p>
                         </Alert>
                     </Col>
@@ -81,7 +114,7 @@ export default function ModalExcluir({ remedio }: { remedio: any }) {
                 delay={{ show: 400, hide: 250 }}
                 overlay={renderTooltip}
             >
-                <Button variant="outline-secondary" onClick={handleShow}>
+                <Button variant="outline-danger" onClick={handleShow}>
                     <i className="bi bi-trash-fill"></i>
                 </Button>
             </OverlayTrigger>
@@ -103,6 +136,8 @@ export default function ModalExcluir({ remedio }: { remedio: any }) {
                 </Modal.Header>
                 <Modal.Body>
                     <Container>
+                        {renderAlerta()}
+
                         <Row className='mb-4'>
                             <h6>
                                 Revisar informações
@@ -122,24 +157,27 @@ export default function ModalExcluir({ remedio }: { remedio: any }) {
                             </Col>
                         </Row>
 
-                        {renderAlerta()}
+                        {renderAlertaErro()}
+
+
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>
                     <div className='mt-3 mb-3d-flex justify-content-around'>
+                        <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
+                            Cancelar
+                        </Button>
+
                         <Button
-                            className='me-5'
                             type="submit"
-                            variant="outline-secondary"
+                            variant="danger"
                             disabled={isLoading || !isFormValid}
                             onClick={!isLoading ? handleClick : null}
                         >
                             {isLoading ? 'Excluindo...' : 'Excluir'}
                         </Button>
 
-                        <Button variant="dark" onClick={handleClose}>
-                            Cancelar
-                        </Button>
+
                     </div>
                 </Modal.Footer>
             </Modal>

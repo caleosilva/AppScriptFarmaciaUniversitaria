@@ -20,8 +20,6 @@ import InputPositiveNumber from '../../../components/InputPositiveNumber';
 
 export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
 
-    // A OPÇÃO PADRÃO DE ENTRADA DEVE SER DOAÇÃO--------------------------
-
     // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
     const [isLoading, setLoading] = useState(false);
@@ -41,6 +39,26 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     const [tipo, setTipo] = useState(''); //-----------------SELECT
     const [fabricante, setFabricante] = useState('');
     const [motivoDoacao, setMotivoDoacao] = useState('');//-----------------SELECT
+
+    function orderData(medicamentoEspecifico){
+        const novoArray = [...data, medicamentoEspecifico];
+        // console.log("Data antes: ", novoArray)
+
+        novoArray.sort((a, b) => {
+            const chaveA = a.chaveGeral.replace(/#/g, "");
+            const chaveB = b.chaveGeral.replace(/#/g, "");
+
+            return chaveA.localeCompare(chaveB);
+        });
+
+        // novoArray.sort((a, b) => {
+        //     console.log(`${b.chaveGeral} = ${a.chaveGeral}`)
+        //     return b.chaveGeral.localeCompare(a.chaveGeral)
+        // });
+
+        setData(novoArray);
+        // console.log("Data depois: ", novoArray)
+    }
 
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
@@ -71,13 +89,14 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     // Realiza o cadastro
     useEffect(() => {
 
+
         var dataValidade = new Date(validade);
         var validadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
 
         var dataHoje = new Date();
         var dataHojeFormatada = (dataHoje.getUTCDate()) + "-" + (dataHoje.getMonth() + 1) + "-" + dataHoje.getFullYear();
 
-        var chaveMedicamentoEspecifica = (lote + '#' + dosagem + '#' + validade).toString().toLowerCase().replace(/\s+/g, '');
+        var chaveMedicamentoEspecifica = (lote + '#' + dosagem + '#' + validadeFormatada).toString().toLowerCase().replace(/\s+/g, '');
 
         // Cria um objeto com os dados do medicamento
         const medicamentoEspecifico = {
@@ -104,7 +123,8 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                     console.log("Sucesso real: " + sucesso);
 
                     // Atualiza a tabela:
-                    setData([...data, medicamentoEspecifico]);
+                    // setData([...data, medicamentoEspecifico]);
+                    orderData(medicamentoEspecifico);
 
                     // Limpa os formulários
                     setLote('');
@@ -126,6 +146,9 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                 }
             }).catch((e) => console.log(e.stack));
         }
+
+        console.log("Final: ", data)
+
     }, [isLoading]);
 
     // Carrega as informações do dropdown

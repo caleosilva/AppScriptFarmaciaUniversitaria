@@ -32,7 +32,8 @@ import {
   appendRowMedicamentoEspecifico,
   adicionarQuantidadeEstoque,
   atualizarQuantidadeEstoque,
-  updateRowEstoque
+  updateRowEstoque,
+  removeRowEstoque
 } from './estoque'
 
 // Import referente aos Doadores
@@ -59,6 +60,7 @@ export {
   adicionarQuantidadeEstoque,
   atualizarQuantidadeEstoque,
   updateRowEstoque,
+  removeRowEstoque,
 
   getDoadores
 };

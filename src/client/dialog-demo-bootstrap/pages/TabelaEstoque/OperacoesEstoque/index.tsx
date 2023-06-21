@@ -16,7 +16,7 @@ export default function OperacoesEstoque({ remedio, listaDD, doadores, data, set
             <ModalSaidaEstoque remedio={remedio} listaDD={listaDD} data={data} setData={setData}/>
             <ModalVerMaisEstoque remedio={remedio}/>
             <ModalAtualizarInformacoesEstoque remedio={remedio} listaDD={listaDD}/>
-            <ModalExcluir remedio={remedio}/>
+            <ModalExcluir remedio={remedio} data={data} setData={setData} index={index}/>
         </ButtonGroup>
     )
 }

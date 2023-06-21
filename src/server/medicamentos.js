@@ -140,38 +140,41 @@ export const encontrarMedicamentoTabelaMedicamentos = (chaveDeBusca) => {
 export const getMedicamentos = () => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("Medicamentos");
-    var data = ws.getRange(2, 1, ws.getLastRow() - 1, ws.getLastColumn()).getValues();
 
-    var informacoes = [];
+    var lr = ws.getLastRow();
 
-    if (data.length > 0) {
-        for (i = 0; i < data.length; i++) {
-            var dataCadastro = new Date(data[i][1]);
-            var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
+    if (lr > 1) {
+        var data = ws.getRange(2, 1, lr - 1, ws.getLastColumn()).getValues();
+        var informacoes = [];
 
-            // const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
+        if (data.length > 0) {
+            for (i = 0; i < data.length; i++) {
+                var dataCadastro = new Date(data[i][1]);
+                var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
 
-            const remedio = {
-                "chaveGeral": data[i][0],
-                "dataCadastro": data[i][1],
-                "dataCadastroFormatada": dataCadastroFormatada,
-                "nome": data[i][2],
-                "principioAtivo": data[i][3],
-                "classe": data[i][4],
-                "tarja": data[i][5],
-                "apresentacao": data[i][6],
-                "quantidadeTotal": data[i][7],
-                "validadeMaisProxima": data[i][8]
+                // const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
+
+                const remedio = {
+                    "chaveGeral": data[i][0],
+                    "dataCadastro": data[i][1],
+                    "dataCadastroFormatada": dataCadastroFormatada,
+                    "nome": data[i][2],
+                    "principioAtivo": data[i][3],
+                    "classe": data[i][4],
+                    "tarja": data[i][5],
+                    "apresentacao": data[i][6],
+                    "quantidadeTotal": data[i][7],
+                    "validadeMaisProxima": data[i][8]
+                }
+                informacoes.push(remedio)
             }
-            informacoes.push(remedio)
+
+            return JSON.stringify(informacoes);
         }
-
-        return JSON.stringify(informacoes);
+    } else {
+        return false
     }
-
-    return false;
-
-};
+}
 
 export const getInformacoesMedicamentos = () => {
     var ss = SpreadsheetApp.openById(idSheet);
@@ -219,6 +222,8 @@ export const appendRowMedicamentos = (medicamento) => {
         return false;
     } else {
         var dataCadastro = getDateToday();
+        let quantidade = 0;
+        let validadeProxima = "-"
         ws.appendRow([
             medicamento.chaveGeral,
             dataCadastro,
@@ -226,7 +231,9 @@ export const appendRowMedicamentos = (medicamento) => {
             medicamento.principioAtivo,
             medicamento.classe,
             medicamento.tarja,
-            medicamento.apresentacao
+            medicamento.apresentacao,
+            quantidade,
+            validadeProxima
         ]);
         ordenarPlanilha("Medicamentos", 1)
         return true;

@@ -35,7 +35,6 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     const [classe, setClasse] = useState(''); //-----------------SELECT
     const [tarja, setTarja] = useState(''); //-------------------SELECT
     const [apresentacao, setApresentacao] = useState(''); //-----SELECT
-    const [dataCadastro, setDataCadastro] = useState(''); //--------------DATA
     const [nome, setNome] = useState('');
     const [principioAtivo, setPrincipioAtivo] = useState('');
 

@@ -22,7 +22,7 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName(nomeDaAba);
     var range = ws.getDataRange().offset(1, 0); // começa na segunda linha
-    range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
+    range.sort(colunaBase);// ordena a faixa de células com base na coluna, Ex: 1 (A)
 }
 
 const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
@@ -279,4 +279,21 @@ export const updateRowEstoque = (medicamento) => {
     }
 
     return null;
+}
+
+export const removeRowEstoque = (medicamento) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("MedicamentoEspecifico");
+
+    // Encontrando o medicamento:
+    var codigo = medicamento.chaveGeral;
+    var dados = buscaBinariaSimples("MedicamentoEspecifico", codigo, 12)
+
+    if (dados){
+        let linha = dados.linha;
+        ws.deleteRow(linha);
+        return true;
+    }
+    return false;
 }
