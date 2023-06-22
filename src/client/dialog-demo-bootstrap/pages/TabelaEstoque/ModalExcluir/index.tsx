@@ -3,18 +3,18 @@ import Modal from 'react-bootstrap/Modal';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { Form } from 'react-bootstrap';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
 
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 
 import React, { useState, useEffect } from 'react';
 
-export default function ModalExcluir({ remedio, data, setData, index}: { remedio: any, data: Array<any>, setData: Function, index: number}) {
+export default function ModalExcluir({ remedio, data, setData, index}: { remedio: MedicamentoEspecifico, data: Array<MedicamentoEspecifico>, setData: Function, index: number}) {
 
     // CRIAR OS USESTATE
     const [mensagem, setMensagem] = useState(false);
@@ -48,7 +48,6 @@ export default function ModalExcluir({ remedio, data, setData, index}: { remedio
     useEffect(() => {
 
         if (isLoading) {
-            console.log("Remedio: ", remedio)
             serverFunctions.removeRowEstoque(remedio).then((sucesso) => {
                 console.log("Sucesso add: " + sucesso)
 
@@ -72,7 +71,7 @@ export default function ModalExcluir({ remedio, data, setData, index}: { remedio
 
 
     function renderAlerta() {
-        if (parseInt(remedio.quantidade) > 0) {
+        if (remedio.quantidade > 0) {
             return (
                 <Row>
                     <Col>

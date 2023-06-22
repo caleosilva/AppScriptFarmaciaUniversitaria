@@ -8,16 +8,15 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
+
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
-import InputDataList from '../InputDataList';
 import InputSelectDoador from '../InputSelectDoador';
-import { any } from 'prop-types';
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 
-export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, setData }: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function }) {
+export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, setData }: { remedio: MedicamentoEspecifico, listaDD: string[][], doadores: [{}], data: Array<MedicamentoEspecifico>, setData: Function }) {
 
     const [quantidade, setQuantidade] = useState('');
     const [doador, setDoador] = useState('');
@@ -74,13 +73,9 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
         if (isLoading) {
 
             serverFunctions.atualizarQuantidadeEstoque(remedio, quantidade, true).then((sucesso) => {
-                console.log("Sucesso add: " + sucesso)
-
                 if (sucesso) {
-                    console.log("Sucesso real add: " + sucesso);
-
                     // Atualiza a tabela:
-                    remedio.quantidade = parseInt(remedio.quantidade) + parseInt(quantidade);
+                    remedio.quantidade = remedio.quantidade + parseInt(quantidade);
                     setData([...data]);
 
                     setLoading(false);
@@ -89,7 +84,6 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
                 } else {
                     setLoading(false);
                     setMensagem(true);
-                    console.log("Não foi possível adicionar")
                 }
             }).catch((e) => console.log(e.stack));
 
@@ -152,21 +146,6 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
 
                             {renderDoador()}
                         </Row>
-
-                        {/* <Row>
-                            <Col sm={4}>
-                                <Row>
-                                    <p>Quantidade atual no estoque</p>
-                                </Row>
-                                <Row>
-                                    <p > <strong>{remedio.quantidade}</strong></p>
-                                </Row>
-                            </Col>
-
-                            <Col>
-                                <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999} />
-                            </Col>
-                        </Row> */}
 
                         <Row className='mb-3 mt-2'>
                             {mensagem &&

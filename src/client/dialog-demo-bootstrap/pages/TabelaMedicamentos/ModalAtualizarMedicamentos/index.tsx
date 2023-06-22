@@ -78,7 +78,6 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
     useEffect(() => {
         // Cria um objeto com os dados atualizados do medicamento
         var dataCadastroFormatada = formatarData(dataCadastro);
-        console.log("Atualzar data cadastro: ", dataCadastroFormatada);
 
         const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastroFormatada, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
 
@@ -87,16 +86,11 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
         if (isLoading) {
 
             serverFunctions.updateRowMedicamentos(medicamentoGeral).then((sucesso) => {
-                console.log("Sucesso: " + sucesso)
-                console.log("Medicamento: ", medicamentoGeral)
                 if (sucesso) {
-
                     var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamentoGeral);
-                    console.log("Novos dados: ", novosDados);
 
                     data[index] = novosDados;
                     setData([...data]);
-
 
                     setMensagem(false);
                     setLoading(false);

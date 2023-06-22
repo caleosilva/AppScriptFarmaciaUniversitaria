@@ -30,10 +30,10 @@ import {
   buscaBinariaCompleta,
   queryMedicamentoEspecifico,
   appendRowMedicamentoEspecifico,
-  adicionarQuantidadeEstoque,
   atualizarQuantidadeEstoque,
   updateRowEstoque,
-  removeRowEstoque
+  removeRowEstoque,
+  definirDataMaisRecente
 } from './estoque'
 
 // Import referente aos Doadores
@@ -45,22 +45,26 @@ import {
 export {
   deleteSheet, setActiveSheet, doGet, onOpen, openDialogBootstrap, getSheetsData,
 
+  //Geral
   getInformacoesSelect,
 
+  //Medicamentos
   getMedicamentos,
   getInformacoesMedicamentos,
   appendRowMedicamentos,
   updateRowMedicamentos,
   encontrarMedicamentoTabelaMedicamentos,
 
+  //Estoque
   queryChaveMedicamentoGeral,
   buscaBinariaCompleta,
   queryMedicamentoEspecifico,
   appendRowMedicamentoEspecifico,
-  adicionarQuantidadeEstoque,
   atualizarQuantidadeEstoque,
   updateRowEstoque,
   removeRowEstoque,
+  definirDataMaisRecente,
 
+  //Doadores
   getDoadores
 };

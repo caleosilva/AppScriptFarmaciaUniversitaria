@@ -9,8 +9,11 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import React, { useState, useEffect } from 'react';
 
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
+import formatarData from '../../../Functions/formatarData'
 
-export default function ModalExemplo({ remedio }: { remedio: any }) {
+
+export default function ModalExemplo({ remedio }: { remedio: MedicamentoEspecifico }) {
 
     const [show, setShow] = useState(false);
 
@@ -29,8 +32,7 @@ export default function ModalExemplo({ remedio }: { remedio: any }) {
         </Tooltip>
     );
 
-    const dataEntrada = new Date(remedio.dataEntrada);
-    const dataEntradaFormatada = (dataEntrada.getUTCDate()) + "-" + (dataEntrada.getMonth() + 1) + "-" + dataEntrada.getFullYear();
+    const dataEntradaFormatada = formatarData(remedio.dataEntrada);
 
     return (
         <>
@@ -78,7 +80,7 @@ export default function ModalExemplo({ remedio }: { remedio: any }) {
                             </Col>
 
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Validade"} data={remedio.validadeFormatada} controlId={"exibirValidade"} />
+                                <ExibirInputSimples label={"Validade"} data={formatarData(remedio.validade)} controlId={"exibirValidade"} />
                             </Col>
                         </Row>
 

@@ -12,11 +12,12 @@ import { serverFunctions } from '../../../../utils/serverFunctions';
 import InputText from '../../../components/InputText';
 import InputDate from '../../../components/InputDate';
 import InputSelect from '../../../components/InputSelect';
-
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 import React, { useState, useEffect } from 'react';
 
-export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { remedio: any, listaDD: string[][] }) {
+
+export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { remedio: MedicamentoEspecifico, listaDD: string[][] }) {
 
     // CRIAR OS USESTATE
     const [lista, setLista] = useState([[]]);
@@ -47,7 +48,8 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
         setMotivoDoacao(remedio.motivoDoacao);
         setDataEntrada(remedio.dataEntrada);
 
-        setShow(false)
+        setShow(false);
+        setLoading(false);
     };
     const handleShow = () => setShow(true);
 
@@ -71,28 +73,29 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
     }, []);
 
     useEffect(() => {
-        var medicamento = {
-            'chaveMedicamentoGeral': remedio.chaveMedicamentoGeral,
-            'chaveMedicamentoEspecifica': remedio.chaveMedicamentoEspecifica,
-            lote,
-            dosagem,
-            validade,
-            quantidade,
-            origem,
-            tipo,
-            fabricante,
-            motivoDoacao,
-            dataEntrada,
-            'chaveGeral': remedio.chaveGeral
-        }
+        
+        const dadosMedicamentoEspecifico = new MedicamentoEspecifico(remedio.chaveMedicamentoGeral, remedio.chaveMedicamentoEspecifico, lote, dosagem, validade, quantidade, origem, tipo, fabricante, motivoDoacao, dataEntrada, remedio.chaveGeral);
 
-        console.log("Antes: ", medicamento)
+        // var medicamento = {
+        //     'chaveMedicamentoGeral': remedio.chaveMedicamentoGeral,
+        //     'chaveMedicamentoEspecifica': remedio.chaveMedicamentoEspecifico,
+        //     lote,
+        //     dosagem,
+        //     validade,
+        //     quantidade,
+        //     origem,
+        //     tipo,
+        //     fabricante,
+        //     motivoDoacao,
+        //     dataEntrada,
+        //     'chaveGeral': remedio.chaveGeral
+        // }
 
         if (isLoading) {
 
-            serverFunctions.updateRowEstoque(medicamento).then((sucesso) => {
+            serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {
                 console.log("Sucesso: " + sucesso);
-                console.log("Medicamento: ", medicamento);
+                console.log("Medicamento: ", dadosMedicamentoEspecifico);
                 if (sucesso) {
 
                     // var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamento);

@@ -16,10 +16,11 @@ import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { serverFunctions } from '../../../utils/serverFunctions';
-import MedicamentoGeral from '../../../../models/MedicamentoGeral';
+import MedicamentoEspecifico from '../../../../models/MedicamentoEspecifico';
 import OperacoesEstoque from './OperacoesEstoque';
 import '../style.css';
 import ModalEstoqueCadastrar from './ModalEstoqueCadastrar';
+import formatarData from '../../Functions/formatarData';
 
 export default function TabelaEstoque() {
     // Carrega a informação da página anterior
@@ -34,7 +35,8 @@ export default function TabelaEstoque() {
 
     const [busca, setBusca] = useState('');
 
-    // Server:
+    // Server: 
+    //TO QUERENDO TIPAR ESSE DATA AQUI PRA TUDO FAZER SENTIDO
     const [data, setData] = useState(null);
     const [infoDD, setInfoDD] = useState(null)
     const [doadores, setDoadores] = useState(null);
@@ -99,19 +101,17 @@ export default function TabelaEstoque() {
                             }).map((medicamento, index) =>
                                 <tr key={index}>
                                     <td>{medicamento.lote}</td>
-                                    <td>{medicamento.validadeFormatada}</td>
+                                    <td>{formatarData(medicamento.validade)}</td>
                                     <td>{medicamento.dosagem}</td>
                                     <td>{medicamento.quantidade}</td>
                                     <td>
                                         <OperacoesEstoque remedio={medicamento} listaDD={infoDD} doadores={doadores} data={data} setData={setData} index={index} />
                                     </td>
-                                </tr>
-                            ) : ''}
+                                </tr>) : ''}
                         </>
                     </tbody>
                 </Table>
             )
-
         }
     }
 
@@ -128,9 +128,8 @@ export default function TabelaEstoque() {
                             </h6>
 
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item active style={{minWidth: '80vh'}} >
-                                <h6>{infoMedicamentoGeral.nome}, {infoMedicamentoGeral.principioAtivo}, {infoMedicamentoGeral.apresentacao}</h6>
-
+                        <Breadcrumb.Item active style={{ minWidth: '80vh' }} >
+                            <h6>{infoMedicamentoGeral.nome}, {infoMedicamentoGeral.principioAtivo}, {infoMedicamentoGeral.apresentacao}</h6>
                         </Breadcrumb.Item>
                     </Breadcrumb>
 
@@ -141,7 +140,7 @@ export default function TabelaEstoque() {
                             <InputGroup className='buscar'>
                                 <Form.Control
                                     placeholder={"Busque pelo lote ou dosagem"}
-                                    aria-label={"Nome do medicamento"}
+                                    aria-label={"lote ou dosagem"}
                                     aria-describedby="basic-addon2"
                                     value={busca}
                                     onChange={(ev) => setBusca(ev.target.value)}
@@ -152,7 +151,6 @@ export default function TabelaEstoque() {
                             </InputGroup>
 
                             <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} />
-
 
                         </Container>
                     </Navbar>

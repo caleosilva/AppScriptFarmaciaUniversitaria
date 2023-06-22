@@ -3,10 +3,10 @@ import React from 'react';
 
 
 export default function InputDate ({label, controlId, name, data, setData}: 
-    {label: string, controlId: string, name: string, data: string, setData: Function})  {
+    {label: string, controlId: string, name: string, data: Date, setData: Function})  {
 
-    var dataObj= new Date(data);
-    var dataFormatada = dataObj.toISOString().split('T')[0];
+    // var dataObj= new Date(data);
+    var dataFormatada = data.toISOString().split('T')[0];
 
     
 

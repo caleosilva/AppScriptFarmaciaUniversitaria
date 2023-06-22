@@ -9,16 +9,14 @@ import { Form } from 'react-bootstrap';
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-import MedicamentoGeral from '../../../../../models/MedicamentoGeral';
-import ErroMedicamentoGeralExistente from '../../../../../erros/ErroMedicamentoGeralExistente';
-
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
 
 
-export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoGeral>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
+export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoEspecifico>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
 
     // Controle ao clicar em cadastrar
     const handleClick = () => setLoading(true);
@@ -42,7 +40,6 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
     function orderData(medicamentoEspecifico){
         const novoArray = [...data, medicamentoEspecifico];
-        // console.log("Data antes: ", novoArray)
 
         novoArray.sort((a, b) => {
             const chaveA = a.chaveGeral.replace(/#/g, "");
@@ -50,14 +47,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
             return chaveA.localeCompare(chaveB);
         });
-
-        // novoArray.sort((a, b) => {
-        //     console.log(`${b.chaveGeral} = ${a.chaveGeral}`)
-        //     return b.chaveGeral.localeCompare(a.chaveGeral)
-        // });
-
         setData(novoArray);
-        // console.log("Data depois: ", novoArray)
     }
 
     // Cuida de abrir e fechar o modal:
@@ -89,42 +79,44 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     // Realiza o cadastro
     useEffect(() => {
 
-
         var dataValidade = new Date(validade);
         var validadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
 
         var dataHoje = new Date();
         var dataHojeFormatada = (dataHoje.getUTCDate()) + "-" + (dataHoje.getMonth() + 1) + "-" + dataHoje.getFullYear();
 
-        var chaveMedicamentoEspecifica = (lote + '#' + dosagem + '#' + validadeFormatada).toString().toLowerCase().replace(/\s+/g, '');
+        var chaveMedicamentoEspecifico = (lote + '#' + dosagem + '#' + validadeFormatada).toString().toLowerCase().replace(/\s+/g, '');
 
+        var chaveGeral = chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifico;
+
+        const dadosMedicamentoEspecifico = new MedicamentoEspecifico(chaveMedicamentoGeral, chaveMedicamentoEspecifico, lote, dosagem, dataValidade, parseInt(quantidade), origem, tipo, fabricante, motivoDoacao, dataHoje, chaveGeral);
+        
         // Cria um objeto com os dados do medicamento
-        const medicamentoEspecifico = {
-            chaveMedicamentoGeral,
-            chaveMedicamentoEspecifica,
-            lote,
-            dosagem,
-            validadeFormatada,
-            quantidade,
-            origem,
-            tipo,
-            fabricante,
-            motivoDoacao,
-            dataHojeFormatada,
-            'chaveGeral': chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifica
-        }
+        // const medicamentoEspecifico = {
+        //     chaveMedicamentoGeral,
+        //     chaveMedicamentoEspecifico,
+        //     lote,
+        //     dosagem,
+        //     validadeFormatada,
+        //     quantidade,
+        //     origem,
+        //     tipo,
+        //     fabricante,
+        //     motivoDoacao,
+        //     dataHojeFormatada,
+        //     'chaveGeral': chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifico
+        // }
 
 
         if (isLoading) {
-            serverFunctions.appendRowMedicamentoEspecifico(medicamentoEspecifico).then((sucesso) => {
+            serverFunctions.appendRowMedicamentoEspecifico(dadosMedicamentoEspecifico).then((sucesso) => {
                 console.log("Sucesso: " + sucesso)
 
                 if (sucesso) {
-                    console.log("Sucesso real: " + sucesso);
 
                     // Atualiza a tabela:
-                    // setData([...data, medicamentoEspecifico]);
-                    orderData(medicamentoEspecifico);
+                    // setData([...data, dadosMedicamentoEspecifico]);
+                    orderData(dadosMedicamentoEspecifico);
 
                     // Limpa os formulários
                     setLote('');
@@ -146,8 +138,6 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                 }
             }).catch((e) => console.log(e.stack));
         }
-
-        console.log("Final: ", data)
 
     }, [isLoading]);
 

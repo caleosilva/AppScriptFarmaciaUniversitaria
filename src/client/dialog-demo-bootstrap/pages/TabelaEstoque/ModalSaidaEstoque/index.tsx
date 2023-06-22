@@ -8,13 +8,15 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
 
 import React, { useState, useEffect } from 'react';
+
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 
-export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: { remedio: any, listaDD: string[][], data: Array<any>, setData: Function }) {
+export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: { remedio: MedicamentoEspecifico, listaDD: string[][], data: Array<MedicamentoEspecifico>, setData: Function }) {
 
     const [quantidade, setQuantidade] = useState('');
     const [paciente, setPaciente] = useState('');
@@ -66,16 +68,12 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
     }, [quantidade, opcaoSaida, paciente]);
 
     useEffect(() => {
-        // Cria o objeto o
-
         if (isLoading) {
 
             serverFunctions.atualizarQuantidadeEstoque(remedio, quantidade, false).then((sucesso) => {
-                console.log("Sucesso add: " + sucesso)
-
                 if (sucesso) {
                     // Atualiza a tabela:
-                    remedio.quantidade = parseInt(remedio.quantidade) - parseInt(quantidade);
+                    remedio.quantidade = remedio.quantidade - parseInt(quantidade);
                     setData([...data]);
 
                     setLoading(false);
@@ -84,7 +82,6 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                 } else {
                     setLoading(false);
                     setMensagem(true);
-                    console.log("Não foi possível adicionar")
                 }
             }).catch((e) => console.log(e.stack));
 

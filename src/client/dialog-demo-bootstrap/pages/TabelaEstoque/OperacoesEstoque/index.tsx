@@ -1,14 +1,15 @@
 import React from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Button from 'react-bootstrap/Button';
+
 import ModalEntradaEstoque from '../ModalEntradaEstoque';
 import ModalSaidaEstoque from '../ModalSaidaEstoque';
 import ModalVerMaisEstoque from '../ModalVerMaisEstoque';
 import ModalAtualizarInformacoesEstoque from '../ModalAtualizarInformacoesEstoque';
 import ModalExcluir from '../ModalExcluir';
+import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 
-export default function OperacoesEstoque({ remedio, listaDD, doadores, data, setData, index}: { remedio: any, listaDD: string[][], doadores: [{}], data: Array<any>, setData: Function, index: number }){
+export default function OperacoesEstoque({ remedio, listaDD, doadores, data, setData, index}: { remedio: MedicamentoEspecifico, listaDD: string[][], doadores: [{}], data: Array<MedicamentoEspecifico>, setData: Function, index: number }){
 
     return (
         <ButtonGroup aria-label="Basic example">
