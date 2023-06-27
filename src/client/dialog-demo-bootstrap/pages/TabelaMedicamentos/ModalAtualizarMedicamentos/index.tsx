@@ -25,16 +25,20 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
     const [lista, setLista] = useState([[]]);
 
-    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastro); //--------------DATA
+    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastro);
     const [nome, setNome] = useState(remedio.nome);
     const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
-    const [classe, setClasse] = useState(remedio.classe); //--------------SELECT
-    const [tarja, setTarja] = useState(remedio.tarja); //-------------------SELECT
-    const [apresentacao, setApresentacao] = useState(remedio.apresentacao); //-----SELECT
+    const [classe, setClasse] = useState(remedio.classe);
+    const [tarja, setTarja] = useState(remedio.tarja);
+    const [apresentacao, setApresentacao] = useState(remedio.apresentacao);
+
+    const [alterado, setAlterado] = useState(false);
 
     const validadeMaisProxima = remedio.validadeMaisProxima;
     const quantidadeTotal = remedio.quantidadeTotal;
     const chaveGeral = remedio.chaveGeral;
+
+    console.log("Alterado: ", alterado)
 
 
     const [show, setShow] = useState(false);
@@ -47,6 +51,9 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
         setApresentacao(remedio.apresentacao);
 
         setShow(false);
+        setMensagem(false);
+        setAlterado(false);
+
     };
 
     const handleShow = () => {
@@ -56,7 +63,9 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
         setTarja(remedio.tarja);
         setApresentacao(remedio.apresentacao);
 
-        setShow(true)
+        setShow(true);
+        setAlterado(false);
+
     };
 
     // Controle ao clicar em atualizar
@@ -73,35 +82,47 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
         } else {
             setIsFormValid(false);
         }
+
+        setAlterado(true);
+
     }, [classe, tarja, apresentacao, nome, principioAtivo]);
 
     useEffect(() => {
         // Cria um objeto com os dados atualizados do medicamento
-        var dataCadastroFormatada = formatarData(dataCadastro);
-
-        const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastroFormatada, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
 
 
+        if (!alterado) {
+            setLoading(false);
+            setMensagem(false);
+            handleClose();
+        } else {
+            var dataCadastroFormatada = formatarData(dataCadastro);
 
-        if (isLoading) {
+            const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastroFormatada, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
 
-            serverFunctions.updateRowMedicamentos(medicamentoGeral).then((sucesso) => {
-                if (sucesso) {
-                    var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamentoGeral);
+            if (isLoading) {
 
-                    data[index] = novosDados;
-                    setData([...data]);
+                serverFunctions.updateRowMedicamentos(medicamentoGeral).then((sucesso) => {
+                    if (sucesso) {
+                        var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamentoGeral);
 
-                    setMensagem(false);
-                    setLoading(false);
-                    handleClose();
-                } else {
-                    setMensagem(true);
-                    setLoading(false);
-                }
-            })
+                        data[index] = novosDados;
+                        setData([...data]);
 
+                        setMensagem(false);
+                        setLoading(false);
+                        handleClose();
+                        setAlterado(false);
+
+                    } else {
+                        setMensagem(true);
+                        setLoading(false);
+                    }
+                })
+
+            }
         }
+
     }, [isLoading]);
 
     const renderTooltip = (props) => (
@@ -109,6 +130,10 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
             Atualizar informações
         </Tooltip>
     )
+
+    // useEffect(() => {
+    //     console.log("Alterou aqui hein")
+    // }, [nome, principioAtivo, classe, tarja, apresentacao]);
 
 
     useEffect(() => {
