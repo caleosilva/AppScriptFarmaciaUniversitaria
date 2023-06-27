@@ -25,18 +25,24 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
     const [lote, setLote] = useState(remedio.lote);
     const [dosagem, setDosagem] = useState(remedio.dosagem);
     const [validade, setValidade] = useState(remedio.validade);
-    const [quantidade, setQuantidade] = useState(remedio.quantidade);
     const [origem, setOrigem] = useState(remedio.origem);
     const [tipo, setTipo] = useState(remedio.tipo);
-
     const [fabricante, setFabricante] = useState(remedio.fabricante);
     const [motivoDoacao, setMotivoDoacao] = useState(remedio.motivoDoacao);
-    const [dataEntrada, setDataEntrada] = useState(remedio.dataEntrada);
 
+    // const [dataEntrada, setDataEntrada] = useState(remedio.dataEntrada);
+    // const [quantidade, setQuantidade] = useState(remedio.quantidade);
+
+    const dataEntrada = remedio.dataEntrada;
+    const quantidade = remedio.quantidade;
+
+    const dateValue = Date.parse(validade.toString());
+    const dateObject = new Date(dateValue);
 
     const [show, setShow] = useState(false);
     const [mensagem, setMensagem] = useState(false);
 
+    
 
     const handleClose = () => {
         setLote(remedio.lote);
@@ -46,7 +52,7 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
         setTipo(remedio.tipo);
         setFabricante(remedio.fabricante);
         setMotivoDoacao(remedio.motivoDoacao);
-        setDataEntrada(remedio.dataEntrada);
+        // setDataEntrada(remedio.dataEntrada);
 
         setShow(false);
         setLoading(false);
@@ -73,33 +79,15 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
     }, []);
 
     useEffect(() => {
-        
+
         const dadosMedicamentoEspecifico = new MedicamentoEspecifico(remedio.chaveMedicamentoGeral, remedio.chaveMedicamentoEspecifico, lote, dosagem, validade, quantidade, origem, tipo, fabricante, motivoDoacao, dataEntrada, remedio.chaveGeral);
 
-        // var medicamento = {
-        //     'chaveMedicamentoGeral': remedio.chaveMedicamentoGeral,
-        //     'chaveMedicamentoEspecifica': remedio.chaveMedicamentoEspecifico,
-        //     lote,
-        //     dosagem,
-        //     validade,
-        //     quantidade,
-        //     origem,
-        //     tipo,
-        //     fabricante,
-        //     motivoDoacao,
-        //     dataEntrada,
-        //     'chaveGeral': remedio.chaveGeral
-        // }
-
         if (isLoading) {
-
+            
             serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {
                 console.log("Sucesso: " + sucesso);
                 console.log("Medicamento: ", dadosMedicamentoEspecifico);
                 if (sucesso) {
-
-                    // var novosDados = gerarObjetoEstiloMedicamentoGeral(medicamento);
-                    // console.log("Novos dados: ", novosDados);
 
                     // data[index] = novosDados;
                     // setData([...data]);
@@ -171,7 +159,7 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
                             </Col>
 
                             <Col sm={6}>
-                                <InputDate label={"Data de validade"} controlId={"inputDataValidade"} name={"inputDataValidade"} data={validade} setData={setValidade} />
+                                <InputDate label={"Data de validade"} controlId={"inputDataValidade"} name={"inputDataValidade"} data={dateObject} setData={setValidade} />
                             </Col>
                         </Row>
 
@@ -193,23 +181,23 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
 
                             </Col>
 
-                            <Col sm={6}>
+                            {/* <Col sm={6}>
                                 <InputDate label={"Data de entrada"} controlId={"inputDataEntrada"} name={"inputDataEntrada"} data={dataEntrada} setData={setDataEntrada} />
-                            </Col>
+                            </Col> */}
                         </Row>
 
                         <Row className='mb-3 mt-3'>
-                                {mensagem &&
-                                    <Col>
-                                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
-                                            <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
-                                            <p>
-                                                Já existe um medicamento cadastrado com esse lote, dosagem e validade.
-                                            </p>
-                                        </Alert>
-                                    </Col>
-                                }
-                            </Row>
+                            {mensagem &&
+                                <Col>
+                                    <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                                        <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
+                                        <p>
+                                            Já existe um medicamento cadastrado com esse lote, dosagem e validade.
+                                        </p>
+                                    </Alert>
+                                </Col>
+                            }
+                        </Row>
                     </Container>
 
                 </Modal.Body>

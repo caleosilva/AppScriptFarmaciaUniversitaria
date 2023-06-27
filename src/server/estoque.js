@@ -57,6 +57,25 @@ const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
     return false;
 }
 
+const queryValidadeMedicamentoEspecifico = (chaveDeBusca) => {
+    const sql = "select E where A = '" + chaveDeBusca + "'";
+    const dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql);
+
+    if (dados[0][0] == "#N/A") {
+        return false;
+    } else {
+
+        var listaValidade = [];
+
+        for (let i = 0; i < dados.length; i++) {
+            let validadeFormatada = formatarData(dados[i])
+            listaValidade.push(validadeFormatada);
+        }
+
+        return listaValidade;
+    }
+}
+
 export const queryMedicamentoEspecifico = (chaveDeBusca) => {
     var sql = "select * where B = '" + chaveDeBusca + "'";
     var dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql)
@@ -271,6 +290,8 @@ export const updateRowEstoque = (medicamento) => {
         // Acha a linha que os dados originais estão:
         var dadosEditar = buscaBinariaSimples('MedicamentoEspecifico', chaveGeralOriginal, 12);
 
+        return JSON.stringify(dadosEditar);
+
         // return JSON.stringify(dadosEditar);
 
         if (dadosEditar.linha) {
@@ -278,8 +299,7 @@ export const updateRowEstoque = (medicamento) => {
             ws.getRange('A' + dadosEditar.linha + ':L' + dadosEditar.linha).setValues([novosDados]);
             ordenarPlanilha('MedicamentoEspecifico', 12);
 
-            // AINDA É NECESSÁRIO EDITAR NAS OUTRAS TABELAS CASO NECESSÁRIO
-            return JSON.stringify(dadosEditar);
+            // return JSON.stringify(dadosEditar); // COMENTEI
         }
 
     }
@@ -351,6 +371,11 @@ export const atualizarQuantidadeEstoque = (medicamento, quantidadeInput, adicion
     return false;
 }
 
-export const definirDataMaisRecente = (medicamento) => {
-    return false;
+export const definirDataMaisRecente = (medicamentoEspecifico) => {
+
+    const listaValidade = queryValidadeMedicamentoEspecifico(medicamentoEspecifico.chaveMedicamentoGeral);
+
+    
+
+
 }
