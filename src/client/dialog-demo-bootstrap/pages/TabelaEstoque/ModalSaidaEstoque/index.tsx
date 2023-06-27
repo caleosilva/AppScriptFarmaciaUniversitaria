@@ -19,7 +19,7 @@ import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: { remedio: MedicamentoEspecifico, listaDD: string[][], data: Array<MedicamentoEspecifico>, setData: Function }) {
 
     const [quantidade, setQuantidade] = useState('');
-    const [paciente, setPaciente] = useState('');
+    // const [paciente, setPaciente] = useState('');
 
     const [opcaoSaida, setOpcaoSaida] = useState('');
     const [lista, setLista] = useState([[]]);
@@ -29,7 +29,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
-        setPaciente('');
+        // setPaciente('');
         setOpcaoSaida('');
         setQuantidade('');
         setShow(false);
@@ -46,26 +46,26 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
         </Tooltip>
     );
 
-    function renderPaciente() {
-        if (opcaoSaida === 'Paciente') {
-            return (
-                <Col SM={8}>
-                    <InputText type={"text"} required={true} label={"Paciente"} placeholder={"Informe o nome, CPF ou CNPJ e selecione o paciente"} controlId={"inputPaciente"} name={"paciente"} data={paciente} setData={setPaciente} />
-                </Col>
-            )
-        }
-    }
+    // function renderPaciente() {
+    //     if (opcaoSaida === 'Paciente') {
+    //         return (
+    //             <Col SM={8}>
+    //                 <InputText type={"text"} required={true} label={"Paciente"} placeholder={"Informe o nome, CPF ou CNPJ e selecione o paciente"} controlId={"inputPaciente"} name={"paciente"} data={paciente} setData={setPaciente} />
+    //             </Col>
+    //         )
+    //     }
+    // }
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (quantidade != '' && opcaoSaida === "Paciente" && paciente != '') {
+        if (quantidade != '' && opcaoSaida === "Paciente") {
             setIsFormValid(true);
         } else if (quantidade != '' && opcaoSaida != 'Paciente' && opcaoSaida != '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
-    }, [quantidade, opcaoSaida, paciente]);
+    }, [quantidade, opcaoSaida]);
 
     useEffect(() => {
         if (isLoading) {
@@ -124,26 +124,26 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                 <Modal.Body>
                     <Container>
 
-                        <Row>
-                            <Col sm={5}>
+                        <Row  className='d-flex justify-content-center'>
+                            <Col sm={6}>
                                 <Alert key="warning" variant="warning">
                                     <p>Em estoque: <strong>{remedio.quantidade}</strong></p>
                                 </Alert>
                             </Col>
                         </Row>
 
-                        <Row>
-                            <Col sm={5}>
+                        <Row  className='d-flex justify-content-center'>
+                            <Col sm={6}>
                                 <InputPositiveNumber required={true} label={"Quantidade a ser retirada"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
                             </Col>
                         </Row>
 
-                        <Row className='mb-3'>
-                            <Col sm={5}>
+                        <Row className='mb-3 d-flex justify-content-center'>
+                            <Col sm={6}>
                                 <InputSelect required={true} label={"Opção de saída"} name={"opcSaida"} data={opcaoSaida} setData={setOpcaoSaida} lista={lista ? lista[11] : []} />
                             </Col>
 
-                            {renderPaciente()}
+                            {/* {renderPaciente()} */}
                         </Row>
 
                         <Row className='mb-3 mt-2'>

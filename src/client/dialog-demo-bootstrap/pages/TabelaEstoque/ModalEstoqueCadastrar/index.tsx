@@ -14,6 +14,7 @@ import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
+import { object } from 'prop-types';
 
 
 export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoEspecifico>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
@@ -83,7 +84,6 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
         var validadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
 
         var dataHoje = new Date();
-        var dataHojeFormatada = (dataHoje.getUTCDate()) + "-" + (dataHoje.getMonth() + 1) + "-" + dataHoje.getFullYear();
 
         var chaveMedicamentoEspecifico = (lote + '#' + dosagem + '#' + validadeFormatada).toString().toLowerCase().replace(/\s+/g, '');
 
@@ -169,13 +169,12 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                 <Modal.Body>
                     <Form>
                         <Container>
-                            <Row>
+                            {/* <Row>
                                 <Col>
                                     <InputText type={"text"} required={true} label={"Doador"} placeholder={"Informe o nome, CPF ou CNPJ e selecione um doador"} controlId={"inputDoador"} name={"doador"} data={dosagem} setData={setDosagem} />
                                 </Col>
                             </Row>
-
-                            <hr/>
+                            <hr/> */}
 
                             <Row>
                                 <Col>
