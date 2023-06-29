@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
 
 import NavBarFU from './NavBarFu';
-import TabelaMedicamentos from '../pages/TabelaMedicamentos';
 import Home from '../pages/Home';
-import React, { useEffect } from 'react';
 import TabelaEstoque from '../pages/TabelaEstoque';
-
+import TabelaDoadores from '../pages/TabelaDoadores';
+import TabelaMedicamentos from '../pages/TabelaMedicamentos';
 
 
 export default function AppRouter() {
@@ -18,6 +18,8 @@ export default function AppRouter() {
                     <Route path='/*' element={<Home />}/>
                     <Route path='/medicamentos' element={<TabelaMedicamentos />}/>
                     <Route path='/estoque' element={<TabelaEstoque/>}/>
+                    <Route path='/doadores' element={<TabelaDoadores/>}/>
+
                 </Routes>
             </Router>
         </main>

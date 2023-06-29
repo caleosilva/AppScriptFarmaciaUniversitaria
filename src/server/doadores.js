@@ -13,8 +13,6 @@ export const  getDoadores = () => {
     }
 
     for (let i = 0; i < data.length; i++) {
-        var cnpj = data[i][8] ? data[i][8] : 'null';
-        var cpf = data[i][9] ? data[i][9] : 'null';
         var info = {
             'chaveDoador': data[i][0],
             'nome': data[i][1],
@@ -24,8 +22,8 @@ export const  getDoadores = () => {
             'endereco': data[i][5],
             'numero': data[i][6],
             'comoSoube': data[i][7],
-            cnpj,
-            cpf,
+            'cnpj': data[i][8],
+            'cpf': data[i][9],
             'dataNascimento': data[i][10],
             'sexo': data[i][11],
             'estadoCivil': data[i][12],
