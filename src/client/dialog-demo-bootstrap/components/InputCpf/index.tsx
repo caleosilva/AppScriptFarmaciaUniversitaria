@@ -4,21 +4,37 @@ import React from 'react';
 
 
 // value para defaultValue={value} retirado
-export default function InputCpf({label, placeholder, controlId, name, data, setData}:
-  {label: string, placeholder: string, controlId: string, name: string, data: string, setData: Function}) {
+export default function InputCpf({ label, placeholder, controlId, name, data, setData }:
+  { label: string, placeholder: string, controlId: string, name: string, data: string, setData: Function }) {
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+
+    // Deixa somente os números
+    const cpfLimpo = value.replace(/\D/g, '');
+
+    let cpfComMascara = '';
+    if (cpfLimpo.length <= 3) {
+      cpfComMascara = cpfLimpo;
+    } else if (cpfLimpo.length <= 6) {
+      cpfComMascara = `${cpfLimpo.slice(0, 3)}.${cpfLimpo.slice(3)}`;
+    } else if (cpfLimpo.length <= 9) {
+      cpfComMascara = `${cpfLimpo.slice(0, 3)}.${cpfLimpo.slice(3, 6)}.${cpfLimpo.slice(6)}`;
+    } else {
+      cpfComMascara = `${cpfLimpo.slice(0, 3)}.${cpfLimpo.slice(3, 6)}.${cpfLimpo.slice(6, 9)}-${cpfLimpo.slice(9, 11)}`;
+    }
+    setData(cpfComMascara);
+  }
 
   return (
     <Form.Group className="mb-3" controlId={controlId}>
       <Form.Label className='labelInputConfig'>{label}</Form.Label>
       <Form.Control
         type={'text'}
-        maxLength={14}
-        pattern={'d{3}\.\d{3}\.\d{3}-\d{2}'}
         placeholder={placeholder}
         name={name}
         value={data}
-        onChange={(e) => setData(e.target.value)} />
+        onChange={(e) => handleChange(e)} />
     </Form.Group>
-
   );
 }
