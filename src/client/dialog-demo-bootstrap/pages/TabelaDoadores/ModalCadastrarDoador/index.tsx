@@ -9,6 +9,7 @@ import { Form } from 'react-bootstrap';
 import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import InputCpf from '../../../components/InputCpf';
+import InputCnpj from '../../../components/InputCnpj';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 // import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 import Doador from '../../../../../models/Doador';
@@ -16,7 +17,7 @@ import Doador from '../../../../../models/Doador';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
-import { object } from 'prop-types';
+import { object, string } from 'prop-types';
 
 
 export default function ModalCadastarDoador({ data, setData, listaDD }: { data: Array<Doador>, setData: Function, listaDD: string[][] }) {
@@ -32,15 +33,6 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [lista, setLista] = useState([[]]);
 
     // Elementos do formulário:
-    const [lote, setLote] = useState('');
-    const [dosagem, setDosagem] = useState('');
-    const [validade, setValidade] = useState('');
-    const [quantidade, setQuantidade] = useState('');
-    const [origem, setOrigem] = useState('');
-    const [tipo, setTipo] = useState('');
-    const [fabricante, setFabricante] = useState('');
-    const [motivoDoacao, setMotivoDoacao] = useState('');
-    //------------------------------------------------------
     const [nome, setNome] = useState('');
     const [tipoDoador, setTipoDoador] = useState('');
     const [cidade, setCidade] = useState('');
@@ -53,6 +45,10 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [dataNascimento, setDataNascimento] = useState('');
     const [sexo, setSexo] = useState('');
     const [estadoCivil, setEstadoCivil] = useState('');
+
+    // var nascimento;
+    // var chaveDoador;
+
 
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
@@ -76,38 +72,95 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
     const [show, setShow] = useState(false);
 
-    // É necessário tipar com base no tipoDoador
+    function renderCamposCondicionais() {
+        if (tipoDoador === 'Pessoa física') {
+            return (
+                <>
+                    <Row>
+                        <Col sm={6}>
+                            <InputCpf label={"CPF"} placeholder={"XXX.XXX.XXX-XX"} controlId={"inputCpf"} name={"cpf"} data={cpf} setData={setCpf} />
+                        </Col>
+
+                        <Col sm={6}>
+                            <InputText type={"date"} required={true} label={"Data de nascimento"} placeholder={""} controlId={"inputNascimento"} name={"nascimento"} data={dataNascimento} setData={setDataNascimento} />
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col sm={6}>
+                            <InputSelect required={true} label={"Sexo"} name={"sexo"} data={sexo} setData={setSexo} lista={lista ? lista[7] : []} />
+                        </Col>
+
+                        <Col sm={6}>
+                            <InputSelect required={true} label={"Estado Civil"} name={"estadoCivil"} data={estadoCivil} setData={setEstadoCivil} lista={lista ? lista[8] : []} />
+                        </Col>
+                    </Row>
+
+                </>
+            )
+
+        } else if (tipoDoador === 'Pessoa jurídica') {
+            return (
+                <>
+                    <Row>
+                        <Col sm={6}>
+                            <InputCnpj label={"CNPJ"} placeholder={"XX.XXX.XXX/XXXX-XX"} controlId={"inputCnpj"} name={"cnpj"} data={cnpj} setData={setCnpj} />
+                        </Col>
+                    </Row>
+
+                </>
+            )
+        }
+
+    }
+
+
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (nome != '' && tipoDoador != '' && cidade != '' && bairro != '' && endereco != '' && numero != '' && cnpj != '' && cpf != '' && dataNascimento != '' && sexo != '' && estadoCivil != '') {
+
+        if (nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && tipoDoador === "Outro") {
             setIsFormValid(true);
+        
+        } else if ((nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cnpj.length === 18) && (tipoDoador === "Pessoa jurídica")) {
+            setIsFormValid(true);
+        
+        } else if ((nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cpf.length === 14 && dataNascimento !== '' && dataNascimento !== '-' && sexo !== '' && sexo !== '-' && estadoCivil !== '' && estadoCivil !== '-') && (tipoDoador === "Pessoa física")) {
+            setIsFormValid(true);
+        
         } else {
             setIsFormValid(false);
         }
-    }, [nome, tipoDoador, cidade, bairro, endereco, numero, cnpj, cpf, dataNascimento, sexo, estadoCivil]);
+    }, [nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, dataNascimento, sexo, estadoCivil]);
 
-    // Realiza o cadastro
+    // Realiza o cadastro //TO-DO
     useEffect(() => {
 
-        var nascimento = new Date(dataNascimento);
-        var nascimentoFormatada = (nascimento.getUTCDate()) + "-" + (nascimento.getMonth() + 1) + "-" + nascimento.getFullYear();
+        var nascimento;
+        if (typeof dataNascimento == 'string' && dataNascimento.length === 1){
+            nascimento = dataNascimento;
+        } else{
+            nascimento = new Date(dataNascimento);
+        }
 
-        var chaveDoador;
-
+        var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
             chaveDoador = cpf;
             setCnpj('-');
         } else if (tipoDoador === 'Pessoa jurídica') {
             chaveDoador = cnpj;
             setCpf('-');
-        } else {
-            setCnpj('');
-            setCpf('');
-            setDataNascimento('');
-            setSexo('');
-            setEstadoCivil('');
+            setDataNascimento('-');
+            setSexo('-');
+            setEstadoCivil('-');
+        } else if (tipoDoador === 'Outro') {
+            setCnpj('-');
+            setCpf('-');
+            setDataNascimento('-');
+            setSexo('-');
+            setEstadoCivil('-');
 
-            // qual será a chaveDoador?
+            // qual será a chaveDoador? um código aleatório [NO, em casa de ser um único evento], nome 
+            chaveDoador = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
 
         }
 
@@ -115,6 +168,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
 
         if (isLoading) {
+            console.log(dadosDoador);
+            setLoading(false);
             // serverFunctions.appendRowMedicamentoEspecifico(dadosMedicamentoEspecifico).then((sucesso) => {
             //     console.log("Sucesso: " + sucesso)
 
@@ -177,61 +232,50 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                         <Container>
 
                             <Row>
-                                <Col>
-                                    <InputCpf label={"Dosagem"} placeholder={"xxx.xxx.xxx-xx"} controlId={"inputDosagem"} name={"dosagem"} data={cpf} setData={setCpf} />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col>
-                                    <InputText type={"text"} required={true} label={"Dosagem"} placeholder={""} controlId={"inputDosagem"} name={"dosagem"} data={dosagem} setData={setDosagem} />
-                                </Col>
-                            </Row>
-
-                            <Row>
                                 <Col sm={6}>
-                                    <InputText type={"text"} required={true} label={"Lote"} placeholder={""} controlId={"inputLote"} name={"lote"} data={lote} setData={setLote} />
+                                    <InputText type={"text"} required={true} label={"Nome"} placeholder={""} controlId={"inputNome"} name={"nome"} data={nome} setData={setNome} />
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputText type={"date"} required={true} label={"Validade"} placeholder={""} controlId={"inputValidade"} name={"validade"} data={validade} setData={setValidade} />
+                                    <InputSelect required={true} label={"Tipo do doador"} name={"tipoDoador"} data={tipoDoador} setData={setTipoDoador} lista={lista ? lista[6] : []} />
                                 </Col>
                             </Row>
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999} />
+                                    <InputText type={"text"} required={true} label={"Cidade"} placeholder={""} controlId={"inputCidade"} name={"cidade"} data={cidade} setData={setCidade} />
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputText type={"text"} required={true} label={"Fabricante"} placeholder={""} controlId={"inputFabricante"} name={"fabricante"} data={fabricante} setData={setFabricante} />
+                                    <InputText type={"text"} required={true} label={"Bairro"} placeholder={""} controlId={"inputBairro"} name={"bairro"} data={bairro} setData={setBairro} />
                                 </Col>
                             </Row>
 
-                            <Row className='mb-3'>
+                            <Row>
+                                <Col sm={6}>
+                                    <InputText type={"text"} required={true} label={"Endereço"} placeholder={""} controlId={"inputEndereco"} name={"endereco"} data={endereco} setData={setEndereco} />
+                                </Col>
 
+                                <Col sm={6}>
+                                    <InputText type={"text"} required={true} label={"Número do endereço"} placeholder={""} controlId={"inputNumero"} name={"numero"} data={numero} setData={setNumero} />
+                                </Col>
+                            </Row>
+
+                            <Row>
                                 <Col>
-                                    <InputSelect required={true} label={"Origem"} name={"origem"} data={origem} setData={setOrigem} lista={lista ? lista[5] : []} />
+                                    <InputText type={"text"} required={true} label={"Como soube?"} placeholder={""} controlId={"inputDosagem"} name={"dosagem"} data={comoSoube} setData={setComoSoube} />
                                 </Col>
                             </Row>
 
-                            <Row className='mb-3'>
-                                <Col sm={6}>
-                                    <InputSelect required={true} label={"Tipo"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
-                                </Col>
+                            {renderCamposCondicionais()}
 
-                                <Col sm={6}>
-                                    <InputSelect required={true} label={"Motivo da doação"} name={"motivoDoacao"} data={motivoDoacao} setData={setMotivoDoacao} lista={lista ? lista[4] : []} />
-                                </Col>
-                            </Row>
-
-                            <Row className='mb-3 mt-2'>
+                            <Row className='mb-3 mt-2 mt-3'>
                                 {mensagem &&
                                     <Col>
                                         <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
                                             <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
                                             <p>
-                                                Já existe um medicamento cadastrado com a dosagem, lote e validade inserida.
+                                                Já existe um doador com o CPF ou CNPJ inserido.
                                             </p>
                                         </Alert>
                                     </Col>

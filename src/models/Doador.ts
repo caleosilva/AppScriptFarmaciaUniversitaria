@@ -9,11 +9,11 @@ export default class Doador{
     comoSoube: string;
     cnpj: string;
     cpf: string;
-    dataNascimento: Date;
+    dataNascimento: Date | string;
     sexo: string;
     estadoCivil: string;
 
-    constructor(chaveDoador: string, nome: string, tipoDoador: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, cnpj: string, cpf: string, dataNascimento: Date, sexo: string, estadoCivil: string){
+    constructor(chaveDoador: string, nome: string, tipoDoador: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, cnpj: string, cpf: string, dataNascimento: Date | string, sexo: string, estadoCivil: string){
 
         this.chaveDoador = chaveDoador;
         this.nome = nome;
@@ -29,4 +29,5 @@ export default class Doador{
         this.sexo = sexo;
         this.estadoCivil = estadoCivil;
     }
+
 }
