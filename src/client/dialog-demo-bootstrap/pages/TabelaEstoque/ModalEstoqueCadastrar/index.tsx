@@ -39,7 +39,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     const [fabricante, setFabricante] = useState('');
     const [motivoDoacao, setMotivoDoacao] = useState('');//-----------------SELECT
 
-    function orderData(medicamentoEspecifico){
+    function orderData(medicamentoEspecifico) {
         const novoArray = [...data, medicamentoEspecifico];
 
         novoArray.sort((a, b) => {
@@ -90,7 +90,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
         var chaveGeral = chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifico;
 
         const dadosMedicamentoEspecifico = new MedicamentoEspecifico(chaveMedicamentoGeral, chaveMedicamentoEspecifico, lote, dosagem, dataValidade, parseInt(quantidade), origem, tipo, fabricante, motivoDoacao, dataHoje, chaveGeral);
-        
+
         // Cria um objeto com os dados do medicamento
         // const medicamentoEspecifico = {
         //     chaveMedicamentoGeral,
@@ -194,7 +194,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
                             <Row>
                                 <Col sm={6}>
-                                    <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999}/>
+                                    <InputPositiveNumber required={true} label={"Quantidade"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={9999} />
                                 </Col>
 
                                 <Col sm={6}>
@@ -204,8 +204,8 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
                             <Row className='mb-3'>
 
-                                <Col>
-                                    <InputSelect required={true} label={"Origem"} name={"origem"} data={origem} setData={setOrigem} lista={lista ? lista[5] : []} />
+                                <Col >
+                                    <InputSelect required={true} label={"Motivo da doação"} name={"motivoDoacao"} data={motivoDoacao} setData={setMotivoDoacao} lista={lista ? lista[4] : []} />
                                 </Col>
                             </Row>
 
@@ -214,8 +214,10 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                                     <InputSelect required={true} label={"Tipo"} name={"tipo"} data={tipo} setData={setTipo} lista={lista ? lista[1] : []} />
                                 </Col>
 
+
+
                                 <Col sm={6}>
-                                    <InputSelect required={true} label={"Motivo da doação"} name={"motivoDoacao"} data={motivoDoacao} setData={setMotivoDoacao} lista={lista ? lista[4] : []} />
+                                    <InputSelect required={true} label={"Origem"} name={"origem"} data={origem} setData={setOrigem} lista={lista ? lista[5] : []} />
                                 </Col>
                             </Row>
 
