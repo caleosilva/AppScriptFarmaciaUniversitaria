@@ -7,13 +7,13 @@ export default class Doador{
     endereco: string;
     numero: string;
     comoSoube: string;
-    cnpj: number;
-    cpf: number;
+    cnpj: string;
+    cpf: string;
     dataNascimento: Date;
     sexo: string;
     estadoCivil: string;
 
-    constructor(chaveDoador: string, nome: string, tipoDoador: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, cnpj: number, cpf: number, dataNascimento: Date, sexo: string, estadoCivil: string){
+    constructor(chaveDoador: string, nome: string, tipoDoador: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, cnpj: string, cpf: string, dataNascimento: Date, sexo: string, estadoCivil: string){
 
         this.chaveDoador = chaveDoador;
         this.nome = nome;

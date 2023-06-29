@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { serverFunctions } from '../../../utils/serverFunctions';
 import '../style.css';
 import formatarData from '../../Functions/formatarData';
+import ModalCadastarDoador from './ModalCadastrarDoador';
 
 export default function TabelaEstoque() {
 
@@ -116,7 +117,7 @@ export default function TabelaEstoque() {
 
                             {/* <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} /> */}
 
-                            <Button> Cadastrar doador</Button>
+                            <ModalCadastarDoador data={data} setData={setData} listaDD={infoDD}/>
 
                         </Container>
                     </Navbar>
