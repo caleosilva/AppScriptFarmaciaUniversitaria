@@ -120,44 +120,66 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
         if (nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && tipoDoador === "Outro") {
             setIsFormValid(true);
-        
+
         } else if ((nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cnpj.length === 18) && (tipoDoador === "Pessoa jurídica")) {
             setIsFormValid(true);
-        
+
         } else if ((nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cpf.length === 14 && dataNascimento !== '' && dataNascimento !== '-' && sexo !== '' && sexo !== '-' && estadoCivil !== '' && estadoCivil !== '-') && (tipoDoador === "Pessoa física")) {
             setIsFormValid(true);
-        
+
         } else {
             setIsFormValid(false);
         }
     }, [nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, dataNascimento, sexo, estadoCivil]);
 
-    // Realiza o cadastro //TO-DO
     useEffect(() => {
-
-        var nascimento;
-        if (typeof dataNascimento == 'string' && dataNascimento.length === 1){
-            nascimento = dataNascimento;
-        } else{
-            nascimento = new Date(dataNascimento);
-        }
-
-        var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
-            chaveDoador = cpf;
             setCnpj('-');
+            console.log("- cnpj")
         } else if (tipoDoador === 'Pessoa jurídica') {
-            chaveDoador = cnpj;
             setCpf('-');
             setDataNascimento('-');
             setSexo('-');
             setEstadoCivil('-');
+            console.log("- nos 4")
         } else if (tipoDoador === 'Outro') {
             setCnpj('-');
             setCpf('-');
             setDataNascimento('-');
             setSexo('-');
             setEstadoCivil('-');
+            console.log("- nos 5")
+
+        }
+
+    }, [tipoDoador]);
+
+    // Realiza o cadastro //TO-DO
+    useEffect(() => {
+
+        var nascimento;
+        if (typeof dataNascimento == 'string' && dataNascimento.length === 1) {
+            nascimento = dataNascimento;
+        } else {
+            nascimento = new Date(dataNascimento);
+        }
+
+        var chaveDoador = '';
+        if (tipoDoador === 'Pessoa física') {
+            chaveDoador = cpf;
+            // setCnpj('-');
+        } else if (tipoDoador === 'Pessoa jurídica') {
+            chaveDoador = cnpj;
+            // setCpf('-');
+            // setDataNascimento('-');
+            // setSexo('-');
+            // setEstadoCivil('-');
+        } else if (tipoDoador === 'Outro') {
+            // setCnpj('-');
+            // setCpf('-');
+            // setDataNascimento('-');
+            // setSexo('-');
+            // setEstadoCivil('-');
 
             // qual será a chaveDoador? um código aleatório [NO, em casa de ser um único evento], nome 
             chaveDoador = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
