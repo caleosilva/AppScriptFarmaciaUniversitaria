@@ -26,6 +26,8 @@ export const getInformacoesSelect = () => {
     let opcaoEntradaMedicamento = []
     let opcaoSaidaMedicamento = []
 
+    let comoSoube = []
+
 
     for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].length; j++) {
@@ -53,9 +55,12 @@ export const getInformacoesSelect = () => {
                 opcaoEntradaMedicamento.push(data[i][j]);
             } else if (data[i][j].length > 0 && j == 11) {
                 opcaoSaidaMedicamento.push(data[i][j]);
+            } else if (data[i][j].length > 0 && j == 12) {
+                comoSoube.push(data[i][j]);
             }
         }
     }
-    informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDoacao, origemMedicamento, tipoDoador, sexo, estadoCivil, tipoPaciente, opcaoEntradaMedicamento, opcaoSaidaMedicamento)
+    informacoes.push(classes, tiposMedicamentos, tarja, apresentacao, motivoDoacao, origemMedicamento, tipoDoador, sexo, estadoCivil, tipoPaciente, opcaoEntradaMedicamento, opcaoSaidaMedicamento, comoSoube);
+
     return JSON.stringify(informacoes);
 }

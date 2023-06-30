@@ -11,13 +11,10 @@ import InputSelect from '../../../components/InputSelect';
 import InputCpf from '../../../components/InputCpf';
 import InputCnpj from '../../../components/InputCnpj';
 import { serverFunctions } from '../../../../utils/serverFunctions';
-// import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 import Doador from '../../../../../models/Doador';
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import InputPositiveNumber from '../../../components/InputPositiveNumber';
-import { object, string } from 'prop-types';
 
 
 export default function ModalCadastarDoador({ data, setData, listaDD }: { data: Array<Doador>, setData: Function, listaDD: string[][] }) {
@@ -45,10 +42,6 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [dataNascimento, setDataNascimento] = useState('');
     const [sexo, setSexo] = useState('');
     const [estadoCivil, setEstadoCivil] = useState('');
-
-    // var nascimento;
-    // var chaveDoador;
-
 
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
@@ -167,23 +160,10 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
         var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
             chaveDoador = cpf;
-            // setCnpj('-');
         } else if (tipoDoador === 'Pessoa jurídica') {
             chaveDoador = cnpj;
-            // setCpf('-');
-            // setDataNascimento('-');
-            // setSexo('-');
-            // setEstadoCivil('-');
         } else if (tipoDoador === 'Outro') {
-            // setCnpj('-');
-            // setCpf('-');
-            // setDataNascimento('-');
-            // setSexo('-');
-            // setEstadoCivil('-');
-
-            // qual será a chaveDoador? um código aleatório [NO, em casa de ser um único evento], nome 
             chaveDoador = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
-
         }
 
         const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
@@ -254,12 +234,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                         <Container>
 
                             <Row>
-                                <Col sm={6}>
+                                <Col>
                                     <InputText type={"text"} required={true} label={"Nome"} placeholder={""} controlId={"inputNome"} name={"nome"} data={nome} setData={setNome} />
-                                </Col>
-
-                                <Col sm={6}>
-                                    <InputSelect required={true} label={"Tipo do doador"} name={"tipoDoador"} data={tipoDoador} setData={setTipoDoador} lista={lista ? lista[6] : []} />
                                 </Col>
                             </Row>
 
@@ -284,8 +260,12 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                             </Row>
 
                             <Row>
-                                <Col>
-                                    <InputText type={"text"} required={true} label={"Como soube?"} placeholder={""} controlId={"inputDosagem"} name={"dosagem"} data={comoSoube} setData={setComoSoube} />
+                                <Col sm={6}>
+                                    <InputSelect required={true} label={"Como soube?"} name={"comoSoube"} data={comoSoube} setData={setComoSoube} lista={lista ? lista[12] : []} />
+                                </Col>
+
+                                <Col sm={6}>
+                                    <InputSelect required={true} label={"Tipo do doador"} name={"tipoDoador"} data={tipoDoador} setData={setTipoDoador} lista={lista ? lista[6] : []} />
                                 </Col>
                             </Row>
 
