@@ -60,7 +60,9 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
         setSexo('');
         setEstadoCivil('');
 
-        setShow(false)
+        setShow(false);
+        setMensagem(false);
+
     };
 
     const handleShow = () => setShow(true);
@@ -156,7 +158,6 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     useEffect(() => {
 
         var  nascimento = new Date(dataNascimento);
-        console.log(nascimento)
 
         var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
@@ -187,14 +188,11 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
         if (isLoading) {
             serverFunctions.appendRowDoadores(dados).then((sucesso) => {
-                console.log("Sucesso: " + sucesso)
-
                 if (sucesso) {
                     // Atualiza a tabela:
-                    // setData([...data, dados]);
-                    // orderData(dadosMedicamentoEspecifico);
+                    setData([...data, dados]);
 
-                    // Limpa os formulários
+                    // Limpa os formulários:
                     setNome('');
                     setTipoDoador('');
                     setCidade('');

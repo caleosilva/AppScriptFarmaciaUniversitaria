@@ -19,6 +19,7 @@ import { serverFunctions } from '../../../utils/serverFunctions';
 import '../style.css';
 import formatarData from '../../Functions/formatarData';
 import ModalCadastarDoador from './ModalCadastrarDoador';
+import OperacaoDoadores from './OperacaoDoadores';
 
 export default function TabelaEstoque() {
 
@@ -61,10 +62,10 @@ export default function TabelaEstoque() {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th style={{ width: '40%' }} >Nome</th>
+                            <th style={{ width: '50%' }} >Nome</th>
                             <th style={{ width: '20%' }} >Data de nascimento</th>
                             <th style={{ width: '20%' }} >CPF</th>
-                            <th style={{ width: '20%' }} >Operações</th>
+                            <th style={{ width: '10%' }} >Operações</th>
 
                         </tr>
                     </thead>
@@ -83,7 +84,7 @@ export default function TabelaEstoque() {
                                     <td>{formatarData(doador.dataNascimento)}</td>
                                     <td>{doador.cpf}</td>
                                     <td>
-                                        ver mais / editar / remover
+                                        <OperacaoDoadores doador={doador} listaDD={infoDD} data={data} setData={setData} index={index}/>
                                     </td>
                                 </tr>) : ''}
                         </>
