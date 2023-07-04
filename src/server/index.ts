@@ -38,7 +38,9 @@ import {
 
 // Import referente aos Doadores
 import {
-  getDoadores
+  getDoadores,
+  queryDoador,
+  appendRowDoadores
 } from './doadores'
 
 // Public functions must be exported as named exports
@@ -66,5 +68,7 @@ export {
   definirDataMaisRecente,
 
   //Doadores
-  getDoadores
+  getDoadores,
+  queryDoador,
+  appendRowDoadores
 };

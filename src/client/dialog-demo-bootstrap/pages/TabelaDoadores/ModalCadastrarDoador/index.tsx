@@ -43,6 +43,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [sexo, setSexo] = useState('');
     const [estadoCivil, setEstadoCivil] = useState('');
 
+    const dataNascimentoPadrao = '1900-01-01'
+
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
         setNome('');
@@ -128,21 +130,24 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     useEffect(() => {
         if (tipoDoador === 'Pessoa física') {
             setCnpj('-');
-            console.log("- cnpj")
+
+            setDataNascimento('');
+            setCpf('');
+            setSexo('');
+            setEstadoCivil('');
         } else if (tipoDoador === 'Pessoa jurídica') {
             setCpf('-');
-            setDataNascimento('-');
+            setDataNascimento(dataNascimentoPadrao);
             setSexo('-');
             setEstadoCivil('-');
-            console.log("- nos 4")
+
+            setCnpj('');
         } else if (tipoDoador === 'Outro') {
             setCnpj('-');
             setCpf('-');
-            setDataNascimento('-');
+            setDataNascimento(dataNascimentoPadrao);
             setSexo('-');
             setEstadoCivil('-');
-            console.log("- nos 5")
-
         }
 
     }, [tipoDoador]);
@@ -150,12 +155,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     // Realiza o cadastro //TO-DO
     useEffect(() => {
 
-        var nascimento;
-        if (typeof dataNascimento == 'string' && dataNascimento.length === 1) {
-            nascimento = dataNascimento;
-        } else {
-            nascimento = new Date(dataNascimento);
-        }
+        var  nascimento = new Date(dataNascimento);
+        console.log(nascimento)
 
         var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
@@ -166,40 +167,60 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             chaveDoador = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
         }
 
+        // constructor(chaveDoador: string, nome: string, tipoDoador: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, cnpj: string, cpf: string, dataNascimento: Date, sexo: string, estadoCivil: string
+
         const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
 
+        const dados = {
+            chaveDoador, 
+            nome, 
+            tipoDoador, 
+            cidade, 
+            bairro, 
+            endereco, 
+            numero, 
+            comoSoube, 
+            cnpj, 
+            cpf, 
+            dataNascimento,
+            sexo,
+            estadoCivil
+        }
+
+        console.log("No front: ", dados);
 
         if (isLoading) {
-            console.log(dadosDoador);
-            setLoading(false);
-            // serverFunctions.appendRowMedicamentoEspecifico(dadosMedicamentoEspecifico).then((sucesso) => {
-            //     console.log("Sucesso: " + sucesso)
+            serverFunctions.appendRowDoadores(dados).then((sucesso) => {
+                console.log("Sucesso: " + sucesso)
 
-            //     if (sucesso) {
+                if (sucesso) {
 
-            //         // Atualiza a tabela:
-            //         // setData([...data, dadosMedicamentoEspecifico]);
-            //         orderData(dadosMedicamentoEspecifico);
+                    // Atualiza a tabela:
+                    // setData([...data, dadosMedicamentoEspecifico]);
+                    // orderData(dadosMedicamentoEspecifico);
 
-            //         // Limpa os formulários
-            //         setLote('');
-            //         setDosagem('');
-            //         setValidade('');
-            //         setQuantidade('');
-            //         setOrigem('');
-            //         setTipo('');
-            //         setFabricante('');
-            //         setMotivoDoacao('');
+                    // Limpa os formulários
+                    setNome('');
+                    setTipoDoador('');
+                    setCidade('');
+                    setBairro('');
+                    setEndereco('');
+                    setNumero('');
+                    setComoSoube('');
+                    setCnpj('');
+                    setCpf('');
+                    setDataNascimento('');
+                    setSexo('');
+                    setEstadoCivil('');
 
-            //         setLoading(false);
-            //         setMensagem(false);
-            //         handleClose();
-            //     } else {
-            //         setLoading(false);
-            //         setMensagem(true);
-            //         console.log("Medicamento específico já existe na tabela")
-            //     }
-            // }).catch((e) => console.log(e.stack));
+                    setLoading(false);
+                    setMensagem(false);
+                    handleClose();
+                } else {
+                    setLoading(false);
+                    setMensagem(true);
+                }
+            }).catch((e) => console.log(e.stack));
         }
 
     }, [isLoading]);
@@ -212,7 +233,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     return (
         <>
             <Button variant="outline-secondary" onClick={handleShow}>
-                Cadastrar novo doador
+                Cadastrar doador
             </Button>
 
             <Modal
@@ -277,7 +298,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                                         <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
                                             <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
                                             <p>
-                                                Já existe um doador com o CPF ou CNPJ inserido.
+                                                Já existe um doador com o CPF, CNPJ ou Nome inserido.
                                             </p>
                                         </Alert>
                                     </Col>
