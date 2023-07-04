@@ -1,5 +1,7 @@
 export default function formatarData(data) {
-    const caracteres = [...data]
+
+    let textoData = data.toString();
+    const caracteres = [...textoData]
     const tamanho = caracteres.length;
 
     if (tamanho <= 10){

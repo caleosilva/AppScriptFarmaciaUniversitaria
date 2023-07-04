@@ -13,24 +13,6 @@ const formatarData = (data) => {
     } else {
         return novaDataFormatada;
     }
-
-    // const caracteres = [...data]
-    // const tamanho = caracteres.length;
-
-    // if (tamanho <= 10) {
-    //     return data
-    // } else {
-    //     var novaData = new Date(data);
-    //     var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
-
-    //     // Verifica se é o valor Default
-    //     if (novaDataFormatada === "01-01-1900") {
-    //         return "-";
-    //     } else {
-    //         return novaDataFormatada;
-    //     }
-
-    // }
 }
 
 const montarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
@@ -58,6 +40,34 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
 }
 
+const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomePlanilha);
+
+    var values = ws.getRange(2, colBusca, ws.getLastRow() - 1, 1).getValues();
+    var lowerBound = 0;
+    var upperBound = values.length - 1;
+
+    while (lowerBound <= upperBound) {
+        var middle = Math.floor((lowerBound + upperBound) / 2);
+        var value = values[middle][0];
+
+        if (value == valorBuscado) {
+            var linhaReal = middle + 2
+            var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+
+            return { linha: linhaReal, data: info }
+
+        } else if (value < valorBuscado) {
+            lowerBound = middle + 1;
+        } else {
+            upperBound = middle - 1;
+        }
+    }
+    return false;
+}
+
+// Tem que depurar para saber qual o erro
 export const queryDoador = (chaveDeBusca) => {
     var sql = "select * where A = '" + chaveDeBusca + "'";
     var dados = montarQuery('Doador', 'A', 'M', sql)
@@ -65,6 +75,7 @@ export const queryDoador = (chaveDeBusca) => {
     if (dados[0][0] === '#N/A') {
         return false;
     } else {
+        return dados;
         var informacoes = [];
         for (let i = 0; i < dados.length; i++) {
             var doador = {
@@ -124,8 +135,6 @@ export const getDoadores = () => {
 
 export const appendRowDoadores = (doador) => {
 
-    // return JSON.stringify(doador);
-
     //Abrindo a planilha:
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("Doador");
@@ -133,17 +142,11 @@ export const appendRowDoadores = (doador) => {
     // Verificando se o doador existe:
     var codigo = doador.chaveDoador;
 
-    // var doadorBuscado = queryDoador("9988");
+    var buscaPorDoador = buscaBinariaSimples("Doador", codigo, 1);
 
-    // let dataNascimento = formatarData(doador.dataNascimento);
-
-    // return JSON.stringify(dataNascimento);
-
-    if (queryDoador(codigo)) {
+    if (buscaPorDoador) {
         return false;
     } else {
-        // return JSON.stringify(doador);
-
         let dataNascimento = formatarData(doador.dataNascimento);
         ws.appendRow([
             doador.chaveDoador,

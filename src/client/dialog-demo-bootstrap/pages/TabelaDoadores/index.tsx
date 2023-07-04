@@ -63,7 +63,7 @@ export default function TabelaEstoque() {
                         <tr>
                             <th style={{ width: '40%' }} >Nome</th>
                             <th style={{ width: '20%' }} >Data de nascimento</th>
-                            <th style={{ width: '20%' }} >Sexo</th>
+                            <th style={{ width: '20%' }} >CPF</th>
                             <th style={{ width: '20%' }} >Operações</th>
 
                         </tr>
@@ -74,13 +74,14 @@ export default function TabelaEstoque() {
                                 return busca.toLowerCase() === ''
                                     ? item
                                     : item.nome.toLowerCase().includes(busca.toLowerCase()) ||
-                                    formatarData(item.dataNascimento).toLowerCase().includes(busca.toLowerCase())
+                                    formatarData(item.dataNascimento).toLowerCase().includes(busca.toLowerCase()) ||
+                                    item.cpf.toLowerCase().includes(busca.toLowerCase())
 
                             }).map((doador, index) =>
                                 <tr key={index}>
                                     <td>{doador.nome}</td>
                                     <td>{formatarData(doador.dataNascimento)}</td>
-                                    <td>{doador.sexo}</td>
+                                    <td>{doador.cpf}</td>
                                     <td>
                                         ver mais / editar / remover
                                     </td>
@@ -104,7 +105,7 @@ export default function TabelaEstoque() {
                             {/* para que esse buscar aqui? */}
                             <InputGroup className='buscar'>
                                 <Form.Control
-                                    placeholder={"Busque pelo Nome ou Data de Nascimento"}
+                                    placeholder={"Busque pelo nome, data de nascimento ou CPF"}
                                     aria-label={"nome ou nascimento"}
                                     aria-describedby="basic-addon2"
                                     value={busca}

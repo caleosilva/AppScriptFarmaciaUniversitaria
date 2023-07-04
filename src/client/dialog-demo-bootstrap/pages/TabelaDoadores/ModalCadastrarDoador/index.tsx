@@ -167,9 +167,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             chaveDoador = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
         }
 
-        // constructor(chaveDoador: string, nome: string, tipoDoador: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, cnpj: string, cpf: string, dataNascimento: Date, sexo: string, estadoCivil: string
-
-        const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
+        // const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
 
         const dados = {
             chaveDoador, 
@@ -187,16 +185,13 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             estadoCivil
         }
 
-        console.log("No front: ", dados);
-
         if (isLoading) {
             serverFunctions.appendRowDoadores(dados).then((sucesso) => {
                 console.log("Sucesso: " + sucesso)
 
                 if (sucesso) {
-
                     // Atualiza a tabela:
-                    // setData([...data, dadosMedicamentoEspecifico]);
+                    // setData([...data, dados]);
                     // orderData(dadosMedicamentoEspecifico);
 
                     // Limpa os formulários
