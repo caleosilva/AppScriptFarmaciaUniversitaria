@@ -41,7 +41,8 @@ import {
   getDoadores,
   queryDoador,
   appendRowDoadores,
-  removeRowDoador
+  removeRowDoador,
+  updateRowDoador
 } from './doadores'
 
 // Public functions must be exported as named exports
@@ -72,5 +73,6 @@ export {
   getDoadores,
   queryDoador,
   appendRowDoadores,
-  removeRowDoador
+  removeRowDoador,
+  updateRowDoador
 };

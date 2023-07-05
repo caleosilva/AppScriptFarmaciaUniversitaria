@@ -19,6 +19,7 @@ export default function ModalExcluirDoador({ doador, data, setData, index }: { d
 
     // CRIAR OS USESTATE
     const [mensagem, setMensagem] = useState(false);
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
@@ -54,7 +55,12 @@ export default function ModalExcluirDoador({ doador, data, setData, index }: { d
                     setLoading(false);
                     setMensagem(true);
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
 
         }
     }, [isLoading]);
@@ -187,6 +193,20 @@ export default function ModalExcluirDoador({ doador, data, setData, index }: { d
                         {renderInformacoesCondicionais()}
 
                         {renderAlertaErro()}
+
+                        <Row className='mb-3 mt-3'>
+                            {mensagemErroBack &&
+                                <Col>
+                                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                        <Alert.Heading>Erro!</Alert.Heading>
+                                        <p>
+                                            Não foi possível atualizar as informações, tente novamente mais tarde!
+                                        </p>
+                                    </Alert>
+                                </Col>
+                            }
+                        </Row>
+
 
 
                     </Container>

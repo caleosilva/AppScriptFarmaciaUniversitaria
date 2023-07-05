@@ -12,6 +12,8 @@ import InputCpf from '../../../components/InputCpf';
 import InputCnpj from '../../../components/InputCnpj';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import Doador from '../../../../../models/Doador';
+import gerarObjetoEstiloDoador from '../../../Functions/gerarObjetoEstiloDoador';
+
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -44,6 +46,9 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [estadoCivil, setEstadoCivil] = useState('');
 
     const dataNascimentoPadrao = '1900-01-01'
+
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
+
 
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
@@ -157,7 +162,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     // Realiza o cadastro //TO-DO
     useEffect(() => {
 
-        var  nascimento = new Date(dataNascimento);
+        var nascimento = new Date(dataNascimento);
 
         var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
@@ -171,16 +176,16 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
         // const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
 
         const dados = {
-            chaveDoador, 
-            nome, 
-            tipoDoador, 
-            cidade, 
-            bairro, 
-            endereco, 
-            numero, 
-            comoSoube, 
-            cnpj, 
-            cpf, 
+            chaveDoador,
+            nome,
+            tipoDoador,
+            cidade,
+            bairro,
+            endereco,
+            numero,
+            comoSoube,
+            cnpj,
+            cpf,
             dataNascimento,
             sexo,
             estadoCivil
@@ -190,7 +195,9 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             serverFunctions.appendRowDoadores(dados).then((sucesso) => {
                 if (sucesso) {
                     // Atualiza a tabela:
-                    setData([...data, dados]);
+                    var novosDados = gerarObjetoEstiloDoador(dados);
+
+                    setData([...data, novosDados]);
 
                     // Limpa os formulários:
                     setNome('');
@@ -213,7 +220,12 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                     setLoading(false);
                     setMensagem(true);
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
         }
 
     }, [isLoading]);
@@ -298,6 +310,18 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                                 }
                             </Row>
 
+                            <Row className='mb-3 mt-3'>
+                                {mensagemErroBack &&
+                                    <Col>
+                                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                            <Alert.Heading>Erro!</Alert.Heading>
+                                            <p>
+                                                Não foi possível cadastrar o doador, tente novamente mais tarde!
+                                            </p>
+                                        </Alert>
+                                    </Col>
+                                }
+                            </Row>
                         </Container>
 
                         <div className='mt-3 d-flex justify-content-around'>

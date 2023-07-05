@@ -38,8 +38,6 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
     const quantidadeTotal = remedio.quantidadeTotal;
     const chaveGeral = remedio.chaveGeral;
 
-    console.log("Alterado: ", alterado)
-
 
     const [show, setShow] = useState(false);
 

@@ -293,27 +293,4 @@ export const updateRowMedicamentos = (medicamento) => {
             return posicao;
         }
     }
-
-    // var novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
-
-    // var chaveGeralOriginal = medicamento.chaveGeral;
-
-    // // Busca binária e atualização:
-    // var posicao = buscaBinaria('Medicamentos', chaveGeralOriginal, 1, true)
-    // // Se achar o medicamento:
-    // if (posicao) {
-    //     // Atualiza na tabela principal
-    //     ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
-
-    //     // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
-    //     if (chaveGeralOriginal !== novaChaveGeral) {
-    //         // Atualização:
-
-    //         //Ordenação:
-    //         ordenarPlanilha('Medicamentos', 1)
-    //     }
-    //     return posicao;
-    // } else {
-    //     return false;
-    // }
 }

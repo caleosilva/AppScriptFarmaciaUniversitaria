@@ -2,6 +2,10 @@ const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 
 const formatarData = (data) => {
 
+    if (data === "-"){
+        return data;
+    }
+
     var novaData = new Date(data);
     var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
 
@@ -184,4 +188,44 @@ export const removeRowDoador = (doador) => {
         return true;
     }
     return false;
+}
+
+export const updateRowDoador = (doador) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("Doador");
+
+    // Formatanto a data e pegando novo código
+    var dataNascimentoFormatada = formatarData(doador.dataNascimento);
+
+    var novaChaveDoador;
+    if (doador.tipoDoador === "Outro"){
+        novaChaveDoador = doador.nome.replace(/\s/g, '').toLowerCase();
+    } else if (doador.tipoDoador === "Pessoa jurídica"){
+        novaChaveDoador = doador.cnpj;
+    } else if (doador.tipoDoador === "Pessoa física"){
+        novaChaveDoador = doador.cpf;        
+    }
+
+    // var novaChaveDoador = (doador.nome + '#' + doador.principioAtivo + '#' + doador.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
+
+    // Verifica se a nova chave (se for o caso) já existe:
+    const resultadoBusca = buscaBinariaSimples("Doador", novaChaveDoador, 1);
+    if (resultadoBusca) {
+        return false;
+    } else {
+        // Chave não for encontrada, é possível atualizar os dados:
+        var novosDados = [novaChaveDoador, doador.nome, doador.tipoDoador, doador.cidade, doador.bairro, doador.endereco, doador.numero, doador.comoSoube, doador.cnpj, doador.cpf, dataNascimentoFormatada, doador.sexo, doador.estadoCivil];
+
+        var chaveDoadorOriginal = doador.chaveDoador;
+
+        // Acha a linha que os dados originais estão:
+        var buscaChaveOriginal = buscaBinariaSimples('Doador', chaveDoadorOriginal, 1)
+        if (buscaChaveOriginal) {
+            // Atualiza e ordena a tabela Medicamentos
+            ws.getRange('A' + buscaChaveOriginal.linha + ':M' + buscaChaveOriginal.linha).setValues([novosDados]);
+            ordenarPlanilha('Doador', 1)
+
+            return true;
+        }
+    }
 }
