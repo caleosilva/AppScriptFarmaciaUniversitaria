@@ -71,7 +71,7 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
     const [isLoading, setLoading] = useState(false);
 
     const [mensagem, setMensagem] = useState(false);
-
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
@@ -116,7 +116,12 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
                         setMensagem(true);
                         setLoading(false);
                     }
-                })
+                }).catch(
+                    (e) => {
+                        console.log(e.stack);
+                        setMensagemErroBack(true);
+                        setLoading(false);
+                    });
 
             }
         }
@@ -128,11 +133,6 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
             Atualizar informações
         </Tooltip>
     )
-
-    // useEffect(() => {
-    //     console.log("Alterou aqui hein")
-    // }, [nome, principioAtivo, classe, tarja, apresentacao]);
-
 
     useEffect(() => {
         setLista(listaDrop)
@@ -204,6 +204,19 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
                                             <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
                                             <p>
                                                 Já existe um medicamento cadastrado com o nome e o princípio ativo inserido.
+                                            </p>
+                                        </Alert>
+                                    </Col>
+                                }
+                            </Row>
+
+                            <Row className='mb-3 mt-3'>
+                                {mensagemErroBack &&
+                                    <Col>
+                                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                            <Alert.Heading>Erro!</Alert.Heading>
+                                            <p>
+                                                Não foi possível atualizar as informações do medicamento, tente novamente mais tarde!
                                             </p>
                                         </Alert>
                                     </Col>

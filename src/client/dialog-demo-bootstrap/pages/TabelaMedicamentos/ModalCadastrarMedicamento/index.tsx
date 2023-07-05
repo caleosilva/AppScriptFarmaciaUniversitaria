@@ -26,6 +26,7 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
 
     // Mensagem de erro:
     const [mensagem, setMensagem] = useState(false);
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
 
     // Carrega os dados do DropDown
@@ -55,9 +56,9 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if(classe != '' && tarja != '' && apresentacao != '' && nome != '' && principioAtivo != ''){
+        if (classe != '' && tarja != '' && apresentacao != '' && nome != '' && principioAtivo != '') {
             setIsFormValid(true);
-        }else{
+        } else {
             setIsFormValid(false);
         }
     }, [classe, tarja, apresentacao, nome, principioAtivo]);
@@ -105,7 +106,12 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
                     setLoading(false);
                     setMensagem(true);
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
         }
     }, [isLoading]);
 
@@ -173,6 +179,19 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
                                             <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
                                             <p>
                                                 Já existe um medicamento cadastrado com o nome e o princípio ativo inserido.
+                                            </p>
+                                        </Alert>
+                                    </Col>
+                                }
+                            </Row>
+
+                            <Row className='mb-3 mt-3'>
+                                {mensagemErroBack &&
+                                    <Col>
+                                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                            <Alert.Heading>Erro!</Alert.Heading>
+                                            <p>
+                                                Não foi possível cadastrar o medicamento, tente novamente mais tarde!
                                             </p>
                                         </Alert>
                                     </Col>
