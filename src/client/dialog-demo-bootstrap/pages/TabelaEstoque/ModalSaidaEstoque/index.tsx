@@ -25,6 +25,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
     const [lista, setLista] = useState([[]]);
 
     const [mensagem, setMensagem] = useState(false);
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
     const [show, setShow] = useState(false);
 
@@ -83,7 +84,12 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                     setLoading(false);
                     setMensagem(true);
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
 
         }
     }, [isLoading]);
@@ -124,7 +130,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                 <Modal.Body>
                     <Container>
 
-                        <Row  className='d-flex justify-content-center'>
+                        <Row className='d-flex justify-content-center'>
                             <Col sm={6}>
                                 <Alert key="warning" variant="warning">
                                     <p>Em estoque: <strong>{remedio.quantidade}</strong></p>
@@ -132,7 +138,7 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                             </Col>
                         </Row>
 
-                        <Row  className='d-flex justify-content-center'>
+                        <Row className='d-flex justify-content-center'>
                             <Col sm={6}>
                                 <InputPositiveNumber required={true} label={"Quantidade a ser retirada"} placeholder={""} controlId={"inputQuantidade"} name={"quantidade"} data={quantidade} setData={setQuantidade} max={remedio.quantidade} />
                             </Col>
@@ -153,6 +159,19 @@ export default function ModalSaidaEstoque({ remedio, listaDD, data, setData }: {
                                         <Alert.Heading>Não foi possível retirar</Alert.Heading>
                                         <p>
                                             Tente novamente mais tarde.
+                                        </p>
+                                    </Alert>
+                                </Col>
+                            }
+                        </Row>
+
+                        <Row className='mb-3 mt-3'>
+                            {mensagemErroBack &&
+                                <Col>
+                                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                        <Alert.Heading>Erro!</Alert.Heading>
+                                        <p>
+                                            Não foi possível completar a retirada, tente novamente mais tarde!
                                         </p>
                                     </Alert>
                                 </Col>

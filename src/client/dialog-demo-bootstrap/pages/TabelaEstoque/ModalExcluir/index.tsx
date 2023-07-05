@@ -14,10 +14,11 @@ import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 
 import React, { useState, useEffect } from 'react';
 
-export default function ModalExcluir({ remedio, data, setData, index}: { remedio: MedicamentoEspecifico, data: Array<MedicamentoEspecifico>, setData: Function, index: number}) {
+export default function ModalExcluir({ remedio, data, setData, index }: { remedio: MedicamentoEspecifico, data: Array<MedicamentoEspecifico>, setData: Function, index: number }) {
 
     // CRIAR OS USESTATE
     const [mensagem, setMensagem] = useState(false);
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
     const [show, setShow] = useState(false);
 
     const handleClose = () => {
@@ -49,8 +50,6 @@ export default function ModalExcluir({ remedio, data, setData, index}: { remedio
 
         if (isLoading) {
             serverFunctions.removeRowEstoque(remedio).then((sucesso) => {
-                console.log("Sucesso add: " + sucesso)
-
                 if (sucesso) {
                     // Atualiza a tabela:
                     const novaLista = data.filter((item, posicao) => posicao !== index);
@@ -62,9 +61,13 @@ export default function ModalExcluir({ remedio, data, setData, index}: { remedio
                 } else {
                     setLoading(false);
                     setMensagem(true);
-                    console.log("Não foi possível excluir")
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
 
         }
     }, [isLoading]);
@@ -157,6 +160,19 @@ export default function ModalExcluir({ remedio, data, setData, index}: { remedio
                         </Row>
 
                         {renderAlertaErro()}
+
+                        <Row className='mb-3 mt-3'>
+                            {mensagemErroBack &&
+                                <Col>
+                                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                        <Alert.Heading>Erro!</Alert.Heading>
+                                        <p>
+                                            Não foi possível excluir o medicamento, tente novamente mais tarde!
+                                        </p>
+                                    </Alert>
+                                </Col>
+                            }
+                        </Row>
 
 
                     </Container>

@@ -24,7 +24,7 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
     const [opcaoEntrada, setOpcaoEntrada] = useState('');
     const [lista, setLista] = useState([[]]);
 
-
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
     const [mensagem, setMensagem] = useState(false);
 
     const [show, setShow] = useState(false);
@@ -85,7 +85,12 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
                     setLoading(false);
                     setMensagem(true);
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
 
         }
     }, [isLoading]);
@@ -132,7 +137,7 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
                                 </Alert>
                             </Col>
 
-                            
+
                         </Row>
 
                         <Row className='d-flex justify-content-center'>
@@ -156,6 +161,19 @@ export default function ModalEntradaEstoque({ remedio, listaDD, doadores, data, 
                                         <Alert.Heading>Não foi possível adicionar</Alert.Heading>
                                         <p>
                                             Tente novamente mais tarde.
+                                        </p>
+                                    </Alert>
+                                </Col>
+                            }
+                        </Row>
+
+                        <Row className='mb-3 mt-3'>
+                            {mensagemErroBack &&
+                                <Col>
+                                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                        <Alert.Heading>Erro!</Alert.Heading>
+                                        <p>
+                                            Não foi possível registrar a entrada, tente novamente mais tarde!
                                         </p>
                                     </Alert>
                                 </Col>

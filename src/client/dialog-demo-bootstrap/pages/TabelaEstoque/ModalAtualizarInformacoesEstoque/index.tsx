@@ -30,9 +30,6 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
     const [fabricante, setFabricante] = useState(remedio.fabricante);
     const [motivoDoacao, setMotivoDoacao] = useState(remedio.motivoDoacao);
 
-    // const [dataEntrada, setDataEntrada] = useState(remedio.dataEntrada);
-    // const [quantidade, setQuantidade] = useState(remedio.quantidade);
-
     const dataEntrada = remedio.dataEntrada;
     const quantidade = remedio.quantidade;
 
@@ -41,8 +38,7 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
 
     const [show, setShow] = useState(false);
     const [mensagem, setMensagem] = useState(false);
-
-    
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
     const handleClose = () => {
         setLote(remedio.lote);
@@ -52,7 +48,6 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
         setTipo(remedio.tipo);
         setFabricante(remedio.fabricante);
         setMotivoDoacao(remedio.motivoDoacao);
-        // setDataEntrada(remedio.dataEntrada);
 
         setShow(false);
         setLoading(false);
@@ -83,7 +78,7 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
         const dadosMedicamentoEspecifico = new MedicamentoEspecifico(remedio.chaveMedicamentoGeral, remedio.chaveMedicamentoEspecifico, lote, dosagem, validade, quantidade, origem, tipo, fabricante, motivoDoacao, dataEntrada, remedio.chaveGeral);
 
         if (isLoading) {
-            
+
             serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {
                 console.log("Sucesso: " + sucesso);
                 console.log("Medicamento: ", dadosMedicamentoEspecifico);
@@ -102,7 +97,12 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
                     setLoading(false);
                     console.log("Não foi possível atualizar")
                 }
-            })
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
 
         }
     }, [isLoading]);
@@ -193,6 +193,19 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
                                         <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
                                         <p>
                                             Já existe um medicamento cadastrado com esse lote, dosagem e validade.
+                                        </p>
+                                    </Alert>
+                                </Col>
+                            }
+                        </Row>
+
+                        <Row className='mb-3 mt-3'>
+                            {mensagemErroBack &&
+                                <Col>
+                                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                        <Alert.Heading>Erro!</Alert.Heading>
+                                        <p>
+                                            Não foi possível atualizar as informações, tente novamente mais tarde!
                                         </p>
                                     </Alert>
                                 </Col>

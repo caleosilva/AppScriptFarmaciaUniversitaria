@@ -25,6 +25,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
     // Mensagem de erro:
     const [mensagem, setMensagem] = useState(false);
+    const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
     // Carrega os dados do DropDown
     const [lista, setLista] = useState([[]]);
@@ -136,7 +137,12 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                     setMensagem(true);
                     console.log("Medicamento específico já existe na tabela")
                 }
-            }).catch((e) => console.log(e.stack));
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
         }
 
     }, [isLoading]);
@@ -228,6 +234,19 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                                             <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
                                             <p>
                                                 Já existe um medicamento cadastrado com a dosagem, lote e validade inserida.
+                                            </p>
+                                        </Alert>
+                                    </Col>
+                                }
+                            </Row>
+
+                            <Row className='mb-3 mt-3'>
+                                {mensagemErroBack &&
+                                    <Col>
+                                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                                            <Alert.Heading>Erro!</Alert.Heading>
+                                            <p>
+                                                Não foi possível cadastrar o medicamento, tente novamente mais tarde!
                                             </p>
                                         </Alert>
                                     </Col>
