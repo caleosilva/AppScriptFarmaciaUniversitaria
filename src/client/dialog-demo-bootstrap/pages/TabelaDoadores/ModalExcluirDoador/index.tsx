@@ -9,7 +9,6 @@ import Alert from 'react-bootstrap/Alert';
 
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
-import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 import Doador from '../../../../../models/Doador';
 import formatarData from '../../../Functions/formatarData';
 
@@ -37,38 +36,27 @@ export default function ModalExcluirDoador({ doador, data, setData, index }: { d
         </Tooltip>
     );
 
-    // WTF IS THAT? ---------------------------------------------------------------------
-    // const [isFormValid, setIsFormValid] = useState(true);
-    // useEffect(() => {
-    //     if (true) {
-    //         setIsFormValid(true);
-    //     } else {
-    //         setIsFormValid(false);
-    //     }
-    // }, []);
-
     useEffect(() => {
 
-        // if (isLoading) {
-        //     serverFunctions.removeRowEstoque(doador).then((sucesso) => {
-        //         console.log("Sucesso add: " + sucesso)
+        if (isLoading) {
+            serverFunctions.removeRowDoador(doador).then((sucesso) => {
+                console.log("Sucesso add: " + sucesso)
 
-        //         if (sucesso) {
-        //             // Atualiza a tabela:
-        //             const novaLista = data.filter((item, posicao) => posicao !== index);
-        //             setData(novaLista);
+                if (sucesso) {
+                    // Atualiza a tabela:
+                    const novaLista = data.filter((item, posicao) => posicao !== index);
+                    setData(novaLista);
 
-        //             setLoading(false);
-        //             setMensagem(false);
-        //             handleClose();
-        //         } else {
-        //             setLoading(false);
-        //             setMensagem(true);
-        //             console.log("Não foi possível excluir")
-        //         }
-        //     }).catch((e) => console.log(e.stack));
+                    setLoading(false);
+                    setMensagem(false);
+                    handleClose();
+                } else {
+                    setLoading(false);
+                    setMensagem(true);
+                }
+            }).catch((e) => console.log(e.stack));
 
-        // }
+        }
     }, [isLoading]);
 
 

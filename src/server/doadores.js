@@ -168,3 +168,20 @@ export const appendRowDoadores = (doador) => {
         return true;
     }
 }
+
+export const removeRowDoador = (doador) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("Doador");
+
+    // Encontrando o doador:
+    var codigo = doador.chaveDoador;
+    var dados = buscaBinariaSimples("Doador", codigo, 1);
+
+    if (dados) {
+        let linha = dados.linha;
+        ws.deleteRow(linha);
+        return true;
+    }
+    return false;
+}
