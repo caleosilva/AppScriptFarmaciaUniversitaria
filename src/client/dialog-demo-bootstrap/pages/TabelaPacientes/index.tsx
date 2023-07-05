@@ -18,10 +18,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { serverFunctions } from '../../../utils/serverFunctions';
 import '../style.css';
 import formatarData from '../../Functions/formatarData';
-import ModalCadastarDoador from './ModalCadastrarDoador';
-import OperacaoDoadores from './OperacaoDoadores';
+import OperacaoPacientes from './OperacaoPacientes';
 
-export default function TabelaDoadores() {
+export default function TabelaPaciente() {
 
     const [busca, setBusca] = useState('');
 
@@ -30,7 +29,7 @@ export default function TabelaDoadores() {
     const [infoDD, setInfoDD] = useState(null);
 
     useEffect(() => {
-        serverFunctions.getDoadores().then(string => {setData(JSON.parse(string))}).catch(alert);
+        serverFunctions.getPacientes().then(string => { setData(JSON.parse(string)) }).catch(alert);
     }, []);
 
     useEffect(() => {
@@ -54,7 +53,7 @@ export default function TabelaDoadores() {
         } else if (data == false) {
             return (
                 <Alert key={"infoTabela"} variant={"dark"}>
-                    Não há doadores cadastrados no sistema!
+                    Não há pacientes cadastrados no sistema!
                 </Alert>
             )
         } else {
@@ -78,13 +77,14 @@ export default function TabelaDoadores() {
                                     formatarData(item.dataNascimento).toLowerCase().includes(busca.toLowerCase()) ||
                                     item.cpf.toLowerCase().includes(busca.toLowerCase())
 
-                            }).map((doador, index) =>
+                            }).map((paciente, index) =>
                                 <tr key={index}>
-                                    <td>{doador.nome}</td>
-                                    <td>{formatarData(doador.dataNascimento)}</td>
-                                    <td>{doador.cpf}</td>
+                                    <td>{paciente.nome}</td>
+                                    <td>{formatarData(paciente.dataNascimento)}</td>
+                                    <td>{paciente.cpf}</td>
                                     <td>
-                                        <OperacaoDoadores doador={doador} listaDD={infoDD} data={data} setData={setData} index={index}/>
+                                        {/* paciente={paciente} listaDD={infoDD} data={data} setData={setData} index={index} */}
+                                        <OperacaoPacientes />
                                     </td>
                                 </tr>) : ''}
                         </>
@@ -102,7 +102,7 @@ export default function TabelaDoadores() {
                     <Navbar>
                         <Container fluid>
                             <Navbar.Brand href="">Doadores</Navbar.Brand>
-                            
+
                             {/* para que esse buscar aqui? */}
                             <InputGroup className='buscar'>
                                 <Form.Control
@@ -117,9 +117,7 @@ export default function TabelaDoadores() {
                                 </InputGroup.Text>
                             </InputGroup>
 
-                            {/* <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} /> */}
-
-                            <ModalCadastarDoador data={data} setData={setData} listaDD={infoDD}/>
+                            {/* <ModalCadastarDoador data={data} setData={setData} listaDD={infoDD}/> */}
 
                         </Container>
                     </Navbar>

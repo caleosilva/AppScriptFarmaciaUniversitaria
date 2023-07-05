@@ -45,6 +45,10 @@ import {
   updateRowDoador
 } from './doadores'
 
+import {
+  getPacientes
+} from './pacientes';
+
 // Public functions must be exported as named exports
 export {
   deleteSheet, setActiveSheet, doGet, onOpen, openDialogBootstrap, getSheetsData,
@@ -74,5 +78,8 @@ export {
   queryDoador,
   appendRowDoadores,
   removeRowDoador,
-  updateRowDoador
+  updateRowDoador,
+
+  //Pacintes
+  getPacientes
 };
