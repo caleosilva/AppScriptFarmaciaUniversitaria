@@ -79,8 +79,7 @@ export default function TabelaPaciente() {
                                     <td>{formatarData(paciente.dataNascimento)}</td>
                                     <td>{paciente.cpf}</td>
                                     <td>
-                                        {/* paciente={paciente} listaDD={infoDD} data={data} setData={setData} index={index} */}
-                                        <OperacaoPacientes />
+                                        <OperacaoPacientes paciente={paciente} listaDD={infoDD} data={data} setData={setData} index={index}/>
                                     </td>
                                 </tr>) : ''}
                         </>
