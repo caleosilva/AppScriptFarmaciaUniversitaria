@@ -2,7 +2,7 @@ const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 
 const formatarData = (data) => {
 
-    if (data === "-"){
+    if (data === "-") {
         return data;
     }
 
@@ -107,34 +107,41 @@ export const queryDoador = (chaveDeBusca) => {
 export const getDoadores = () => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("Doador");
-    var data = ws.getRange(2, 1, ws.getLastRow() - 1, ws.getLastColumn()).getValues();
 
-    var informacoes = [];
+    var lr = ws.getLastRow();
 
-    if (data.length == 0) {
-        return false;
-    }
+    if (lr > 1) {
+        var data = ws.getRange(2, 1, lr - 1, ws.getLastColumn()).getValues();
 
-    for (let i = 0; i < data.length; i++) {
-        var info = {
-            'chaveDoador': data[i][0],
-            'nome': data[i][1],
-            'tipoDoador': data[i][2],
-            'cidade': data[i][3],
-            'bairro': data[i][4],
-            'endereco': data[i][5],
-            'numero': data[i][6],
-            'comoSoube': data[i][7],
-            'cnpj': data[i][8],
-            'cpf': data[i][9],
-            'dataNascimento': data[i][10],
-            'sexo': data[i][11],
-            'estadoCivil': data[i][12],
+        var informacoes = [];
+
+        if (data.length == 0) {
+            return false;
         }
-        informacoes.push(info);
-    }
 
-    return JSON.stringify(informacoes);
+        for (let i = 0; i < data.length; i++) {
+            var info = {
+                'chaveDoador': data[i][0],
+                'nome': data[i][1],
+                'tipoDoador': data[i][2],
+                'cidade': data[i][3],
+                'bairro': data[i][4],
+                'endereco': data[i][5],
+                'numero': data[i][6],
+                'comoSoube': data[i][7],
+                'cnpj': data[i][8],
+                'cpf': data[i][9],
+                'dataNascimento': data[i][10],
+                'sexo': data[i][11],
+                'estadoCivil': data[i][12],
+            }
+            informacoes.push(info);
+        }
+        return JSON.stringify(informacoes);
+
+    } else {
+        return false
+    }
 }
 
 export const appendRowDoadores = (doador) => {
@@ -198,12 +205,12 @@ export const updateRowDoador = (doador) => {
     var dataNascimentoFormatada = formatarData(doador.dataNascimento);
 
     var novaChaveDoador;
-    if (doador.tipoDoador === "Outro"){
+    if (doador.tipoDoador === "Outro") {
         novaChaveDoador = doador.nome.replace(/\s/g, '').toLowerCase();
-    } else if (doador.tipoDoador === "Pessoa jurídica"){
+    } else if (doador.tipoDoador === "Pessoa jurídica") {
         novaChaveDoador = doador.cnpj;
-    } else if (doador.tipoDoador === "Pessoa física"){
-        novaChaveDoador = doador.cpf;        
+    } else if (doador.tipoDoador === "Pessoa física") {
+        novaChaveDoador = doador.cpf;
     }
 
     // var novaChaveDoador = (doador.nome + '#' + doador.principioAtivo + '#' + doador.apresentacao).toString().toLowerCase().replace(/\s+/g, '');

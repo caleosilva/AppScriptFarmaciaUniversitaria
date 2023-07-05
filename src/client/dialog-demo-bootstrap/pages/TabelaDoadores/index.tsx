@@ -1,5 +1,4 @@
-import Button from 'react-bootstrap/Button';
-import { Col, InputGroup } from 'react-bootstrap';
+import { InputGroup } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { Form } from 'react-bootstrap';
@@ -7,13 +6,9 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
-import Row from 'react-bootstrap/Row';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-
 
 import { useEffect, useState } from 'react';
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import { serverFunctions } from '../../../utils/serverFunctions';
 import '../style.css';
@@ -96,7 +91,6 @@ export default function TabelaDoadores() {
 
     return (
         <section className='margemNavBar ms-5 me-5'>
-
             <Card>
                 <Card.Header>
                     <Navbar>
@@ -116,8 +110,6 @@ export default function TabelaDoadores() {
                                     <i className="bi bi-search"></i>
                                 </InputGroup.Text>
                             </InputGroup>
-
-                            {/* <ModalEstoqueCadastrar data={data} setData={setData} listaDD={infoDD} chaveMedicamentoGeral={infoMedicamentoGeral.chaveGeral} /> */}
 
                             <ModalCadastarDoador data={data} setData={setData} listaDD={infoDD}/>
 
