@@ -11,6 +11,7 @@ import {
   doGet,
 } from './sheets';
 
+// Imports de funções Gerais:
 import {
   getInformacoesSelect
 } from './geral'
@@ -24,7 +25,7 @@ import {
   updateRowMedicamentos
 } from './medicamentos'
 
-// Imports referentes ao Estoque
+// Imports referentes ao Estoque:
 import {
   queryChaveMedicamentoGeral,
   buscaBinariaCompleta,
@@ -36,17 +37,17 @@ import {
   definirDataMaisRecente
 } from './estoque'
 
-// Import referente aos Doadores
+// Import referente aos Doadores:
 import {
   getDoadores,
-  queryDoador,
   appendRowDoadores,
   removeRowDoador,
   updateRowDoador
 } from './doadores'
 
 import {
-  getPacientes
+  getPacientes,
+  appendRowPacientes
 } from './pacientes';
 
 // Public functions must be exported as named exports
@@ -75,11 +76,11 @@ export {
 
   //Doadores
   getDoadores,
-  queryDoador,
   appendRowDoadores,
   removeRowDoador,
   updateRowDoador,
 
   //Pacintes
-  getPacientes
+  getPacientes,
+  appendRowPacientes
 };

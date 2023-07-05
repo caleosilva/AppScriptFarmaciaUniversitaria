@@ -1,5 +1,47 @@
 const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA"; // Testes 123
 
+const ordenarPlanilha = (nomeDaAba, colunaBase) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomeDaAba);
+    var range = ws.getDataRange().offset(1, 0); // começa na segunda linha
+    range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
+}
+
+const formatarData = (data) => {
+
+    var novaData = new Date(data);
+    var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
+
+    return novaDataFormatada;
+}
+
+const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomePlanilha);
+
+    var values = ws.getRange(2, colBusca, ws.getLastRow() - 1, 1).getValues();
+    var lowerBound = 0;
+    var upperBound = values.length - 1;
+
+    while (lowerBound <= upperBound) {
+        var middle = Math.floor((lowerBound + upperBound) / 2);
+        var value = values[middle][0];
+
+        if (value == valorBuscado) {
+            var linhaReal = middle + 2
+            var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+
+            return { linha: linhaReal, data: info }
+
+        } else if (value < valorBuscado) {
+            lowerBound = middle + 1;
+        } else {
+            upperBound = middle - 1;
+        }
+    }
+    return false;
+}
+
 export const getPacientes = () => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("Pacientes");
@@ -36,5 +78,42 @@ export const getPacientes = () => {
         return JSON.stringify(informacoes);
     } else {
         return false
+    }
+}
+
+export const appendRowPacientes = (paciente) => {
+
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("Pacientes");
+
+    // Verificando se o paciente existe:
+    var codigo = paciente.chavePaciente;
+
+    var resultadoBuscaPorPaciente = buscaBinariaSimples("Pacientes", codigo, 1);
+
+    if (resultadoBuscaPorPaciente) {
+        return false;
+    } else {
+        let dataNascimento = formatarData(paciente.dataNascimento);
+        ws.appendRow([
+            paciente.chavePaciente,
+            paciente.nome,
+            paciente.cpf,
+            dataNascimento,
+            paciente.telefone,
+            paciente.tipoPaciente,
+            paciente.complemento,
+            paciente.sexo,
+            paciente.estadoCivil,
+            paciente.cidade,
+            paciente.bairro,
+            paciente.endereco,
+            paciente.numero,
+            paciente.comoSoube
+        ]);
+
+        ordenarPlanilha("Pacientes", 1)
+        return true;
     }
 }

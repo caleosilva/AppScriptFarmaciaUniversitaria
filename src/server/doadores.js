@@ -19,24 +19,6 @@ const formatarData = (data) => {
     }
 }
 
-const montarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
-
-    var currentDoc = SpreadsheetApp.openById(idSheet)
-    var tempSheet = currentDoc.insertSheet();
-
-    var ws = currentDoc.getSheetByName(nomeDaAba);
-    var lr = ws.getLastRow();
-
-    var targetRange = nomeDaAba + '!' + primeiraCol + '2:' + ultimaCol + lr;
-    var Query = '=QUERY(' + targetRange + ';\"' + consulta + '\")';
-
-    var pushQuery = tempSheet.getRange(1, 1).setFormula(Query);
-    var pullResult = tempSheet.getDataRange().getValues();
-
-    currentDoc.deleteSheet(tempSheet);
-    return pullResult;
-}
-
 const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName(nomeDaAba);
@@ -69,39 +51,6 @@ const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
         }
     }
     return false;
-}
-
-// Tem que depurar para saber qual o erro
-export const queryDoador = (chaveDeBusca) => {
-    var sql = "select * where A = '" + chaveDeBusca + "'";
-    var dados = montarQuery('Doador', 'A', 'M', sql)
-
-    if (dados[0][0] === '#N/A') {
-        return false;
-    } else {
-        return dados;
-        var informacoes = [];
-        for (let i = 0; i < dados.length; i++) {
-            var doador = {
-                chaveDoador: dados[i][0],
-                nome: dados[i][1],
-                tipoDoador: dados[i][2],
-                cidade: dados[i][3],
-                bairro: dados[i][4],
-                endereco: dados[i][5],
-                numero: dados[i][6],
-                comoSoube: dados[i][7],
-                cnpj: dados[i][8],
-                cpf: dados[i][9],
-                dataNascimento: dados[i][10],
-                sexo: dados[i][11],
-                estadoCivil: dados[i][12]
-            }
-
-            informacoes.push(doador)
-        }
-        return informacoes;
-    }
 }
 
 export const getDoadores = () => {

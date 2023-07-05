@@ -74,49 +74,6 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
     const [show, setShow] = useState(false);
 
-    // function renderCamposCondicionais() {
-    //     if (tipoDoador === 'Pessoa física') {
-    //         return (
-    //             <>
-    //                 <Row>
-    //                     <Col sm={6}>
-    //                         <InputCpf label={"CPF"} placeholder={"XXX.XXX.XXX-XX"} controlId={"inputCpf"} name={"cpf"} data={cpf} setData={setCpf} />
-    //                     </Col>
-
-    //                     <Col sm={6}>
-    //                         <InputText type={"date"} required={true} label={"Data de nascimento"} placeholder={""} controlId={"inputNascimento"} name={"nascimento"} data={dataNascimento} setData={setDataNascimento} />
-    //                     </Col>
-    //                 </Row>
-
-    //                 <Row>
-    //                     <Col sm={6}>
-    //                         <InputSelect required={true} label={"Sexo"} name={"sexo"} data={sexo} setData={setSexo} lista={lista ? lista[7] : []} />
-    //                     </Col>
-
-    //                     <Col sm={6}>
-    //                         <InputSelect required={true} label={"Estado Civil"} name={"estadoCivil"} data={estadoCivil} setData={setEstadoCivil} lista={lista ? lista[8] : []} />
-    //                     </Col>
-    //                 </Row>
-
-    //             </>
-    //         )
-
-    //     } else if (tipoDoador === 'Pessoa jurídica') {
-    //         return (
-    //             <>
-    //                 <Row>
-    //                     <Col sm={6}>
-    //                         <InputCnpj label={"CNPJ"} placeholder={"XX.XXX.XXX/XXXX-XX"} controlId={"inputCnpj"} name={"cnpj"} data={cnpj} setData={setCnpj} />
-    //                     </Col>
-    //                 </Row>
-
-    //             </>
-    //         )
-    //     }
-
-    // }
-
-
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
 
@@ -132,7 +89,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     useEffect(() => {
 
         const dados = {
-            "chaveDoador": cpf,
+            "chavePaciente": cpf,
             nome,
             cpf,
             dataNascimento,
@@ -150,40 +107,39 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
         if (isLoading) {
 
-            // serverFunctions.appendRowDoadores(dados).then((sucesso) => {
-            //     if (sucesso) {
-            //         // Atualiza a tabela:
-            //         var novosDados = gerarObjetoEstiloDoador(dados);
+            serverFunctions.appendRowPacientes(dados).then((sucesso) => {
+                if (sucesso) {
+                    // Atualiza a tabela:
+                    setData([...data, dados]);
 
-            //         setData([...data, novosDados]);
+                    // Limpa os formulários:
+                    setNome('');
+                    setCpf('');
+                    setDataNascimento('');
+                    setTelefone('');
+                    setTipoPaciente('');
+                    setComplemento('');
+                    setSexo('');
+                    setEstadoCivil('');
+                    setCidade('');
+                    setBairro('');
+                    setEndereco('');
+                    setNumero('');
+                    setComoSoube('');
 
-            //         // Limpa os formulários:
-            //         setNome('');
-            //         setTipoDoador('');
-            //         setCidade('');
-            //         setBairro('');
-            //         setEndereco('');
-            //         setNumero('');
-            //         setComoSoube('');
-            //         setCnpj('');
-            //         setCpf('');
-            //         setDataNascimento('');
-            //         setSexo('');
-            //         setEstadoCivil('');
-
-            //         setLoading(false);
-            //         setMensagem(false);
-            //         handleClose();
-            //     } else {
-            //         setLoading(false);
-            //         setMensagem(true);
-            //     }
-            // }).catch(
-            //     (e) => {
-            //         console.log(e.stack);
-            //         setMensagemErroBack(true);
-            //         setLoading(false);
-            //     });
+                    setLoading(false);
+                    setMensagem(false);
+                    handleClose();
+                } else {
+                    setLoading(false);
+                    setMensagem(true);
+                }
+            }).catch(
+                (e) => {
+                    console.log(e.stack);
+                    setMensagemErroBack(true);
+                    setLoading(false);
+                });
         }
 
     }, [isLoading]);
