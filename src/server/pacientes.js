@@ -117,3 +117,20 @@ export const appendRowPacientes = (paciente) => {
         return true;
     }
 }
+
+export const removeRowPaciente = (paciente) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("Pacientes");
+
+    // Encontrando o paciente:
+    var codigo = paciente.chavePaciente;
+    var dados = buscaBinariaSimples("Pacientes", codigo, 1);
+
+    if (dados) {
+        let linha = dados.linha;
+        ws.deleteRow(linha);
+        return true;
+    }
+    return false;
+}

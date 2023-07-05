@@ -3,6 +3,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 import Paciente from '../../../../../models/Paciente';
 import ModalVerMaisPaciente from '../ModalVerMaisPaciente';
+import ModalExcluirPaciente from '../ModalExcluirPaciente';
 
 import React from 'react';
 
@@ -15,9 +16,7 @@ export default function operacoesPaciente({ paciente, listaDD, data, setData, in
                 <i className="bi bi-pencil-square"></i>
             </Button>
 
-            <Button variant="outline-danger">
-                <i className="bi bi-trash-fill"></i>
-            </Button>
+            <ModalExcluirPaciente paciente={paciente} data={data} setData={setData} index={index} />
         </ButtonGroup>
     );
 }

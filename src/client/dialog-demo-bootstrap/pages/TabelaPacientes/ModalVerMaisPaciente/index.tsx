@@ -10,9 +10,10 @@ import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import React, { useState} from 'react';
 
 import formatarData from '../../../Functions/formatarData'
+import Paciente from '../../../../../models/Paciente';
 
 
-export default function ModalVerMaisPaciente({ paciente }: { paciente: any }) {
+export default function ModalVerMaisPaciente({ paciente }: { paciente: Paciente }) {
 
     const [show, setShow] = useState(false);
 
