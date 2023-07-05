@@ -14,6 +14,7 @@ import { serverFunctions } from '../../../utils/serverFunctions';
 import '../style.css';
 import formatarData from '../../Functions/formatarData';
 import OperacaoPacientes from './OperacaoPacientes';
+import ModalCadastrarPaciente from './ModalCadastrarPaciente';
 
 export default function TabelaPaciente() {
 
@@ -96,7 +97,7 @@ export default function TabelaPaciente() {
                 <Card.Header>
                     <Navbar>
                         <Container fluid>
-                            <Navbar.Brand href="">Doadores</Navbar.Brand>
+                            <Navbar.Brand href="">Pacientes</Navbar.Brand>
 
                             {/* para que esse buscar aqui? */}
                             <InputGroup className='buscar'>
@@ -112,7 +113,7 @@ export default function TabelaPaciente() {
                                 </InputGroup.Text>
                             </InputGroup>
 
-                            {/* <ModalCadastarDoador data={data} setData={setData} listaDD={infoDD}/> */}
+                            <ModalCadastrarPaciente data={data} setData={setData} listaDD={infoDD}/>
 
                         </Container>
                     </Navbar>
