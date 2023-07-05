@@ -255,8 +255,13 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
 
                         </Container>
 
-                        <div className='mt-3 d-flex justify-content-around'>
-                            <Button variant="outline-secondary" onClick={handleClose}>
+                        
+                    </Form>
+                </Modal.Body>
+
+                <Modal.Footer>
+                <div className='mt-3 mb-3'>
+                            <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
                                 Cancelar
                             </Button>
 
@@ -269,8 +274,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                                 {isLoading ? 'Cadastrando...' : 'Cadastrar'}
                             </Button>
                         </div>
-                    </Form>
-                </Modal.Body>
+                </Modal.Footer>
             </Modal>
         </>
     );

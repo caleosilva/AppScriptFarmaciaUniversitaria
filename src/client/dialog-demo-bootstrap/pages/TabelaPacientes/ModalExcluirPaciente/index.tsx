@@ -164,7 +164,7 @@ export default function ModalExcluirPaciente({ paciente, data, setData, index }:
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className='mt-3 mb-3d-flex justify-content-around'>
+                    <div className='mt-3 mb-3'>
                         <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
                             Cancelar
                         </Button>

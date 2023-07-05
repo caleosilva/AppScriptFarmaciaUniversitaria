@@ -126,7 +126,7 @@ export default function ModalVerMaisPaciente({ paciente }: { paciente: Paciente 
                     </Container>
                 </Modal.Body>
                 <Modal.Footer>
-                    <div className='mt-3 mb-3 d-flex justify-content-around'>
+                    <div className='mt-3 mb-3'>
                         <Button variant="outline-secondary" onClick={handleClose}>
                             Fechar
                         </Button>

@@ -297,9 +297,9 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
                             {renderCamposCondicionais()}
 
-                            <Row className='mb-3 mt-2 mt-3'>
+                            <Row >
                                 {mensagem &&
-                                    <Col>
+                                    <Col className='mb-3 mt-2 mt-3'>
                                         <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
                                             <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
                                             <p>
@@ -310,9 +310,9 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                                 }
                             </Row>
 
-                            <Row className='mb-3 mt-3'>
+                            <Row >
                                 {mensagemErroBack &&
-                                    <Col>
+                                    <Col className='mb-3 mt-3'>
                                         <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
                                             <Alert.Heading>Erro!</Alert.Heading>
                                             <p>
@@ -323,23 +323,25 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                                 }
                             </Row>
                         </Container>
-
-                        <div className='mt-3 d-flex justify-content-around'>
-                            <Button variant="outline-secondary" onClick={handleClose}>
-                                Cancelar
-                            </Button>
-
-                            <Button
-                                type="submit"
-                                variant="dark"
-                                disabled={isLoading || !isFormValid}
-                                onClick={!isLoading ? handleClick : null}
-                            >
-                                {isLoading ? 'Cadastrando...' : 'Cadastrar'}
-                            </Button>
-                        </div>
                     </Form>
                 </Modal.Body>
+
+                <Modal.Footer>
+                    <div className='mt-3 mb-3'>
+                        <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
+                            Cancelar
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            variant="dark"
+                            disabled={isLoading || !isFormValid}
+                            onClick={!isLoading ? handleClick : null}
+                        >
+                            {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+                        </Button>
+                    </div>
+                </Modal.Footer>
             </Modal>
         </>
     );
