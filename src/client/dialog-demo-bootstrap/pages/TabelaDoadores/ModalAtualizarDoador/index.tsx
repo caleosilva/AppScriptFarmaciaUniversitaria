@@ -98,12 +98,6 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
     function renderCamposCondicionais() {
         if (tipoDoador === 'Pessoa física') {
 
-            // var dateObject;
-            // if (dataNascimento !== undefined) {
-            //     const dateValue = Date.parse(dataNascimento.toString());
-            //     dateObject = new Date(dateValue);
-            // }
-
             return (
                 <>
                     <Row>
@@ -112,8 +106,6 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
                         </Col>
 
                         <Col sm={6}>
-                            {/* <InputText type={"date"} required={true} label={"Data de nascimento"} placeholder={""} controlId={"inputNascimento"} name={"nascimento"} data={dateValue} setData={setDataNascimento} /> */}
-
                             <InputDate label={"Data de nascimento"} controlId={"inputNascimento"} name={"nascimento"} data={dateObject} setData={setDataNascimento} />
                         </Col>
                     </Row>
@@ -148,17 +140,14 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        // var dateObject;
-        // if (dataNascimento !== undefined) {
-        //     const dateValue = Date.parse(dataNascimento.toString());
-        //     dateObject = new Date(dateValue);
-        // }
+
+        var localDataString = formatarData(dataNascimento);
 
         if (tipoDoador === "Outro" && nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
             setIsFormValid(true);
         } else if (tipoDoador === "Pessoa jurídica" && nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cnpj !== '' && cnpj.length == 18) {
             setIsFormValid(true);
-        } else if (tipoDoador === "Pessoa física" && nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && sexo !== '' && estadoCivil !== '') {
+        } else if (tipoDoador === "Pessoa física" && nome !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && localDataString.length <= 10 && sexo !== '' && estadoCivil !== '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
@@ -169,8 +158,6 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
     }, [nome, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, dataNascimento, sexo, estadoCivil]);
 
     useEffect(() => {
-        // Cria um objeto com os dados atualizados do medicamento
-
 
         if (!alterado) {
             setLoading(false);

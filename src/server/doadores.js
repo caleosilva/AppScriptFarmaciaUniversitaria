@@ -152,36 +152,52 @@ export const updateRowDoador = (doador) => {
 
     // Formatanto a data e pegando novo código
     var dataNascimentoFormatada = formatarData(doador.dataNascimento);
+    var chaveMudou = false;
+
+    // Lista com os novos dados:
+    var novosDados = []
 
     var novaChaveDoador;
     if (doador.tipoDoador === "Outro") {
+
         novaChaveDoador = doador.nome.replace(/\s/g, '').toLowerCase();
+        if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
+
     } else if (doador.tipoDoador === "Pessoa jurídica") {
+
         novaChaveDoador = doador.cnpj;
+        if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
+
     } else if (doador.tipoDoador === "Pessoa física") {
+
         novaChaveDoador = doador.cpf;
+        if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
     }
 
-    // var novaChaveDoador = (doador.nome + '#' + doador.principioAtivo + '#' + doador.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
-
-    // Verifica se a nova chave (se for o caso) já existe:
-    const resultadoBusca = buscaBinariaSimples("Doador", novaChaveDoador, 1);
-    if (resultadoBusca) {
-        return false;
-    } else {
-        // Chave não for encontrada, é possível atualizar os dados:
-        var novosDados = [novaChaveDoador, doador.nome, doador.tipoDoador, doador.cidade, doador.bairro, doador.endereco, doador.numero, doador.comoSoube, doador.cnpj, doador.cpf, dataNascimentoFormatada, doador.sexo, doador.estadoCivil];
-
-        var chaveDoadorOriginal = doador.chaveDoador;
-
-        // Acha a linha que os dados originais estão:
-        var buscaChaveOriginal = buscaBinariaSimples('Doador', chaveDoadorOriginal, 1)
-        if (buscaChaveOriginal) {
-            // Atualiza e ordena a tabela Medicamentos
-            ws.getRange('A' + buscaChaveOriginal.linha + ':M' + buscaChaveOriginal.linha).setValues([novosDados]);
-            ordenarPlanilha('Doador', 1)
-
-            return true;
+    if (chaveMudou) {
+        // Verifica se a nova chave já existe:
+        const resultadoBusca = buscaBinariaSimples("Doador", novaChaveDoador, 1);
+        if (resultadoBusca) {
+            return false;
+        } else {
+            novosDados = [novaChaveDoador, doador.nome, doador.tipoDoador, doador.cidade, doador.bairro, doador.endereco, doador.numero, doador.comoSoube, doador.cnpj, doador.cpf, dataNascimentoFormatada, doador.sexo, doador.estadoCivil];
         }
+    } else {
+        novosDados = [doador.chaveDoador, doador.nome, doador.tipoDoador, doador.cidade, doador.bairro, doador.endereco, doador.numero, doador.comoSoube, doador.cnpj, doador.cpf, dataNascimentoFormatada, doador.sexo, doador.estadoCivil];
     }
+
+    var chaveDoadorOriginal = doador.chaveDoador;
+
+    // Acha a linha que os dados originais estão:
+    var buscaChaveOriginal = buscaBinariaSimples('Doador', chaveDoadorOriginal, 1);
+
+    if (buscaChaveOriginal) {
+        // Atualiza e ordena a tabela
+        ws.getRange('A' + buscaChaveOriginal.linha + ':M' + buscaChaveOriginal.linha).setValues([novosDados]);
+        ordenarPlanilha('Doador', 1)
+
+        return true;
+    }
+
+    
 }
