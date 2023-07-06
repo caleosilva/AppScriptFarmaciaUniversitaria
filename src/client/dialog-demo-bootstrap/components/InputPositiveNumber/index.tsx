@@ -9,16 +9,20 @@ export default function InputPositiveNumber({ label, placeholder, controlId, nam
 
   const handleChange = (e) => {
     const inputValue = e.target.value;
-    if (inputValue === '' || (parseFloat(inputValue) > 0 && parseFloat(inputValue) <= max)) {
-      setData(inputValue);
+
+    // Deixa somente os números
+    const cleanInputValue = inputValue.replace(/\D/g, '');
+
+    if (cleanInputValue === '' || (parseFloat(cleanInputValue) > 0 && parseFloat(cleanInputValue) <= max)) {
+      setData(cleanInputValue);
     }
   }
 
   return (
     <Form.Group className="mb-3" controlId={controlId}>
-      <Form.Label className='labelInputConfig'>{label}</Form.Label>
+      <Form.Label className='labelInputConfig'><h6>{label}</h6></Form.Label>
       <Form.Control
-        type={"number"}
+        type={"text"}
         required={required}
         placeholder={placeholder}
         name={name}

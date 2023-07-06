@@ -9,7 +9,7 @@ export default function InputSelect({ label, name, data, setData, required, list
     { label: string, name: string, data: string, setData: Function, required: boolean, lista: Array<string> }) {
     return (
         <section className='mb-3'>
-            <Form.Label >{label}</Form.Label>
+            <Form.Label ><h6>{label}</h6></Form.Label>
             <Form.Select
                 required={required}
                 aria-label={label}

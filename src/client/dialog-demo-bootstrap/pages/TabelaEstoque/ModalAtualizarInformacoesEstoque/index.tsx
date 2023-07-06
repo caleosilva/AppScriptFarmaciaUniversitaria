@@ -13,6 +13,7 @@ import InputText from '../../../components/InputText';
 import InputDate from '../../../components/InputDate';
 import InputSelect from '../../../components/InputSelect';
 import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
+import formatarData from '../../../Functions/formatarData.js';
 
 import React, { useState, useEffect } from 'react';
 
@@ -40,6 +41,8 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
     const [mensagem, setMensagem] = useState(false);
     const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
+    const [alterado, setAlterado] = useState(false);
+
     const handleClose = () => {
         setLote(remedio.lote);
         setDosagem(remedio.dosagem);
@@ -51,8 +54,14 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
 
         setShow(false);
         setLoading(false);
+        setMensagem(false);
+        setMensagemErroBack(false);
+        setAlterado(false);
     };
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setAlterado(false);
+        setShow(true)
+    };
 
 
     const handleClick = () => setLoading(true);
@@ -64,53 +73,95 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
         </Tooltip>
     );
 
+    function renderAlertaExistente() {
+        if (mensagem) {
+            return (
+                <Row className='mb-3 mt-3'>
+                    <Col>
+                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                            <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
+                            <p>
+                                Já existe um medicamento cadastrado com esse lote, dosagem e validade.
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+        }
+    }
+
+    function renderAlertaErroBack() {
+        if (mensagemErroBack) {
+            <Row className='mb-3 mt-3'>
+                <Col>
+                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                        <Alert.Heading>Erro!</Alert.Heading>
+                        <p>
+                            Não foi possível atualizar as informações, tente novamente mais tarde!
+                        </p>
+                    </Alert>
+                </Col>
+            </Row>
+        }
+    }
+
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (true) {
+        var localDataString = formatarData(validade);
+
+        if (lote !== '' && dosagem !== '' && origem !== '' && tipo !== '' && fabricante !== '' && motivoDoacao !== '' && (!isNaN(dateObject.getTime())) && localDataString.length <= 10) {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
-    }, []);
+
+        setAlterado(true);
+    }, [lote, dosagem, origem, tipo, fabricante, motivoDoacao, validade]);
 
     useEffect(() => {
 
-        const dadosMedicamentoEspecifico = new MedicamentoEspecifico(remedio.chaveMedicamentoGeral, remedio.chaveMedicamentoEspecifico, lote, dosagem, validade, quantidade, origem, tipo, fabricante, motivoDoacao, dataEntrada, remedio.chaveGeral);
+        if (!alterado) {
+            setLoading(false);
+            setMensagem(false);
+            handleClose();
+        } else {
+            const dadosMedicamentoEspecifico = new MedicamentoEspecifico(remedio.chaveMedicamentoGeral, remedio.chaveMedicamentoEspecifico, lote, dosagem, validade, quantidade, origem, tipo, fabricante, motivoDoacao, dataEntrada, remedio.chaveGeral);
 
-        if (isLoading) {
+            if (isLoading) {
 
-            serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {
-                console.log("Sucesso: " + sucesso);
-                console.log("Medicamento: ", dadosMedicamentoEspecifico);
-                if (sucesso) {
+                serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {
+                    console.log("Medicamento: ", dadosMedicamentoEspecifico);
+                    console.log("Sucesso: " + sucesso);
+                    if (sucesso) {
+                        // data[index] = novosDados;
+                        // setData([...data]);
 
-                    // data[index] = novosDados;
-                    // setData([...data]);
+                        setAlterado(false);
+                        setMensagem(false);
+                        setLoading(false);
+                        handleClose();
+                        console.log("Sucesso");
 
-
-                    setMensagem(false);
-                    setLoading(false);
-                    handleClose();
-                    console.log("Informações atualizadas")
-                } else {
-                    setMensagem(true);
-                    setLoading(false);
-                    console.log("Não foi possível atualizar")
-                }
-            }).catch(
-                (e) => {
-                    console.log(e.stack);
-                    setMensagemErroBack(true);
-                    setLoading(false);
-                });
-
+                    } else {
+                        setMensagem(true);
+                        setLoading(false);
+                        console.log("Deu ruim aqui");
+                    }
+                }).catch(
+                    (e) => {
+                        console.log(e.stack);
+                        setMensagemErroBack(true);
+                        setLoading(false);
+                    });
+            }
         }
+
+
     }, [isLoading]);
 
     useEffect(() => {
         setLista(listaDD);
     }, [listaDD]);
-
 
 
     return (
@@ -180,37 +231,12 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
                                 <InputSelect required={true} label={"Motivo da doação"} name={"motivoDoacao"} data={motivoDoacao} setData={setMotivoDoacao} lista={listaDD ? listaDD[4] : []} />
 
                             </Col>
-
-                            {/* <Col sm={6}>
-                                <InputDate label={"Data de entrada"} controlId={"inputDataEntrada"} name={"inputDataEntrada"} data={dataEntrada} setData={setDataEntrada} />
-                            </Col> */}
                         </Row>
 
-                        <Row className='mb-3 mt-3'>
-                            {mensagem &&
-                                <Col>
-                                    <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
-                                        <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
-                                        <p>
-                                            Já existe um medicamento cadastrado com esse lote, dosagem e validade.
-                                        </p>
-                                    </Alert>
-                                </Col>
-                            }
-                        </Row>
+                        {renderAlertaExistente()}
 
-                        <Row className='mb-3 mt-3'>
-                            {mensagemErroBack &&
-                                <Col>
-                                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
-                                        <Alert.Heading>Erro!</Alert.Heading>
-                                        <p>
-                                            Não foi possível atualizar as informações, tente novamente mais tarde!
-                                        </p>
-                                    </Alert>
-                                </Col>
-                            }
-                        </Row>
+                        {renderAlertaErroBack()}
+
                     </Container>
 
                 </Modal.Body>

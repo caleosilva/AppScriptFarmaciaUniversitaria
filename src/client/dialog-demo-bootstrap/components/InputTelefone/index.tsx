@@ -27,7 +27,7 @@ export default function InputTelefone({ label, placeholder, controlId, name, dat
 
   return (
     <Form.Group className="mb-3" controlId={controlId}>
-      <Form.Label className='labelInputConfig'>{label}</Form.Label>
+      <Form.Label className='labelInputConfig'><h6>{label}</h6></Form.Label>
       <Form.Control
         type={'text'}
         placeholder={placeholder}

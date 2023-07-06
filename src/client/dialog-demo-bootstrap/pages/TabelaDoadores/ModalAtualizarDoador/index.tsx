@@ -17,7 +17,6 @@ import InputCnpj from '../../../components/InputCnpj';
 import InputCpf from '../../../components/InputCpf';
 import InputDate from '../../../components/InputDate';
 import gerarObjetoEstiloDoador from '../../../Functions/gerarObjetoEstiloDoador';
-
 import formatarData from '../../../Functions/formatarData.js';
 
 
@@ -68,20 +67,6 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
     };
 
     const handleShow = () => {
-        setNome(doador.nome);
-        setCidade(doador.cidade);
-        setBairro(doador.bairro);
-        setEndereco(doador.endereco);
-        setNumero(doador.numero);
-        setComoSoube(doador.comoSoube);
-
-        setCnpj(doador.cnpj);
-
-        setCpf(doador.cpf);
-        setDataNascimento(doador.dataNascimento);
-        setSexo(doador.sexo);
-        setEstadoCivil(doador.estadoCivil);
-
         setShow(true);
         setAlterado(false);
     };
@@ -180,7 +165,7 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
                 "dataNascimento": dataNascimentoFormatada,
                 sexo,
                 estadoCivil
-            }  
+            }
             if (isLoading) {
                 serverFunctions.updateRowDoador(dados).then((sucesso) => {
                     console.log(sucesso)

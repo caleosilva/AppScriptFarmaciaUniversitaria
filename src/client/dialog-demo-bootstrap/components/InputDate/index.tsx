@@ -10,7 +10,6 @@ export default function InputDate({ label, controlId, name, data, setData }:
         const inputDate = new Date(inputValue);
 
         if (!isNaN(inputDate.getTime())) {
-            console.log(inputDate);
             setData(inputValue);
         }
     }

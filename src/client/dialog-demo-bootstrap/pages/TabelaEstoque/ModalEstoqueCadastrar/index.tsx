@@ -10,6 +10,8 @@ import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
+import formatarData from '../../../Functions/formatarData';
+import dataHojeFormatada from '../../../Functions/dataHojeFormatada';
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -52,6 +54,41 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
         setData(novoArray);
     }
 
+    function renderErroExistente() {
+        if (mensagem) {
+            return (
+                <Row className='mb-3 mt-2'>
+                    <Col>
+                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                            <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
+                            <p>
+                                Já existe um medicamento cadastrado com a dosagem, lote e validade inserida.
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+        }
+    }
+
+    function renderErroBack() {
+        if (mensagemErroBack) {
+            return (
+                <Row className='mb-3 mt-3'>
+                    <Col>
+                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                            <Alert.Heading>Erro!</Alert.Heading>
+                            <p>
+                                Não foi possível cadastrar o medicamento, tente novamente mais tarde!
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+        }
+
+    }
+
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
         setLote('')
@@ -81,43 +118,35 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     // Realiza o cadastro
     useEffect(() => {
 
-        var dataValidade = new Date(validade);
-        var validadeFormatada = (dataValidade.getUTCDate()) + "-" + (dataValidade.getMonth() + 1) + "-" + dataValidade.getFullYear();
-
-        var dataHoje = new Date();
+        var validadeFormatada = formatarData(validade);
+        var dataHoje = dataHojeFormatada();
 
         var chaveMedicamentoEspecifico = (lote + '#' + dosagem + '#' + validadeFormatada).toString().toLowerCase().replace(/\s+/g, '');
 
         var chaveGeral = chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifico;
 
-        const dadosMedicamentoEspecifico = new MedicamentoEspecifico(chaveMedicamentoGeral, chaveMedicamentoEspecifico, lote, dosagem, dataValidade, parseInt(quantidade), origem, tipo, fabricante, motivoDoacao, dataHoje, chaveGeral);
+        // const dadosMedicamentoEspecifico = new MedicamentoEspecifico(chaveMedicamentoGeral, chaveMedicamentoEspecifico, lote, dosagem, dataValidade, parseInt(quantidade), origem, tipo, fabricante, motivoDoacao, dataHoje, chaveGeral);
 
-        // Cria um objeto com os dados do medicamento
-        // const medicamentoEspecifico = {
-        //     chaveMedicamentoGeral,
-        //     chaveMedicamentoEspecifico,
-        //     lote,
-        //     dosagem,
-        //     validadeFormatada,
-        //     quantidade,
-        //     origem,
-        //     tipo,
-        //     fabricante,
-        //     motivoDoacao,
-        //     dataHojeFormatada,
-        //     'chaveGeral': chaveMedicamentoGeral + '#' + chaveMedicamentoEspecifico
-        // }
-
+        const medicamentoEspecifico = {
+            chaveMedicamentoGeral,
+            chaveMedicamentoEspecifico,
+            lote,
+            dosagem,
+            "validade": validadeFormatada,
+            quantidade,
+            origem,
+            tipo,
+            fabricante,
+            motivoDoacao,
+            "dataEntrada": dataHoje,
+            chaveGeral
+        }
 
         if (isLoading) {
-            serverFunctions.appendRowMedicamentoEspecifico(dadosMedicamentoEspecifico).then((sucesso) => {
-                console.log("Sucesso: " + sucesso)
-
+            serverFunctions.appendRowMedicamentoEspecifico(medicamentoEspecifico).then((sucesso) => {
                 if (sucesso) {
-
                     // Atualiza a tabela:
-                    // setData([...data, dadosMedicamentoEspecifico]);
-                    orderData(dadosMedicamentoEspecifico);
+                    setData([...data, medicamentoEspecifico]);
 
                     // Limpa os formulários
                     setLote('');
@@ -227,53 +256,29 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
                                 </Col>
                             </Row>
 
-                            <Row className='mb-3 mt-2'>
-                                {mensagem &&
-                                    <Col>
-                                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
-                                            <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
-                                            <p>
-                                                Já existe um medicamento cadastrado com a dosagem, lote e validade inserida.
-                                            </p>
-                                        </Alert>
-                                    </Col>
-                                }
-                            </Row>
+                            {renderErroExistente()}
 
-                            <Row className='mb-3 mt-3'>
-                                {mensagemErroBack &&
-                                    <Col>
-                                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
-                                            <Alert.Heading>Erro!</Alert.Heading>
-                                            <p>
-                                                Não foi possível cadastrar o medicamento, tente novamente mais tarde!
-                                            </p>
-                                        </Alert>
-                                    </Col>
-                                }
-                            </Row>
+                            {renderErroBack()}
 
                         </Container>
-
-                        
                     </Form>
                 </Modal.Body>
 
                 <Modal.Footer>
-                <div className='mt-3 mb-3'>
-                            <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
-                                Cancelar
-                            </Button>
+                    <div className='mt-3 mb-3'>
+                        <Button variant="outline-secondary" onClick={handleClose} className='me-5'>
+                            Cancelar
+                        </Button>
 
-                            <Button
-                                type="submit"
-                                variant="dark"
-                                disabled={isLoading || !isFormValid}
-                                onClick={!isLoading ? handleClick : null}
-                            >
-                                {isLoading ? 'Cadastrando...' : 'Cadastrar'}
-                            </Button>
-                        </div>
+                        <Button
+                            type="submit"
+                            variant="dark"
+                            disabled={isLoading || !isFormValid}
+                            onClick={!isLoading ? handleClick : null}
+                        >
+                            {isLoading ? 'Cadastrando...' : 'Cadastrar'}
+                        </Button>
+                    </div>
                 </Modal.Footer>
             </Modal>
         </>
