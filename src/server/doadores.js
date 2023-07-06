@@ -1,21 +1,17 @@
 const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA";
 
-const formatarData = (data) => {
+const formatarData = (doador) => {
+
+    const data = doador.dataNascimento;
 
     if (data === "-") {
         return data;
-    }
-
-    var novaData = new Date(data);
-    var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
-
-    // Verifica se é o valor Default
-    if (novaDataFormatada === "1-1-1900") {
-        return "-";
-    } else if (novaDataFormatada === "1-12-1899") {
-        return "-"; // PQ TÁ ENTRANDO NESSE AQUI E NÃO NO OUTRO??
-    } else {
+    } else if (doador.tipoDoador === "Pessoa física") {
+        var novaData = new Date(data);
+        var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
         return novaDataFormatada;
+    } else {
+        return "-";
     }
 }
 
@@ -107,7 +103,7 @@ export const appendRowDoadores = (doador) => {
     if (buscaPorDoador) {
         return false;
     } else {
-        let dataNascimento = formatarData(doador.dataNascimento);
+        let dataNascimento = formatarData(doador);
         ws.appendRow([
             doador.chaveDoador,
             doador.nome,
@@ -151,7 +147,7 @@ export const updateRowDoador = (doador) => {
     var ws = ss.getSheetByName("Doador");
 
     // Formatanto a data e pegando novo código
-    var dataNascimentoFormatada = formatarData(doador.dataNascimento);
+    var dataNascimentoFormatada = formatarData(doador);
     var chaveMudou = false;
 
     // Lista com os novos dados:
@@ -199,5 +195,5 @@ export const updateRowDoador = (doador) => {
         return true;
     }
 
-    
+
 }
