@@ -1,4 +1,4 @@
-export default function formatarData() {
+export default function dataHojeFormatada() {
     var dataHoje = new Date();
     var dataHojeFormatada = (dataHoje.getUTCDate()) + "-" + (dataHoje.getMonth() + 1) + "-" + dataHoje.getFullYear();
     

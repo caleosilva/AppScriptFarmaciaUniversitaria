@@ -1,7 +1,6 @@
 const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA"; // Testes 123
 // const idSheet = "18b2ssk9V1GCerIvlg-FzsLzcCDwgDoZWy9a6Q98QxSw";    // Farmacia Universitaria
 
-
 const formatarData = (data) => {
     const caracteres = [...data]
     const tamanho = caracteres.length;
@@ -294,7 +293,7 @@ export const updateRowMedicamentos = (medicamento) => {
             var dados = buscaBinariaCompleta(idSheet, "MedicamentoEspecifico", chaveMedicamentoOriginal, 0);
 
             for (let i = 0; i < dados.length; i++) {
-                var novaChaveGeralEstoque = novaChaveGeral + dados[i].data[1];
+                var novaChaveGeralEstoque = novaChaveGeral + '#' + dados[i].data[1];
                 wsn.getRange("A" + parseInt(dados[i].linha)).setValue(novaChaveGeral);
                 wsn.getRange("L" + parseInt(dados[i].linha)).setValue(novaChaveGeralEstoque);
 
@@ -303,42 +302,4 @@ export const updateRowMedicamentos = (medicamento) => {
         }
         return posicao;
     }
-
-
-
-
-
-    // // Verifica se a nova chave (se for o caso) já existe:
-    // if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {
-    //     // Chave encontrada, não é possível atualizar os dados com esse nome e princípio ativo:
-    //     return false;
-    // } else {
-    //     // Chave não for encontrada, é possível atualizar os dados:
-    //     var novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
-
-    //     var chaveGeralOriginal = medicamento.chaveGeral;
-
-    //     // Acha a linha que os dados originais estão:
-    //     var posicao = buscaBinaria('Medicamentos', chaveGeralOriginal, 1, true)
-    //     if (posicao) {
-    //         // Atualiza e ordena a tabela Medicamentos
-    //         ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
-    //         ordenarPlanilha('Medicamentos', 1)
-
-    //         // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
-    //         if (chaveGeralOriginal !== novaChaveGeral) {
-    //             // Atualização:
-    //             var wsn = ss.getSheetByName("MedicamentoEspecifico");
-
-
-    //             var dados = buscaBinariaCompleta(idSheet, "MedicamentoEspecifico", chaveGeralOriginal, 0);
-    //             for (let i = 0; i < dados.length; i++) {
-    //                 wsn.getRange("A" + parseInt(dados[i].linha)).setValue(novaChaveGeral);
-    //             }
-    //             //Ordenação:
-    //             ordenarPlanilha('MedicamentoEspecifico', 1)
-    //         }
-    //         return posicao;
-    //     }
-    // }
 }

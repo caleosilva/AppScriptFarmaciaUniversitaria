@@ -46,6 +46,8 @@ const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
             var linhaReal = middle + 2
             var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
 
+            var objeto = {}
+
             return { linha: linhaReal, data: info }
 
         } else if (value < valorBuscado) {
@@ -272,36 +274,39 @@ export const updateRowEstoque = (medicamento) => {
     const validadeFormatada = formatarData(medicamento.validade);
     const dataEntradaFormatada = formatarData(medicamento.dataEntrada);
 
-    var novaChaveMedicamentoEspecifico = (medicamento.lote + '#' + medicamento.dosagem + '#' + medicamento.validadeFormatada);
+    var novaChaveMedicamentoEspecifico = (medicamento.lote + '#' + medicamento.dosagem + '#' + validadeFormatada);
     var novaChaveGeral = medicamento.chaveMedicamentoGeral + '#' + novaChaveMedicamentoEspecifico;
 
-    // return JSON.stringify(novaChaveGeral);
+    // Lista com os novos dados:
+    var novosDados = []
 
-    // Verifica se a nova chave (se for o caso) já existe:
-    if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {
-        // Chave encontrada, não é possível atualizar os dados com esse nome e princípio ativo:
-        return false;
-    } else {
-        // Chave não for encontrada, é possível atualizar os dados:
-        var novosDados = [medicamento.chaveMedicamentoGeral, novaChaveMedicamentoEspecifico, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
+    // Verifica se a chave mudou e se é válida
+    if (medicamento.chaveMedicamentoEspecifico !== novaChaveMedicamentoEspecifico) {
 
-        var chaveGeralOriginal = medicamento.chaveMedicamentoGeral;
+        const resultadoBusca = queryMedicamentoEspecifico(novaChaveMedicamentoEspecifico);
 
-        // Acha a linha que os dados originais estão:
-        var dadosEditar = buscaBinariaSimples('MedicamentoEspecifico', chaveGeralOriginal, 12);
+        if (resultadoBusca) {
+            // return false;
+        } else {
 
-        return JSON.stringify(dadosEditar);
-
-        // return JSON.stringify(dadosEditar);
-
-        if (dadosEditar.linha) {
-            // Atualiza e ordena a tabela Medicamentos
-            ws.getRange('A' + dadosEditar.linha + ':L' + dadosEditar.linha).setValues([novosDados]);
-            ordenarPlanilha('MedicamentoEspecifico', 12);
-
-            // return JSON.stringify(dadosEditar); // COMENTEI
+            novosDados = [medicamento.chaveMedicamentoGeral, novaChaveMedicamentoEspecifico, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
         }
 
+    // Se a chave continuar a mesma
+    } else {
+        novosDados = [medicamento.chaveMedicamentoGeral, medicamento.chaveMedicamentoEspecifico, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
+    }
+
+    var chaveGeralOriginal = medicamento.chaveGeral;
+
+
+    // Acha a linha que os dados originais estão:
+    var buscaChaveOriginal = buscaBinariaSimples('MedicamentoEspecifico', chaveGeralOriginal, 12);
+
+    if (buscaChaveOriginal) {
+        ws.getRange('A' + buscaChaveOriginal.linha + ':L' + buscaChaveOriginal.linha).setValues([novosDados]);
+        ordenarPlanilha('MedicamentoEspecifico', 12);
+        return true
     }
 
     return null;
@@ -375,7 +380,7 @@ export const definirDataMaisRecente = (medicamentoEspecifico) => {
 
     const listaValidade = queryValidadeMedicamentoEspecifico(medicamentoEspecifico.chaveMedicamentoGeral);
 
-    
+
 
 
 }

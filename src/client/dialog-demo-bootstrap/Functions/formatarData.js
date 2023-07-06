@@ -4,10 +4,10 @@ export default function formatarData(data) {
     const caracteres = [...textoData]
     const tamanho = caracteres.length;
 
-    if (tamanho <= 10){
+    if (tamanho < 8){
         return data
     }
-
+    
     var novaData = new Date(data);
     var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
 
