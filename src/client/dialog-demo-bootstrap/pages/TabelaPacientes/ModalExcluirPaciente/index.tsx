@@ -41,8 +41,6 @@ export default function ModalExcluirPaciente({ paciente, data, setData, index }:
 
         if (isLoading) {
             serverFunctions.removeRowPaciente(paciente).then((sucesso) => {
-                console.log("Sucesso add: " + sucesso)
-
                 if (sucesso) {
                     // Atualiza a tabela:
                     const novaLista = data.filter((item, posicao) => posicao !== index);

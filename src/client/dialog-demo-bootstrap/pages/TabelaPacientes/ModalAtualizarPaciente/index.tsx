@@ -136,7 +136,6 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
 
             if (isLoading) {
                 serverFunctions.updateRowPaciente(dados).then((sucesso) => {
-                    console.log(sucesso)
                     if (sucesso) {
 
                         data[index] = dados;
