@@ -6,7 +6,7 @@ const formatarData = (data) => {
     const caracteres = [...data]
     const tamanho = caracteres.length;
 
-    if (tamanho <= 10){
+    if (tamanho <= 10) {
         return data
     }
 
@@ -255,42 +255,90 @@ export const updateRowMedicamentos = (medicamento) => {
     var ws = ss.getSheetByName("Medicamentos");
 
     // Formatanto a data e pegando novo código
-    // var dataCadastro = new Date(medicamento.dataCadastro);
     var dataCadastroFormatada = formatarData(medicamento.dataCadastro)
-
     var novaChaveGeral = (medicamento.nome + '#' + medicamento.principioAtivo + '#' + medicamento.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
 
-    // Verifica se a nova chave (se for o caso) já existe:
-    if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {
-        // Chave encontrada, não é possível atualizar os dados com esse nome e princípio ativo:
-        return false;
-    } else {
-        // Chave não for encontrada, é possível atualizar os dados:
-        var novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+    // Lista com os novos dados:
+    var novosDados = [];
 
-        var chaveGeralOriginal = medicamento.chaveGeral;
+    // Verifica se a chave mudou
+    if (medicamento.chaveGeral !== novaChaveGeral) {
 
-        // Acha a linha que os dados originais estão:
-        var posicao = buscaBinaria('Medicamentos', chaveGeralOriginal, 1, true)
-        if (posicao) {
-            // Atualiza e ordena a tabela Medicamentos
-            ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
-            ordenarPlanilha('Medicamentos', 1)
+        const resultadoBusca = encontrarMedicamentoTabelaMedicamentos(novaChaveGeral);
 
-            // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
-            if (chaveGeralOriginal !== novaChaveGeral) {
-                // Atualização:
-                var wsn = ss.getSheetByName("MedicamentoEspecifico");
-
-
-                var dados = buscaBinariaCompleta(idSheet, "MedicamentoEspecifico", chaveGeralOriginal, 0);
-                for (let i = 0; i < dados.length; i++) {
-                    wsn.getRange("A" + parseInt(dados[i].linha)).setValue(novaChaveGeral);
-                }
-                //Ordenação:
-                ordenarPlanilha('MedicamentoEspecifico', 1)
-            }
-            return posicao;
+        if (resultadoBusca) {
+            return false;
+        } else {
+            novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
         }
+
+        // A chave continua a mesma
+    } else {
+        novosDados = [medicamento.chaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
     }
+
+    var chaveMedicamentoOriginal = medicamento.chaveGeral;
+
+    // Acha a linha que os dados originais estão:
+    var posicao = buscaBinaria('Medicamentos', chaveMedicamentoOriginal, 1, true);
+
+    if (posicao) {
+        // Atualiza e ordena a tabela Medicamentos
+        ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
+        ordenarPlanilha('Medicamentos', 1);
+
+        // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
+        if (chaveMedicamentoOriginal !== novaChaveGeral) {
+            
+            var wsn = ss.getSheetByName("MedicamentoEspecifico");
+            var dados = buscaBinariaCompleta(idSheet, "MedicamentoEspecifico", chaveMedicamentoOriginal, 0);
+
+            for (let i = 0; i < dados.length; i++) {
+                var novaChaveGeralEstoque = novaChaveGeral + dados[i].data[1];
+                wsn.getRange("A" + parseInt(dados[i].linha)).setValue(novaChaveGeral);
+                wsn.getRange("L" + parseInt(dados[i].linha)).setValue(novaChaveGeralEstoque);
+
+            }
+            ordenarPlanilha('MedicamentoEspecifico', 1);
+        }
+        return posicao;
+    }
+
+
+
+
+
+    // // Verifica se a nova chave (se for o caso) já existe:
+    // if (encontrarMedicamentoTabelaMedicamentos(novaChaveGeral)) {
+    //     // Chave encontrada, não é possível atualizar os dados com esse nome e princípio ativo:
+    //     return false;
+    // } else {
+    //     // Chave não for encontrada, é possível atualizar os dados:
+    //     var novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+
+    //     var chaveGeralOriginal = medicamento.chaveGeral;
+
+    //     // Acha a linha que os dados originais estão:
+    //     var posicao = buscaBinaria('Medicamentos', chaveGeralOriginal, 1, true)
+    //     if (posicao) {
+    //         // Atualiza e ordena a tabela Medicamentos
+    //         ws.getRange('A' + posicao + ':G' + posicao).setValues([novosDados]);
+    //         ordenarPlanilha('Medicamentos', 1)
+
+    //         // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
+    //         if (chaveGeralOriginal !== novaChaveGeral) {
+    //             // Atualização:
+    //             var wsn = ss.getSheetByName("MedicamentoEspecifico");
+
+
+    //             var dados = buscaBinariaCompleta(idSheet, "MedicamentoEspecifico", chaveGeralOriginal, 0);
+    //             for (let i = 0; i < dados.length; i++) {
+    //                 wsn.getRange("A" + parseInt(dados[i].linha)).setValue(novaChaveGeral);
+    //             }
+    //             //Ordenação:
+    //             ordenarPlanilha('MedicamentoEspecifico', 1)
+    //         }
+    //         return posicao;
+    //     }
+    // }
 }

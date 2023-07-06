@@ -38,7 +38,7 @@ export default function OperacoesMedicamento({ remedio, index, listaDD, data, se
                 delay={{ show: 400, hide: 250 }}
                 overlay={renderTooltip}
             >
-                <Button variant="outline-secondary" onClick={()=> {handleNavigateEstoque()}}>
+                <Button variant="outline-primary" onClick={()=> {handleNavigateEstoque()}}>
                 <i className="bi bi-archive-fill"></i>
 
                 </Button>
