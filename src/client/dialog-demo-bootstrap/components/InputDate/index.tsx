@@ -2,20 +2,25 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 
 
-export default function InputDate ({label, controlId, name, data, setData}: 
-    {label: string, controlId: string, name: string, data: Date, setData: Function})  {
+export default function InputDate({ label, controlId, name, data, setData }:
+    { label: string, controlId: string, name: string, data: Date, setData: Function }) {
 
-    // var dataObj= new Date(data);
-    var dataFormatada = data.toISOString().split('T')[0];
+    const handleChange = (event) => {
+        const inputValue = event.target.value;
+        const inputDate = new Date(inputValue);
 
-    
+        if (!isNaN(inputDate.getTime())) {
+            console.log(inputDate);
+            setData(inputValue);
+        }
+    }
 
     return (
         <Form.Group className="mb-3" controlId={controlId}>
             <Form.Label className='labelInputConfig'>{label}</Form.Label>
-            <Form.Control type="date" name={name} value={dataFormatada} onChange={(e) => setData(e.target.value)}/>
+            <Form.Control type="date" name={name} value={data.toISOString().split('T')[0]} onChange={handleChange}/>
         </Form.Group>
 
-        
+
     )
 }

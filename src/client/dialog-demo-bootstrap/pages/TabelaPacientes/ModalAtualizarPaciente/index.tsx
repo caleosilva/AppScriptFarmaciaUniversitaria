@@ -26,18 +26,6 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
 
     const [alterado, setAlterado] = useState(false);
 
-    // const [nome, setNome] = useState(paciente.nome);
-    // const [cidade, setCidade] = useState(paciente.cidade);
-    // const [bairro, setBairro] = useState(paciente.bairro);
-    // const [endereco, setEndereco] = useState(paciente.endereco);
-    // const [numero, setNumero] = useState(paciente.numero);
-    // const [comoSoube, setComoSoube] = useState(paciente.comoSoube);
-    // const [cnpj, setCnpj] = useState(paciente.cnpj);
-    // const [cpf, setCpf] = useState(paciente.cpf);
-    // const [dataNascimento, setDataNascimento] = useState(paciente.dataNascimento);
-    // const [sexo, setSexo] = useState(paciente.sexo);
-    // const [estadoCivil, setEstadoCivil] = useState(paciente.estadoCivil);
-
     const [nome, setNome] = useState(paciente.nome);
     const [cpf, setCpf] = useState(paciente.cpf);
     const [dataNascimento, setDataNascimento] = useState(paciente.dataNascimento);
@@ -108,14 +96,15 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (nome !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
+        var localDataString = dataNascimento.toString();
+
+        if (nome !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && localDataString.length === 10 && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
 
         setAlterado(true);
-
     }, [nome, cpf, dataNascimento, telefone, tipoPaciente, complemento, sexo, estadoCivil, cidade, bairro, endereco, numero, comoSoube]);
 
 
@@ -310,7 +299,6 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
                                     <InputText type={"text"} required={true} label={"Número do endereço"} placeholder={""} controlId={"inputNumero"} name={"numero"} data={numero} setData={setNumero} />
                                 </Col>
                             </Row>
-
 
                             <Row>
                                 <Col>
