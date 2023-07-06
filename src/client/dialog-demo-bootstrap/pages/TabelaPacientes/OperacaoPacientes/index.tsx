@@ -4,6 +4,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Paciente from '../../../../../models/Paciente';
 import ModalVerMaisPaciente from '../ModalVerMaisPaciente';
 import ModalExcluirPaciente from '../ModalExcluirPaciente';
+import ModalAtualizarPaciente from '../ModalAtualizarPaciente';
 
 import React from 'react';
 
@@ -12,9 +13,7 @@ export default function operacoesPaciente({ paciente, listaDD, data, setData, in
         <ButtonGroup aria-label="Basic example">
             <ModalVerMaisPaciente paciente={paciente} />
 
-            <Button variant="outline-secondary">
-                <i className="bi bi-pencil-square"></i>
-            </Button>
+            <ModalAtualizarPaciente paciente={paciente} index={index} listaDrop={listaDD} data={data} setData={setData}/>
 
             <ModalExcluirPaciente paciente={paciente} data={data} setData={setData} index={index} />
         </ButtonGroup>

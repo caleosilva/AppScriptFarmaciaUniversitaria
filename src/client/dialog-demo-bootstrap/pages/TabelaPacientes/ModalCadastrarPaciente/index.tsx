@@ -76,7 +76,6 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-
         if (nome !== '' && cpf !== '' && cpf.length === 14 && dataNascimento !== '' && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
             setIsFormValid(true);
         } else {
