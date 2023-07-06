@@ -274,7 +274,7 @@ export const updateRowEstoque = (medicamento) => {
     const validadeFormatada = formatarData(medicamento.validade);
     const dataEntradaFormatada = formatarData(medicamento.dataEntrada);
 
-    var novaChaveMedicamentoEspecifico = (medicamento.lote + '#' + medicamento.dosagem + '#' + validadeFormatada);
+    var novaChaveMedicamentoEspecifico = (medicamento.lote + '#' + medicamento.dosagem + '#' + validadeFormatada).toLowerCase().replace(/\s/g, '');
     var novaChaveGeral = medicamento.chaveMedicamentoGeral + '#' + novaChaveMedicamentoEspecifico;
 
     // Lista com os novos dados:

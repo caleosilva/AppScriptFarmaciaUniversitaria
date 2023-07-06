@@ -18,7 +18,7 @@ import formatarData from '../../../Functions/formatarData.js';
 import React, { useState, useEffect } from 'react';
 
 
-export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { remedio: MedicamentoEspecifico, listaDD: string[][] }) {
+export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD, data, setData, index}: { remedio: MedicamentoEspecifico, listaDD: string[][], data: Array<MedicamentoEspecifico>, setData: Function, index: number}) {
 
     // CRIAR OS USESTATE
     const [lista, setLista] = useState([[]]);
@@ -130,22 +130,18 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD }: { 
             if (isLoading) {
 
                 serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {
-                    console.log("Medicamento: ", dadosMedicamentoEspecifico);
-                    console.log("Sucesso: " + sucesso);
+
                     if (sucesso) {
-                        // data[index] = novosDados;
-                        // setData([...data]);
+                        data[index] = dadosMedicamentoEspecifico;
+                        setData([...data]);
 
                         setAlterado(false);
                         setMensagem(false);
                         setLoading(false);
                         handleClose();
-                        console.log("Sucesso");
-
                     } else {
                         setMensagem(true);
                         setLoading(false);
-                        console.log("Deu ruim aqui");
                     }
                 }).catch(
                     (e) => {
