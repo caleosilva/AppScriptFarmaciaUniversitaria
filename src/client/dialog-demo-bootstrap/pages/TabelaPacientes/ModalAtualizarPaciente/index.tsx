@@ -181,31 +181,37 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
 
     function renderWarningDadosExistentes() {
         if (mensagem) {
-            <Row className='mb-3 mt-3'>
-                <Col>
-                    <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
-                        <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
-                        <p>
-                            Já existe um paciente cadastrado com o CPF, CNPJ ou Nome inserido.
-                        </p>
-                    </Alert>
-                </Col>
-            </Row>
+            return (
+                <Row className='mb-3 mt-3'>
+                    <Col>
+                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                            <Alert.Heading>Não foi possível atualizar as informações</Alert.Heading>
+                            <p>
+                                Já existe um paciente cadastrado com o CPF, CNPJ ou Nome inserido.
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+
         }
     }
 
     function renderWarningBackError() {
         if (mensagemErroBack) {
-            <Row className='mb-3 mt-3'>
-                <Col>
-                    <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
-                        <Alert.Heading>Erro!</Alert.Heading>
-                        <p>
-                            Não foi possível atualizar as informações, tente novamente mais tarde!
-                        </p>
-                    </Alert>
-                </Col>
-            </Row>
+            return (
+                <Row className='mb-3 mt-3'>
+                    <Col>
+                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                            <Alert.Heading>Erro!</Alert.Heading>
+                            <p>
+                                Não foi possível atualizar as informações, tente novamente mais tarde!
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+
         }
     }
 
@@ -261,7 +267,7 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
                                 </Col>
 
                                 <Col sm={6}>
-                                    <InputDate label={"Data de nascimento"} controlId={"inputNascimento"} name={"nascimento"} data={dateObject} setData={setDataNascimento}/>
+                                    <InputDate label={"Data de nascimento"} controlId={"inputNascimento"} name={"nascimento"} data={dateObject} setData={setDataNascimento} />
                                 </Col>
                             </Row>
 

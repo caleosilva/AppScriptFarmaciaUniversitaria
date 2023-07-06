@@ -134,3 +134,42 @@ export const removeRowPaciente = (paciente) => {
     }
     return false;
 }
+
+export const updateRowPaciente = (paciente) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("Pacientes");
+
+    // Formatanto a data e pegando novo código
+    var dataNascimentoFormatada = formatarData(paciente.dataNascimento);
+    var novaChavePaciente = paciente.cpf;
+
+    // Lista com os novos dados:
+    var novosDados = []
+
+    // Verifica se a nova chave (se for o caso) é válida e preenche a lista com os novos dados
+    if (paciente.cpf !== paciente.chavePaciente) {
+
+        const resultadoBusca = buscaBinariaSimples("Pacientes", novaChavePaciente, 1);
+
+        if (resultadoBusca) {
+            return false;
+        } else {
+            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
+        }
+    // O CPF continua o mesmo
+    } else {
+        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
+    }
+
+    var chavePacienteOriginal = paciente.chavePaciente;
+
+    // Acha a linha que os dados originais estão:
+    var buscaChaveOriginal = buscaBinariaSimples('Pacientes', chavePacienteOriginal, 1);
+
+    if (buscaChaveOriginal) {
+        // Atualiza e ordena a tabela
+        ws.getRange('A' + buscaChaveOriginal.linha + ':N' + buscaChaveOriginal.linha).setValues([novosDados]);
+        ordenarPlanilha('Pacientes', 1);
+        return true;
+    }
+}
