@@ -1,9 +1,8 @@
 import MedicamentoEspecifico from '../models/MedicamentoEspecifico';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
 
+import idSheet from './env';
 
-const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA"; // Testes 123
-// const idSheet = "18b2ssk9V1GCerIvlg-FzsLzcCDwgDoZWy9a6Q98QxSw";    // Farmacia Universitaria
 
 const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
 

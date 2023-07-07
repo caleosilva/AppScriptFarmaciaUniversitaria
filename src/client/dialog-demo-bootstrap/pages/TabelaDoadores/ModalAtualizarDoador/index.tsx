@@ -168,7 +168,8 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
             }
             if (isLoading) {
                 serverFunctions.updateRowDoador(dados).then((sucesso) => {
-                    console.log(sucesso)
+
+                    console.log(sucesso);
                     if (sucesso) {
 
                         var novosDados = gerarObjetoEstiloDoador(dados);

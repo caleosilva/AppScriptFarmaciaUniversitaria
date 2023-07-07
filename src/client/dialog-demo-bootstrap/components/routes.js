@@ -21,8 +21,6 @@ export default function AppRouter() {
                     <Route path='/estoque' element={<TabelaEstoque/>}/>
                     <Route path='/doadores' element={<TabelaDoadores/>}/>
                     <Route path='/pacientes' element={<TabelaPacientes/>}/>
-
-
                 </Routes>
             </Router>
         </main>

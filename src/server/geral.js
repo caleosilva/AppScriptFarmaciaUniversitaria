@@ -1,5 +1,7 @@
-const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA"; // Testes 123
-// const idSheet = "18b2ssk9V1GCerIvlg-FzsLzcCDwgDoZWy9a6Q98QxSw";    // Farmacia Universitaria
+// const idSheet = "1t3eQuU5-PqPzX7Yb2r-iHEjXvi1oKC3Jf0ors4MhZUA"; // Testes 123
+// const idSheet = "1m_oQevP8OAzaSceG_0iFQ0lQlYCWHqQIyRCsIlP7W1w";    // Farmacia Solidaria UEFS
+
+import idSheet from './env';
 
 export const getInformacoesSelect = () => {
     var ss = SpreadsheetApp.openById(idSheet);
