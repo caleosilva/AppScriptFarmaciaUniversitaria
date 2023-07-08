@@ -33,8 +33,7 @@ import {
   appendRowMedicamentoEspecifico,
   atualizarQuantidadeEstoque,
   updateRowEstoque,
-  removeRowEstoque,
-  definirDataMaisRecente
+  removeRowEstoque
 } from './estoque'
 
 // Import referente aos Doadores:
@@ -74,7 +73,6 @@ export {
   atualizarQuantidadeEstoque,
   updateRowEstoque,
   removeRowEstoque,
-  definirDataMaisRecente,
 
   //Doadores
   getDoadores,

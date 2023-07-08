@@ -58,9 +58,9 @@ const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
     return false;
 }
 
-const queryValidadeMedicamentoEspecifico = (chaveDeBusca) => {
+const queryValidades = (chaveDeBusca) => {
     const sql = "select E where A = '" + chaveDeBusca + "'";
-    const dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql);
+    var dados = realizarQuery('MedicamentoEspecifico', 'A', 'L', sql);
 
     if (dados[0][0] == "#N/A") {
         return false;
@@ -69,12 +69,52 @@ const queryValidadeMedicamentoEspecifico = (chaveDeBusca) => {
         var listaValidade = [];
 
         for (let i = 0; i < dados.length; i++) {
-            let validadeFormatada = formatarData(dados[i])
-            listaValidade.push(validadeFormatada);
+            listaValidade.push(dados[i][0]);
         }
-
         return listaValidade;
     }
+}
+
+const encontrarMaisProxima = (listaComValidades) => {
+    const currentDate = new Date();
+    const dates = listaComValidades.map(dateStr => new Date(dateStr));
+
+    let closestDate = dates[0];
+    let closestDiff = Math.abs(dates[0] - currentDate);
+
+    for (let i = 1; i < dates.length; i++) {
+        const diff = Math.abs(dates[i] - currentDate);
+        if (diff < closestDiff) {
+            closestDiff = diff;
+            closestDate = dates[i];
+        }
+    }
+
+    return formatarData(closestDate);
+}
+
+const definirDataMaisRecente = (MedicamentoEspecifico) => {
+
+    const chaveMedicamentoGeral = MedicamentoEspecifico.chaveMedicamentoGeral;
+
+    // Pegando a data mais próxima
+    const listaValidades = queryValidades(chaveMedicamentoGeral);
+
+    var dataMaisProxima;
+
+    if (listaValidades) {
+        dataMaisProxima = encontrarMaisProxima(listaValidades);
+    } else {
+        dataMaisProxima = '-';
+    }
+
+    var ss = SpreadsheetApp.openById(idSheet);
+    var wsMed = ss.getSheetByName("Medicamentos");
+
+    var dadosMed = buscaBinariaSimples("Medicamentos", chaveMedicamentoGeral, 1);
+
+    wsMed.getRange("I" + parseInt(dadosMed.linha)).setValue(dataMaisProxima);
+    return JSON.stringify(dadosMed);
 }
 
 export const queryMedicamentoEspecifico = (chaveDeBusca) => {
@@ -261,6 +301,9 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
         var novaQuantidadeMed = parseInt(quantidadeMed) + parseInt(medicamento.quantidade);
         wsMed.getRange("H" + parseInt(dadosMed.linha)).setValue(novaQuantidadeMed);
 
+        // Atualiza a validade:
+        definirDataMaisRecente(medicamento);
+
         return true;
     }
 }
@@ -285,13 +328,13 @@ export const updateRowEstoque = (medicamento) => {
         const resultadoBusca = queryMedicamentoEspecifico(novaChaveMedicamentoEspecifico);
 
         if (resultadoBusca) {
-            // return false;
+            return false;
         } else {
 
             novosDados = [medicamento.chaveMedicamentoGeral, novaChaveMedicamentoEspecifico, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
         }
 
-    // Se a chave continuar a mesma
+        // Se a chave continuar a mesma
     } else {
         novosDados = [medicamento.chaveMedicamentoGeral, medicamento.chaveMedicamentoEspecifico, medicamento.lote, medicamento.dosagem, validadeFormatada, medicamento.quantidade, medicamento.origem, medicamento.tipo, medicamento.fabricante, medicamento.motivoDoacao, dataEntradaFormatada, novaChaveGeral];
     }
@@ -305,6 +348,9 @@ export const updateRowEstoque = (medicamento) => {
     if (buscaChaveOriginal) {
         ws.getRange('A' + buscaChaveOriginal.linha + ':L' + buscaChaveOriginal.linha).setValues([novosDados]);
         ordenarPlanilha('MedicamentoEspecifico', 12);
+
+        // Atualiza a validade:
+        definirDataMaisRecente(medicamento);
         return true
     }
 
@@ -318,7 +364,7 @@ export const removeRowEstoque = (medicamento) => {
 
     // Encontrando o medicamento:
     var codigo = medicamento.chaveGeral;
-    var dados = buscaBinariaSimples("MedicamentoEspecifico", codigo, 12)
+    var dados = buscaBinariaSimples("MedicamentoEspecifico", codigo, 12);
 
     if (dados) {
         let linha = dados.linha;
@@ -334,6 +380,9 @@ export const removeRowEstoque = (medicamento) => {
             var novaQuantidadeMed = parseInt(quantidadeMed) - parseInt(medicamento.quantidade);
             wsMed.getRange("H" + parseInt(dadosMed.linha)).setValue(novaQuantidadeMed);
         }
+
+        // Atualiza a data de vencimento mais próxima:
+        definirDataMaisRecente(medicamento);
         return true;
     }
     return false;
@@ -375,11 +424,3 @@ export const atualizarQuantidadeEstoque = (medicamento, quantidadeInput, adicion
     return false;
 }
 
-export const definirDataMaisRecente = (medicamentoEspecifico) => {
-
-    const listaValidade = queryValidadeMedicamentoEspecifico(medicamentoEspecifico.chaveMedicamentoGeral);
-
-
-
-
-}

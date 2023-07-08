@@ -42,18 +42,6 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
     const [fabricante, setFabricante] = useState('');
     const [motivoDoacao, setMotivoDoacao] = useState('');//-----------------SELECT
 
-    function orderData(medicamentoEspecifico) {
-        const novoArray = [...data, medicamentoEspecifico];
-
-        novoArray.sort((a, b) => {
-            const chaveA = a.chaveGeral.replace(/#/g, "");
-            const chaveB = b.chaveGeral.replace(/#/g, "");
-
-            return chaveA.localeCompare(chaveB);
-        });
-        setData(novoArray);
-    }
-
     function renderErroExistente() {
         if (mensagem) {
             return (
@@ -141,6 +129,9 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
             "dataEntrada": dataHoje,
             chaveGeral
         }
+
+        console.log("validadeFormatada", validadeFormatada);
+        console.log(medicamentoEspecifico);
 
         if (isLoading) {
             serverFunctions.appendRowMedicamentoEspecifico(medicamentoEspecifico).then((sucesso) => {
