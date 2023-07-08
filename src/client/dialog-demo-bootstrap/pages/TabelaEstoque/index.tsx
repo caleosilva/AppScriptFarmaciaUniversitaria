@@ -21,6 +21,7 @@ import OperacoesEstoque from './OperacoesEstoque';
 import '../style.css';
 import ModalEstoqueCadastrar from './ModalEstoqueCadastrar';
 import formatarData from '../../Functions/formatarData';
+import formatarDataParaVisualizacao from '../../Functions/formatarDataParaVisualizacao';
 
 export default function TabelaEstoque() {
     // Carrega a informação da página anterior
@@ -101,7 +102,7 @@ export default function TabelaEstoque() {
                             }).map((medicamento, index) =>
                                 <tr key={index}>
                                     <td>{medicamento.lote}</td>
-                                    <td>{formatarData(medicamento.validade)}</td>
+                                    <td>{formatarDataParaVisualizacao(medicamento.validade)}</td>
                                     <td>{medicamento.dosagem}</td>
                                     <td>{medicamento.quantidade}</td>
                                     <td>

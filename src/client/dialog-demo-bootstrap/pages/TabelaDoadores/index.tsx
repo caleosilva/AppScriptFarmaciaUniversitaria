@@ -15,6 +15,7 @@ import '../style.css';
 import formatarData from '../../Functions/formatarData';
 import ModalCadastarDoador from './ModalCadastrarDoador';
 import OperacaoDoadores from './OperacaoDoadores';
+import formatarDataParaVisualizacao from '../../Functions/formatarDataParaVisualizacao';
 
 export default function TabelaDoadores() {
 
@@ -76,7 +77,7 @@ export default function TabelaDoadores() {
                             }).map((doador, index) =>
                                 <tr key={index}>
                                     <td>{doador.nome}</td>
-                                    <td>{formatarData(doador.dataNascimento)}</td>
+                                    <td>{formatarDataParaVisualizacao(doador.dataNascimento)}</td>
                                     <td>{doador.cpf}</td>
                                     <td>
                                         <OperacaoDoadores doador={doador} listaDD={infoDD} data={data} setData={setData} index={index}/>

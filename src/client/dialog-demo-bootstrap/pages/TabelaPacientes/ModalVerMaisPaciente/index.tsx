@@ -9,7 +9,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import React, { useState} from 'react';
 
-import formatarData from '../../../Functions/formatarData'
+import formatarDataParaVisualizacao from '../../../Functions/formatarDataParaVisualizacao';
 import Paciente from '../../../../../models/Paciente';
 
 
@@ -70,7 +70,7 @@ export default function ModalVerMaisPaciente({ paciente }: { paciente: Paciente 
 
                         <Row>
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Data de Nascimento"} data={formatarData(paciente.dataNascimento)} controlId={"exibirNascimento"} />
+                                <ExibirInputSimples label={"Data de Nascimento"} data={formatarDataParaVisualizacao(paciente.dataNascimento)} controlId={"exibirNascimento"} />
                             </Col>
 
                             <Col sm={6}>

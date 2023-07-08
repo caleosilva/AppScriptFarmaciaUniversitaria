@@ -1,4 +1,4 @@
-export default function formatarData(dataRecebida) {
+export default function formatarDataParaVisualizacao(dataRecebida) {
     let textoData = dataRecebida.toString();
     const caracteres = [...textoData]
     const tamanho = caracteres.length;
@@ -28,6 +28,6 @@ export default function formatarData(dataRecebida) {
 
     var ano = data.getFullYear();
 
-    var dataFormatada = dia + '-' + mes + '-' + ano;
+    var dataFormatada = dia + '/' + mes + '/' + ano;
     return dataFormatada;
 }

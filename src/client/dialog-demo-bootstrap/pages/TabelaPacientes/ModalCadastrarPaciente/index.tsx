@@ -12,6 +12,7 @@ import InputCpf from '../../../components/InputCpf';
 import InputTelefone from '../../../components/InputTelefone';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import Doador from '../../../../../models/Doador';
+import formatarData from '../../../Functions/formatarData.js';
 import gerarObjetoEstiloDoador from '../../../Functions/gerarObjetoEstiloDoador';
 
 
@@ -87,11 +88,13 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     // Realiza o cadastro //TO-DO
     useEffect(() => {
 
+        var dataNascimentoFormatada = formatarData(dataNascimento);
+
         const dados = {
             "chavePaciente": cpf,
             nome,
             cpf,
-            dataNascimento,
+            "dataNascimento": dataNascimentoFormatada,
             telefone,
             tipoPaciente,
             complemento,

@@ -11,8 +11,7 @@ import InputText from '../../../components/InputText';
 import InputSelect from '../../../components/InputSelect';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import MedicamentoGeral from '../../../../../models/MedicamentoGeral';
-import ErroMedicamentoGeralExistente from '../../../../../erros/ErroMedicamentoGeralExistente';
-import dataHojeFormatada from '../../../Functions/dataHojeFormatada'
+import dataHojeFormatada from '../../../Functions/dataHojeFormatada';
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -67,27 +66,21 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
     useEffect(() => {
 
         const dataCadastro = dataHojeFormatada();
+
         const chaveGeral = (nome + '#' + principioAtivo + '#' + apresentacao).toString().toLowerCase().replace(/\s+/g, '');
         const quantidadeTotal = 0;
         const validadeMaisProxima = "-";
 
         // Cria um objeto com os dados do medicamento
-        const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
+        // const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataHoje, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
 
-        const medicamento = {
-            'chaveGeral': (nome + '#' + principioAtivo + '#' + apresentacao).toString().toLowerCase().replace(/\s+/g, ''),
-            nome,
-            principioAtivo,
-            classe,
-            tarja,
-            apresentacao,
-            "quantidadeTotal": "0",
-            "validadeMaisProxima": "-",
-            dataCadastro
+        const medicamentoGeral = {
+            chaveGeral, "dataCadastro": dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
         }
 
         if (isLoading) {
             serverFunctions.appendRowMedicamentos(medicamentoGeral).then((sucesso) => {
+                console.log(sucesso);
                 if (sucesso) {
                     // Atualiza a tabela:
                     setData([...data, medicamentoGeral])

@@ -127,6 +127,8 @@ export default function ModalAtualizarInfomacoesEstoque({ remedio, listaDD, data
         } else {
             const dadosMedicamentoEspecifico = new MedicamentoEspecifico(remedio.chaveMedicamentoGeral, remedio.chaveMedicamentoEspecifico, lote, dosagem, validade, quantidade, origem, tipo, fabricante, motivoDoacao, dataEntrada, remedio.chaveGeral);
 
+            // console.log(dadosMedicamentoEspecifico)
+
             if (isLoading) {
 
                 serverFunctions.updateRowEstoque(dadosMedicamentoEspecifico).then((sucesso) => {

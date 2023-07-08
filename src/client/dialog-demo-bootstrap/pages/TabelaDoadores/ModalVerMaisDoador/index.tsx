@@ -10,7 +10,7 @@ import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import React, { useState, useEffect } from 'react';
 
 import Doador from '../../../../../models/Doador';
-import formatarData from '../../../Functions/formatarData'
+import formatarDataParaVisualizacao from '../../../Functions/formatarDataParaVisualizacao'
 
 
 export default function ModalVerMaisDoador({ doador }: { doador: Doador }) {
@@ -43,7 +43,7 @@ export default function ModalVerMaisDoador({ doador }: { doador: Doador }) {
                         </Col>
 
                         <Col sm={6}>
-                            <ExibirInputSimples label={"Data de nascimento"} data={formatarData(doador.dataNascimento)} controlId={"exibirDataNascimento"} />
+                            <ExibirInputSimples label={"Data de nascimento"} data={formatarDataParaVisualizacao(doador.dataNascimento)} controlId={"exibirDataNascimento"} />
                         </Col>
                     </Row>
 

@@ -16,7 +16,6 @@ import dataHojeFormatada from '../../../Functions/dataHojeFormatada';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import InputPositiveNumber from '../../../components/InputPositiveNumber';
-import { object } from 'prop-types';
 
 
 export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMedicamentoGeral }: { data: Array<MedicamentoEspecifico>, setData: Function, listaDD: string[][], chaveMedicamentoGeral: string }) {
@@ -120,7 +119,7 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
             chaveMedicamentoEspecifico,
             lote,
             dosagem,
-            "validade": validadeFormatada,
+            validade,
             quantidade,
             origem,
             tipo,
@@ -130,10 +129,9 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
             chaveGeral
         }
 
-        console.log("validadeFormatada", validadeFormatada);
-        console.log(medicamentoEspecifico);
-
         if (isLoading) {
+            console.log(medicamentoEspecifico)
+            setLoading(false)
             serverFunctions.appendRowMedicamentoEspecifico(medicamentoEspecifico).then((sucesso) => {
                 if (sucesso) {
                     // Atualiza a tabela:

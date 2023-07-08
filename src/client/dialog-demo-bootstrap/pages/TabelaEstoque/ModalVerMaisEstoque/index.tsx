@@ -11,6 +11,7 @@ import React, { useState, useEffect } from 'react';
 
 import MedicamentoEspecifico from '../../../../../models/MedicamentoEspecifico';
 import formatarData from '../../../Functions/formatarData'
+import formatarDataParaVisualizacao from '../../../Functions/formatarDataParaVisualizacao';
 
 
 export default function ModalExemplo({ remedio }: { remedio: MedicamentoEspecifico }) {
@@ -32,7 +33,7 @@ export default function ModalExemplo({ remedio }: { remedio: MedicamentoEspecifi
         </Tooltip>
     );
 
-    const dataEntradaFormatada = formatarData(remedio.dataEntrada);
+    const dataEntradaFormatada = formatarDataParaVisualizacao(remedio.dataEntrada);
 
     return (
         <>
@@ -80,7 +81,7 @@ export default function ModalExemplo({ remedio }: { remedio: MedicamentoEspecifi
                             </Col>
 
                             <Col sm={6}>
-                                <ExibirInputSimples label={"Validade"} data={formatarData(remedio.validade)} controlId={"exibirValidade"} />
+                                <ExibirInputSimples label={"Validade"} data={formatarDataParaVisualizacao(remedio.validade)} controlId={"exibirValidade"} />
                             </Col>
                         </Row>
 

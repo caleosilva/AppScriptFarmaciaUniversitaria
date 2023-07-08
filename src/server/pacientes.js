@@ -1,18 +1,12 @@
 import idSheet from './env';
+import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
+
 
 const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName(nomeDaAba);
     var range = ws.getDataRange().offset(1, 0); // começa na segunda linha
     range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
-}
-
-const formatarData = (data) => {
-
-    var novaData = new Date(data);
-    var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
-
-    return novaDataFormatada;
 }
 
 const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
@@ -95,12 +89,12 @@ export const appendRowPacientes = (paciente) => {
     if (resultadoBuscaPorPaciente) {
         return false;
     } else {
-        let dataNascimento = formatarData(paciente.dataNascimento);
+        // let dataNascimento = formatarData(paciente.dataNascimento);
         ws.appendRow([
             paciente.chavePaciente,
             paciente.nome,
             paciente.cpf,
-            dataNascimento,
+            paciente.dataNascimento,
             paciente.telefone,
             paciente.tipoPaciente,
             paciente.complemento,
@@ -140,7 +134,7 @@ export const updateRowPaciente = (paciente) => {
     var ws = ss.getSheetByName("Pacientes");
 
     // Formatanto a data e pegando novo código
-    var dataNascimentoFormatada = formatarData(paciente.dataNascimento);
+    // var paciente.dataNascimento = formatarData(paciente.dataNascimento);
     var novaChavePaciente = paciente.cpf;
 
     // Lista com os novos dados:
@@ -154,11 +148,11 @@ export const updateRowPaciente = (paciente) => {
         if (resultadoBusca) {
             return false;
         } else {
-            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
+            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
         }
     // A chave continua a mesma
     } else {
-        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
+        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
     }
 
     var chavePacienteOriginal = paciente.chavePaciente;

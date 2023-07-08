@@ -10,10 +10,10 @@ import Alert from 'react-bootstrap/Alert';
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-// import InputBuscar from '../../components/InputBuscar' // TENHO QUE REFATORAR PARA UTILIZAR ISSO AQ
 import MedModalCadastrar from './ModalCadastrarMedicamento';
 import OperacoesMedicamento from './OperacoesMedicamento'
 import { serverFunctions } from '../../../utils/serverFunctions';
+import formatarDataParaVisualizacao from '../../Functions/formatarDataParaVisualizacao';
 import '../style.css'
 import './TabelaMedicamentos.css'
 
@@ -77,8 +77,7 @@ function TabelaMedicamentos() {
         var validadeFormatada = '-';
 
         if (validade !== '-'){
-            var novaData = new Date(validade);
-            validadeFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
+            validadeFormatada = formatarDataParaVisualizacao(validade)
         }
         
         return (
@@ -105,8 +104,8 @@ function TabelaMedicamentos() {
     }, []);
 
     useEffect(() => {
-        // serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string))}).catch(alert);
         renderTable();
+        console.log(data);
     }, [data]);
 
 

@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import MedicamentoGeral from '../../../../../models/MedicamentoGeral'
 import formatarData from '../../../Functions/formatarData';
+import formatarDataParaVisualizacao from '../../../Functions/formatarDataParaVisualizacao';
 
 
 export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral }) {
@@ -27,7 +28,7 @@ export default function MedModalVerMais({ remedio }: { remedio: MedicamentoGeral
     );
 
     function renderFormularioDeExibicao() {
-        const dataCadastroFormatada = formatarData(remedio.dataCadastro);
+        const dataCadastroFormatada = formatarDataParaVisualizacao(remedio.dataCadastro);
         return (
             <Form>
                 <Row>

@@ -15,6 +15,7 @@ import '../style.css';
 import formatarData from '../../Functions/formatarData';
 import OperacaoPacientes from './OperacaoPacientes';
 import ModalCadastrarPaciente from './ModalCadastrarPaciente';
+import formatarDataParaVisualizacao from '../../Functions/formatarDataParaVisualizacao';
 
 export default function TabelaPaciente() {
 
@@ -25,7 +26,7 @@ export default function TabelaPaciente() {
     const [infoDD, setInfoDD] = useState(null);
 
     useEffect(() => {
-        serverFunctions.getPacientes().then(string => { setData(JSON.parse(string)) }).catch(alert);
+        serverFunctions.getPacientes().then(string => { setData(JSON.parse(string))}).catch(alert);
     }, []);
 
     useEffect(() => {
@@ -76,7 +77,7 @@ export default function TabelaPaciente() {
                             }).map((paciente, index) =>
                                 <tr key={index}>
                                     <td>{paciente.nome}</td>
-                                    <td>{formatarData(paciente.dataNascimento)}</td>
+                                    <td>{formatarDataParaVisualizacao(paciente.dataNascimento)}</td>
                                     <td>{paciente.cpf}</td>
                                     <td>
                                         <OperacaoPacientes paciente={paciente} listaDD={infoDD} data={data} setData={setData} index={index}/>

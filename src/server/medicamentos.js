@@ -1,19 +1,20 @@
 import idSheet from './env';
+import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
 
 
-const formatarData = (data) => {
-    const caracteres = [...data]
-    const tamanho = caracteres.length;
+// const formatarData = (data) => {
+//     const caracteres = [...data]
+//     const tamanho = caracteres.length;
 
-    if (tamanho <= 10) {
-        return data
-    }
+//     if (tamanho <= 10) {
+//         return data
+//     }
 
-    var novaData = new Date(data);
-    var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
+//     var novaData = new Date(data);
+//     var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
 
-    return novaDataFormatada;
-}
+//     return novaDataFormatada;
+// }
 
 const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
 
@@ -161,15 +162,10 @@ export const getMedicamentos = () => {
 
         if (data.length > 0) {
             for (i = 0; i < data.length; i++) {
-                var dataCadastro = new Date(data[i][1]);
-                var dataCadastroFormatada = (dataCadastro.getUTCDate()) + "-" + (dataCadastro.getMonth() + 1) + "-" + dataCadastro.getFullYear();
-
-                // const remedio = new MedicamentoGeral(data[i][0], data[i][1], dataCadastroFormatada, data[i][2], data[i][3], data[i][4], data[i][5], data[i][6]);
-
+                
                 const remedio = {
                     "chaveGeral": data[i][0],
                     "dataCadastro": data[i][1],
-                    "dataCadastroFormatada": dataCadastroFormatada,
                     "nome": data[i][2],
                     "principioAtivo": data[i][3],
                     "classe": data[i][4],
@@ -230,7 +226,6 @@ export const appendRowMedicamentos = (medicamento) => {
     var codigo = medicamento.chaveGeral;
 
     if (encontrarMedicamentoTabelaMedicamentos(codigo)) {
-        // throw new ErroMedicamentoGeralExistente("O medicamento já está cadastrado!");
         return false;
     } else {
         ws.appendRow([
@@ -242,7 +237,7 @@ export const appendRowMedicamentos = (medicamento) => {
             medicamento.tarja,
             medicamento.apresentacao,
             medicamento.quantidadeTotal,
-            medicamento.validadeMaisProxima
+            formatarData(medicamento.validadeMaisProxima)            
         ]);
         ordenarPlanilha("Medicamentos", 1)
         return true;
