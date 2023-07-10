@@ -8,6 +8,7 @@ import TabelaDoadores from '../pages/TabelaDoadores';
 import TabelaMedicamentos from '../pages/TabelaMedicamentos';
 import TabelaPacientes from '../pages/TabelaPacientes';
 import Sobre from '../pages/Sobre';
+import Login from '../pages/Login';
 
 
 export default function AppRouter() {
@@ -23,7 +24,7 @@ export default function AppRouter() {
                     <Route path='/doadores' element={<TabelaDoadores/>}/>
                     <Route path='/pacientes' element={<TabelaPacientes/>}/>
                     <Route path='/sobre' element={<Sobre/>}/>
-
+                    <Route path='/login' element={<Login/>}/>
                 </Routes>
             </Router>
         </main>

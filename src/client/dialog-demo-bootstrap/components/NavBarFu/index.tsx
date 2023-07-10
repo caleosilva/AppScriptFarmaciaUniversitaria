@@ -20,6 +20,9 @@ const NavBarFU = () => {
   }, {
     label: 'Sobre',
     to: '/sobre'
+  }, {
+    label: 'Login',
+    to: '/login'
   }];
 
   const imgUrl = 'https://drive.google.com/uc?export=view&id=16w37OmWjBmHXN8aWdYud1wQYAJt__jnP';
