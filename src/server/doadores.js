@@ -1,6 +1,8 @@
 import idSheet from './env';
+import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
 
-const formatarData = (doador) => {
+
+const formatarDataS = (doador) => {
 
     const data = doador.dataNascimento;
 
@@ -8,7 +10,17 @@ const formatarData = (doador) => {
         return data;
     } else if (doador.tipoDoador === "Pessoa física") {
         var novaData = new Date(data);
-        var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
+        var dia = novaData.getDate();
+        if (dia < 10) {
+            dia = '0' + dia; // Adiciona um zero à esquerda para dias menores que 10
+        }
+        var mes = novaData.getMonth() + 1; // Os meses são indexados a partir de 0, então é necessário adicionar 1
+        if (mes < 10) {
+            mes = '0' + mes; // Adiciona um zero à esquerda para meses menores que 10
+        }
+        var ano = novaData.getFullYear();
+
+        var novaDataFormatada = dia + '-' + mes + '-' + ano;
         return novaDataFormatada;
     } else {
         return "-";
@@ -103,7 +115,7 @@ export const appendRowDoadores = (doador) => {
     if (buscaPorDoador) {
         return false;
     } else {
-        let dataNascimento = formatarData(doador);
+        let dataNascimento = formatarData(doador.dataNascimento);
         ws.appendRow([
             doador.chaveDoador,
             doador.nome,
@@ -147,7 +159,7 @@ export const updateRowDoador = (doador) => {
     var ws = ss.getSheetByName("Doador");
 
     // Formatanto a data e pegando novo código
-    var dataNascimentoFormatada = formatarData(doador);
+    var dataNascimentoFormatada = formatarData(doador.dataNascimento);
     var chaveMudou = false;
 
     // Lista com os novos dados:

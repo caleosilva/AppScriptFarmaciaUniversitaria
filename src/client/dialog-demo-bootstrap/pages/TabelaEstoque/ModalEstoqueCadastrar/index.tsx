@@ -130,8 +130,6 @@ export default function ModalEstoqueCadastrar({ data, setData, listaDD, chaveMed
         }
 
         if (isLoading) {
-            console.log(medicamentoEspecifico)
-            setLoading(false)
             serverFunctions.appendRowMedicamentoEspecifico(medicamentoEspecifico).then((sucesso) => {
                 if (sucesso) {
                     // Atualiza a tabela:

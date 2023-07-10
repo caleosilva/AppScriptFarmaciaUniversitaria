@@ -8,6 +8,10 @@ export default function formatarDataParaVisualizacao(dataRecebida) {
     if (tamanho < 8) {
         return dataRecebida;
     } else if (8 <= tamanho && tamanho <= 10) {
+        const parts = dataRecebida.split('-');
+        if (parts[2].length === 4){
+            return `${parts[0]}/${parts[1]}/${parts[2]}`;
+        }
         let temp = dataRecebida + 'T00:00:00Z';
         data = new Date(temp);
         data.setMinutes(data.getMinutes() + data.getTimezoneOffset()); // Ajuste para o fuso horário local

@@ -45,10 +45,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [sexo, setSexo] = useState('');
     const [estadoCivil, setEstadoCivil] = useState('');
 
-    const dataNascimentoPadrao = '1900-01-01'
-
     const [mensagemErroBack, setMensagemErroBack] = useState(false);
-
 
     // Cuida de abrir e fechar o modal:
     const handleClose = () => {
@@ -144,7 +141,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             setEstadoCivil('');
         } else if (tipoDoador === 'Pessoa jurídica') {
             setCpf('-');
-            setDataNascimento(dataNascimentoPadrao);
+            setDataNascimento('-');
             setSexo('-');
             setEstadoCivil('-');
 
@@ -152,7 +149,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
         } else if (tipoDoador === 'Outro') {
             setCnpj('-');
             setCpf('-');
-            setDataNascimento(dataNascimentoPadrao);
+            setDataNascimento('-');
             setSexo('-');
             setEstadoCivil('-');
         }
@@ -161,8 +158,6 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
     // Realiza o cadastro //TO-DO
     useEffect(() => {
-
-        var nascimento = new Date(dataNascimento);
 
         var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {

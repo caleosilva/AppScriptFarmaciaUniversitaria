@@ -149,8 +149,6 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
             setMensagem(false);
             handleClose();
         } else {
-            var dataNascimentoFormatada = formatarData(dataNascimento);
-
             const dados = {
                 chaveDoador,
                 nome,
@@ -162,16 +160,13 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
                 comoSoube,
                 cnpj,
                 cpf,
-                "dataNascimento": dataNascimentoFormatada,
+                dataNascimento,
                 sexo,
                 estadoCivil
             }
             if (isLoading) {
                 serverFunctions.updateRowDoador(dados).then((sucesso) => {
-
-                    console.log(sucesso);
                     if (sucesso) {
-
                         var novosDados = gerarObjetoEstiloDoador(dados);
                         data[index] = novosDados;
                         setData([...data]);

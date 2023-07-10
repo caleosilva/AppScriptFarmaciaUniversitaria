@@ -116,12 +116,12 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
             handleClose();
         } else {
 
-            var dataNascimentoFormatada = formatarData(dataNascimento);
+            // var dataNascimentoFormatada = formatarData(dataNascimento);
             const dados = {
                 chavePaciente,
                 nome,
                 cpf,
-                "dataNascimento": dataNascimentoFormatada,
+                dataNascimento,
                 telefone,
                 tipoPaciente,
                 complemento,
@@ -137,7 +137,6 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
             if (isLoading) {
                 serverFunctions.updateRowPaciente(dados).then((sucesso) => {
                     if (sucesso) {
-
                         data[index] = dados;
                         setData([...data]);
 
