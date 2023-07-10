@@ -78,8 +78,6 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
             chaveGeral, "dataCadastro": dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
         }
 
-        console.log(medicamentoGeral);
-
         if (isLoading) {
             serverFunctions.appendRowMedicamentos(medicamentoGeral).then((sucesso) => {
                 if (sucesso) {

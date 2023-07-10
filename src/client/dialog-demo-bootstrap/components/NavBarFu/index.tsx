@@ -17,6 +17,9 @@ const NavBarFU = () => {
   }, {
     label: 'Pacientes',
     to: '/pacientes'
+  }, {
+    label: 'Sobre',
+    to: '/sobre'
   }];
 
   const imgUrl = 'https://drive.google.com/uc?export=view&id=16w37OmWjBmHXN8aWdYud1wQYAJt__jnP';
