@@ -178,6 +178,7 @@ const DynamicCdnWebpackPluginConfig = {
     // "var" is important to get right -- this should be the exposed global. Look up "webpack externals" for info.
     switch (packageName) {
 
+      
       case 'react-router-dom':
         return null;
       case 'react-router':

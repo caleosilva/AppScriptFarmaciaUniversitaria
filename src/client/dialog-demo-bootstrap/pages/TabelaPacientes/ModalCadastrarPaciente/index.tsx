@@ -94,7 +94,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             "chavePaciente": cpf,
             nome,
             cpf,
-            "dataNascimento": dataNascimentoFormatada,
+            dataNascimento,
             telefone,
             tipoPaciente,
             complemento,

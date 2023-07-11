@@ -41,7 +41,6 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
     const [comoSoube, setComoSoube] = useState(paciente.comoSoube);
 
     const chavePaciente = paciente.chavePaciente;
-
     const dateValue = Date.parse(dataNascimento.toString());
     const dateObject = new Date(dateValue);
 
@@ -98,7 +97,7 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
     useEffect(() => {
         var localDataString = formatarData(dataNascimento);
 
-        if (nome !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && localDataString.length <= 10  && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
+        if (nome !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && localDataString.length <= 10 && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);

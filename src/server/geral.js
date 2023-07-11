@@ -64,3 +64,36 @@ export const getInformacoesSelect = () => {
 
     return JSON.stringify(informacoes);
 }
+
+export const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomePlanilha);
+
+    var lr = ws.getLastRow();
+
+    if (lr > 1) {
+        var values = ws.getRange(2, colBusca, lr - 1, 1).getValues();
+        var lowerBound = 0;
+        var upperBound = values.length - 1;
+
+        while (lowerBound <= upperBound) {
+            var middle = Math.floor((lowerBound + upperBound) / 2);
+            var value = values[middle][0];
+
+            if (value == valorBuscado) {
+                var linhaReal = middle + 2
+                var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+
+                return { linha: linhaReal, data: info }
+
+            } else if (value < valorBuscado) {
+                lowerBound = middle + 1;
+            } else {
+                upperBound = middle - 1;
+            }
+        }
+    } else {
+        return false;
+    }
+    return null;
+}

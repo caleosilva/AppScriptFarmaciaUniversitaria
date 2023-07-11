@@ -25,7 +25,7 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
     const [lista, setLista] = useState([[]]);
 
-    const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastro);
+    // const [dataCadastro, setDataCadastro] = useState(remedio.dataCadastro);
     const [nome, setNome] = useState(remedio.nome);
     const [principioAtivo, setPrincipioAtivo] = useState(remedio.principioAtivo);
     const [classe, setClasse] = useState(remedio.classe);
@@ -34,6 +34,7 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
     const [alterado, setAlterado] = useState(false);
 
+    const dataCadastro = formatarData(remedio.dataCadastro);
     const validadeMaisProxima = remedio.validadeMaisProxima;
     const quantidadeTotal = remedio.quantidadeTotal;
     const chaveGeral = remedio.chaveGeral;
@@ -94,9 +95,13 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
             setMensagem(false);
             handleClose();
         } else {
-            var dataCadastroFormatada = formatarData(dataCadastro);
+            // var dataCadastroFormatada = formatarData(dataCadastro);
 
-            const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastroFormatada, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
+            // const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
+
+            const medicamentoGeral = {
+                chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
+            }
 
             if (isLoading) {
 

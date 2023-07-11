@@ -19,7 +19,7 @@ export default function Sobre() {
 
             <div>
                 <h3 className='d-flex justify-content-center'>
-                    Titulo
+                    Nosso objetivo
                 </h3>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vitae tortor dui. Nunc sed consequat ante, ac porttitor ipsum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce lacinia dui non congue ultricies. Quisque dignissim fringilla lorem quis consequat. Pellentesque consequat erat a quam aliquam accumsan. Nullam imperdiet, nibh ac lacinia dignissim, ante erat tincidunt ipsum, quis euismod lectus diam eget elit. Sed eget felis enim. Morbi et felis tellus.

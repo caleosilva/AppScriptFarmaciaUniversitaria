@@ -1,31 +1,8 @@
 import idSheet from './env';
+import { buscaBinariaSimples } from './geral';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
+import gerarHashCode from '../client/dialog-demo-bootstrap/Functions/gerarHashCode';
 
-
-const formatarDataS = (doador) => {
-
-    const data = doador.dataNascimento;
-
-    if (data === "-") {
-        return data;
-    } else if (doador.tipoDoador === "Pessoa física") {
-        var novaData = new Date(data);
-        var dia = novaData.getDate();
-        if (dia < 10) {
-            dia = '0' + dia; // Adiciona um zero à esquerda para dias menores que 10
-        }
-        var mes = novaData.getMonth() + 1; // Os meses são indexados a partir de 0, então é necessário adicionar 1
-        if (mes < 10) {
-            mes = '0' + mes; // Adiciona um zero à esquerda para meses menores que 10
-        }
-        var ano = novaData.getFullYear();
-
-        var novaDataFormatada = dia + '-' + mes + '-' + ano;
-        return novaDataFormatada;
-    } else {
-        return "-";
-    }
-}
 
 const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ss = SpreadsheetApp.openById(idSheet);
@@ -34,32 +11,38 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
 }
 
-const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
-    var ss = SpreadsheetApp.openById(idSheet);
-    var ws = ss.getSheetByName(nomePlanilha);
+// const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+//     var ss = SpreadsheetApp.openById(idSheet);
+//     var ws = ss.getSheetByName(nomePlanilha);
 
-    var values = ws.getRange(2, colBusca, ws.getLastRow() - 1, 1).getValues();
-    var lowerBound = 0;
-    var upperBound = values.length - 1;
+//     var lr = ws.getLastRow();
 
-    while (lowerBound <= upperBound) {
-        var middle = Math.floor((lowerBound + upperBound) / 2);
-        var value = values[middle][0];
+//     if (lr > 1) {
+//         var values = ws.getRange(2, colBusca, lr - 1, 1).getValues();
+//         var lowerBound = 0;
+//         var upperBound = values.length - 1;
 
-        if (value == valorBuscado) {
-            var linhaReal = middle + 2
-            var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+//         while (lowerBound <= upperBound) {
+//             var middle = Math.floor((lowerBound + upperBound) / 2);
+//             var value = values[middle][0];
 
-            return { linha: linhaReal, data: info }
+//             if (value == valorBuscado) {
+//                 var linhaReal = middle + 2
+//                 var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
 
-        } else if (value < valorBuscado) {
-            lowerBound = middle + 1;
-        } else {
-            upperBound = middle - 1;
-        }
-    }
-    return false;
-}
+//                 return { linha: linhaReal, data: info }
+
+//             } else if (value < valorBuscado) {
+//                 lowerBound = middle + 1;
+//             } else {
+//                 upperBound = middle - 1;
+//             }
+//         }
+//     } else {
+//         return false;
+//     }
+//     return null;
+// }
 
 export const getDoadores = () => {
     var ss = SpreadsheetApp.openById(idSheet);
@@ -168,17 +151,20 @@ export const updateRowDoador = (doador) => {
     var novaChaveDoador;
     if (doador.tipoDoador === "Outro") {
 
-        novaChaveDoador = doador.nome.replace(/\s/g, '').toLowerCase();
+        nomeLimpo = doador.nome.replace(/\s/g, '').toLowerCase();
+        novaChaveDoador = gerarHashCode(nomeLimpo);
         if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
 
     } else if (doador.tipoDoador === "Pessoa jurídica") {
 
-        novaChaveDoador = doador.cnpj;
+        novaChaveDoador = gerarHashCode(doador.cnpj);
+        // novaChaveDoador = doador.cnpj;
         if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
 
     } else if (doador.tipoDoador === "Pessoa física") {
 
-        novaChaveDoador = doador.cpf;
+        novaChaveDoador = gerarHashCode(doador.cpf);
+        // novaChaveDoador = doador.cpf;
         if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
     }
 

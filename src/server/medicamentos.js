@@ -1,20 +1,7 @@
 import idSheet from './env';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
+import { buscaBinariaSimples } from './geral';
 
-
-// const formatarData = (data) => {
-//     const caracteres = [...data]
-//     const tamanho = caracteres.length;
-
-//     if (tamanho <= 10) {
-//         return data
-//     }
-
-//     var novaData = new Date(data);
-//     var novaDataFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
-
-//     return novaDataFormatada;
-// }
 
 const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
 
@@ -34,11 +21,11 @@ const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
     return pullResult;
 }
 
-const getDateToday = () => {
-    var data = new Date();
-    var dataFormatada = (data.getUTCDate()) + "-" + (data.getMonth() + 1) + "-" + data.getFullYear();
-    return dataFormatada;
-}
+// const getDateToday = () => {
+//     var data = new Date();
+//     var dataFormatada = (data.getUTCDate()) + "-" + (data.getMonth() + 1) + "-" + data.getFullYear();
+//     return dataFormatada;
+// }
 
 const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ss = SpreadsheetApp.openById(idSheet);
@@ -249,7 +236,7 @@ export const updateRowMedicamentos = (medicamento) => {
     var ws = ss.getSheetByName("Medicamentos");
 
     // Formatanto a data e pegando novo código
-    var dataCadastroFormatada = formatarData(medicamento.dataCadastro)
+    // var medicamento.dataCadastro = formatarData(medicamento.dataCadastro)
     var novaChaveGeral = (medicamento.nome + '#' + medicamento.principioAtivo + '#' + medicamento.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
 
     // Lista com os novos dados:
@@ -263,12 +250,12 @@ export const updateRowMedicamentos = (medicamento) => {
         if (resultadoBusca) {
             return false;
         } else {
-            novosDados = [novaChaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+            novosDados = [novaChaveGeral, medicamento.dataCadastro, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
         }
 
         // A chave continua a mesma
     } else {
-        novosDados = [medicamento.chaveGeral, dataCadastroFormatada, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+        novosDados = [medicamento.chaveGeral, medicamento.dataCadastro, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
     }
 
     var chaveMedicamentoOriginal = medicamento.chaveGeral;

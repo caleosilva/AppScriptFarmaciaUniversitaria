@@ -5,7 +5,8 @@ import { useState } from 'react';
 
 export default function Home() {
 
-    const imgUrl = 'https://drive.google.com/uc?export=view&id=16w37OmWjBmHXN8aWdYud1wQYAJt__jnP';
+    const imgUrl = 'https://drive.google.com/uc?export=view&id=1LqXNwpjQQCfQtM1ml4iLLBJQHJIv9PV1';
+
 
     return (
         <div className="d-flex justify-content-center" style={{ marginTop: "100px" }}>

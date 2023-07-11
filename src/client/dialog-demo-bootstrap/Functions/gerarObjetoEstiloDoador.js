@@ -1,23 +1,18 @@
+import formatarData from "./formatarData";
+
+
 export default function gerarObjetoEstiloDoador(doador) {
 
-    var novaChaveDoador;
+    // Ainda precisa dessa verificação?
     var dataNascimentoFormatada;
-
-    if (doador.tipoDoador === "Outro") {
-        novaChaveDoador = doador.nome.replace(/\s/g, '').toLowerCase();
+    if (doador.tipoDoador === "Pessoa física") {
+        dataNascimentoFormatada = formatarData(doador.dataNascimento);
+    } else{
         dataNascimentoFormatada = "-";
-    } else if (doador.tipoDoador === "Pessoa jurídica") {
-        novaChaveDoador = doador.cnpj;
-        dataNascimentoFormatada = "-";
-
-    } else if (doador.tipoDoador === "Pessoa física") {
-        novaChaveDoador = doador.cpf;
-        var novaData = new Date(doador.dataNascimento);
-        dataNascimentoFormatada = (novaData.getUTCDate()) + "-" + (novaData.getMonth() + 1) + "-" + novaData.getFullYear();
     }
 
     const dados = {
-        "chaveDoador": novaChaveDoador,
+        "chaveDoador": doador.chaveDoador,
         "nome": doador.nome,
         "tipoDoador": doador.tipoDoador,
         "cidade": doador.cidade,

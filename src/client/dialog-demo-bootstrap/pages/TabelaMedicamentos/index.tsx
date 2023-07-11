@@ -105,7 +105,6 @@ function TabelaMedicamentos() {
 
     useEffect(() => {
         renderTable();
-        console.log(data);
     }, [data]);
 
 

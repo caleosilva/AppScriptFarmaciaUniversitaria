@@ -1,6 +1,7 @@
 import MedicamentoEspecifico from '../models/MedicamentoEspecifico';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
 import idSheet from './env';
+import { buscaBinariaSimples } from './geral';
 
 
 const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
@@ -28,34 +29,34 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     range.sort(colunaBase);// ordena a faixa de células com base na coluna, Ex: 1 (A)
 }
 
-const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
-    var ss = SpreadsheetApp.openById(idSheet);
-    var ws = ss.getSheetByName(nomePlanilha);
+// const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+//     var ss = SpreadsheetApp.openById(idSheet);
+//     var ws = ss.getSheetByName(nomePlanilha);
 
-    var values = ws.getRange(2, colBusca, ws.getLastRow() - 1, 1).getValues();
-    var lowerBound = 0;
-    var upperBound = values.length - 1;
+//     var values = ws.getRange(2, colBusca, ws.getLastRow() - 1, 1).getValues();
+//     var lowerBound = 0;
+//     var upperBound = values.length - 1;
 
-    while (lowerBound <= upperBound) {
-        var middle = Math.floor((lowerBound + upperBound) / 2);
-        var value = values[middle][0];
+//     while (lowerBound <= upperBound) {
+//         var middle = Math.floor((lowerBound + upperBound) / 2);
+//         var value = values[middle][0];
 
-        if (value == valorBuscado) {
-            var linhaReal = middle + 2
-            var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+//         if (value == valorBuscado) {
+//             var linhaReal = middle + 2
+//             var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
 
-            var objeto = {}
+//             var objeto = {}
 
-            return { linha: linhaReal, data: info }
+//             return { linha: linhaReal, data: info }
 
-        } else if (value < valorBuscado) {
-            lowerBound = middle + 1;
-        } else {
-            upperBound = middle - 1;
-        }
-    }
-    return false;
-}
+//         } else if (value < valorBuscado) {
+//             lowerBound = middle + 1;
+//         } else {
+//             upperBound = middle - 1;
+//         }
+//     }
+//     return false;
+// }
 
 const queryValidades = (chaveDeBusca) => {
     const sql = "select E where A = '" + chaveDeBusca + "'";

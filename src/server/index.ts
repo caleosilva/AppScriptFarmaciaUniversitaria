@@ -13,7 +13,8 @@ import {
 
 // Imports de funções Gerais:
 import {
-  getInformacoesSelect
+  getInformacoesSelect,
+  buscaBinariaSimples
 } from './geral'
 
 // Imports referentes aos Medicamentos:
@@ -57,6 +58,7 @@ export {
 
   //Geral
   getInformacoesSelect,
+  buscaBinariaSimples,
 
   //Medicamentos
   getMedicamentos,

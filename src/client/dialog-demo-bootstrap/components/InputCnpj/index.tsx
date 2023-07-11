@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import React from 'react';
 
 
-export default function InputCpf({ label, placeholder, controlId, name, data, setData }:
+export default function InputCnpj({ label, placeholder, controlId, name, data, setData }:
   { label: string, placeholder: string, controlId: string, name: string, data: string, setData: Function }) {
 
   const handleChange = (event) => {

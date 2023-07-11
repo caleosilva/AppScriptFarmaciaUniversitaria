@@ -13,6 +13,7 @@ import InputCnpj from '../../../components/InputCnpj';
 import { serverFunctions } from '../../../../utils/serverFunctions';
 import Doador from '../../../../../models/Doador';
 import gerarObjetoEstiloDoador from '../../../Functions/gerarObjetoEstiloDoador';
+import gerarHashCode from '../../../Functions/gerarHashCode';
 
 
 import React, { useEffect } from 'react';
@@ -113,6 +114,49 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
     }
 
+    function renderAlertaExistente() {
+        if (mensagem) {
+
+            var texto;
+            if (tipoDoador === 'Pessoa física') {
+                texto = "Já existe um doador com o CPF inserido";
+            } else if (tipoDoador === 'Pessoa jurídica') {
+                texto = "Já existe um doador com o CNPJ inserido";
+            } else {
+                texto = "Já existe um doador com o Nome inserido";
+            }
+
+            return (
+                <Row >
+                    <Col className='mb-3 mt-2 mt-3'>
+                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
+                            <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
+                            <p>
+                                {texto}
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+        }
+    }
+
+    function renderAlertaBack() {
+        if (mensagemErroBack) {
+            return (
+                <Row >
+                    <Col className='mb-3 mt-3'>
+                        <Alert variant="dark" onClose={() => setMensagemErroBack(false)} dismissible>
+                            <Alert.Heading>Erro!</Alert.Heading>
+                            <p>
+                                Não foi possível cadastrar o doador, tente novamente mais tarde!
+                            </p>
+                        </Alert>
+                    </Col>
+                </Row>
+            )
+        }
+    }
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
@@ -161,11 +205,16 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
         var chaveDoador = '';
         if (tipoDoador === 'Pessoa física') {
-            chaveDoador = cpf;
+            // chaveDoador = cpf;
+            chaveDoador = gerarHashCode(cpf);
         } else if (tipoDoador === 'Pessoa jurídica') {
-            chaveDoador = cnpj;
+            // chaveDoador = cnpj;
+            chaveDoador = gerarHashCode(cnpj);
+
         } else if (tipoDoador === 'Outro') {
-            chaveDoador = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
+            var nomeLimpo = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
+            chaveDoador = gerarHashCode(nomeLimpo);
+
         }
 
         // const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
@@ -187,6 +236,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
         }
 
         if (isLoading) {
+            console.log(dados);
             serverFunctions.appendRowDoadores(dados).then((sucesso) => {
                 if (sucesso) {
                     // Atualiza a tabela:
@@ -292,18 +342,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
                             {renderCamposCondicionais()}
 
-                            <Row >
-                                {mensagem &&
-                                    <Col className='mb-3 mt-2 mt-3'>
-                                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
-                                            <Alert.Heading>Não foi possível realizar o cadastro</Alert.Heading>
-                                            <p>
-                                                Já existe um doador com o CPF, CNPJ ou Nome inserido.
-                                            </p>
-                                        </Alert>
-                                    </Col>
-                                }
-                            </Row>
+                            {renderAlertaExistente()}
 
                             <Row >
                                 {mensagemErroBack &&
