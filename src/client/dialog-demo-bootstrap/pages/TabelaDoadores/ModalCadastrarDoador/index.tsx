@@ -212,9 +212,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             chaveDoador = gerarHashCode(cnpj);
 
         } else if (tipoDoador === 'Outro') {
-            var nomeLimpo = nome.replace(/\s/g, '').toLowerCase(); // Nome sem espaco
+            var nomeLimpo = nome.replace(/\s/g, '').toString().toLowerCase();
             chaveDoador = gerarHashCode(nomeLimpo);
-
         }
 
         // const dadosDoador = new Doador(chaveDoador, nome, tipoDoador, cidade, bairro, endereco, numero, comoSoube, cnpj, cpf, nascimento, sexo, estadoCivil);
@@ -234,9 +233,7 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             sexo,
             estadoCivil
         }
-
         if (isLoading) {
-            console.log(dados);
             serverFunctions.appendRowDoadores(dados).then((sucesso) => {
                 if (sucesso) {
                     // Atualiza a tabela:

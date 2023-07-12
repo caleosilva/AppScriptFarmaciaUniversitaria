@@ -41,8 +41,6 @@ export default function ModalExcluirDoador({ doador, data, setData, index }: { d
 
         if (isLoading) {
             serverFunctions.removeRowDoador(doador).then((sucesso) => {
-                console.log("Sucesso add: " + sucesso)
-
                 if (sucesso) {
                     // Atualiza a tabela:
                     const novaLista = data.filter((item, posicao) => posicao !== index);

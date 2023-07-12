@@ -16,8 +16,8 @@ import Paciente from '../../../../../models/Paciente';
 import InputTelefone from '../../../components/InputTelefone';
 import InputCpf from '../../../components/InputCpf';
 import InputDate from '../../../components/InputDate';
-import formatarData from '../../../Functions/formatarData.js';
-
+import formatarData from '../../../Functions/formatarData';
+import gerarObjetoEstiloPaciente from '../../../Functions/gerarObjetoEstiloPaciente';
 
 export default function ModalAtualizarPaciente({ paciente, index, listaDrop, data, setData }:
     { paciente: Paciente, index: number, listaDrop: string[][], data: Array<Paciente>, setData: Function }) {
@@ -136,13 +136,11 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
                 nivelEscolaridade,
                 profissao
             }
-
-            console.log(dados);
-
             if (isLoading) {
                 serverFunctions.updateRowPaciente(dados).then((sucesso) => {
                     if (sucesso) {
-                        data[index] = dados;
+                        const novosDados = gerarObjetoEstiloPaciente(dados);
+                        data[index] = novosDados;
                         setData([...data]);
 
                         setMensagem(false);

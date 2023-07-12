@@ -1,5 +1,5 @@
 import idSheet from './env';
-import { buscaBinariaSimples } from './geral';
+// import { buscaBinariaSimples } from './geral';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
 import gerarHashCode from '../client/dialog-demo-bootstrap/Functions/gerarHashCode';
 
@@ -11,38 +11,39 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
 }
 
-// const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
-//     var ss = SpreadsheetApp.openById(idSheet);
-//     var ws = ss.getSheetByName(nomePlanilha);
+const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomePlanilha);
 
-//     var lr = ws.getLastRow();
+    var lr = ws.getLastRow();
+    if (lr > 1) {
+        var values = ws.getRange(2, colBusca, lr - 1, 1).getValues();
+        var lowerBound = 0;
+        var upperBound = values.length - 1;
 
-//     if (lr > 1) {
-//         var values = ws.getRange(2, colBusca, lr - 1, 1).getValues();
-//         var lowerBound = 0;
-//         var upperBound = values.length - 1;
+        while (lowerBound <= upperBound) {
+            var middle = Math.floor((lowerBound + upperBound) / 2);
+            var value = values[middle][0];
+            console.log(value);
+            console.log(valorBuscado == value);
 
-//         while (lowerBound <= upperBound) {
-//             var middle = Math.floor((lowerBound + upperBound) / 2);
-//             var value = values[middle][0];
+            if (value == valorBuscado) {
+                var linhaReal = middle + 2
+                var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
 
-//             if (value == valorBuscado) {
-//                 var linhaReal = middle + 2
-//                 var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+                return { linha: linhaReal, data: info }
 
-//                 return { linha: linhaReal, data: info }
-
-//             } else if (value < valorBuscado) {
-//                 lowerBound = middle + 1;
-//             } else {
-//                 upperBound = middle - 1;
-//             }
-//         }
-//     } else {
-//         return false;
-//     }
-//     return null;
-// }
+            } else if (value < valorBuscado) {
+                lowerBound = middle + 1;
+            } else {
+                upperBound = middle - 1;
+            }
+        }
+    } else {
+        return false;
+    }
+    return null;
+}
 
 export const getDoadores = () => {
     var ss = SpreadsheetApp.openById(idSheet);
@@ -138,6 +139,7 @@ export const removeRowDoador = (doador) => {
 }
 
 export const updateRowDoador = (doador) => {
+
     var ss = SpreadsheetApp.openById(idSheet);
     var ws = ss.getSheetByName("Doador");
 
@@ -145,26 +147,25 @@ export const updateRowDoador = (doador) => {
     var dataNascimentoFormatada = formatarData(doador.dataNascimento);
     var chaveMudou = false;
 
+
     // Lista com os novos dados:
     var novosDados = []
 
     var novaChaveDoador;
     if (doador.tipoDoador === "Outro") {
 
-        nomeLimpo = doador.nome.replace(/\s/g, '').toLowerCase();
+        var nomeLimpo = doador.nome.replace(/\s/g, '').toString().toLowerCase();
         novaChaveDoador = gerarHashCode(nomeLimpo);
         if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
 
     } else if (doador.tipoDoador === "Pessoa jurídica") {
 
         novaChaveDoador = gerarHashCode(doador.cnpj);
-        // novaChaveDoador = doador.cnpj;
         if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
 
     } else if (doador.tipoDoador === "Pessoa física") {
 
         novaChaveDoador = gerarHashCode(doador.cpf);
-        // novaChaveDoador = doador.cpf;
         if (doador.chaveDoador !== novaChaveDoador) chaveMudou = true;
     }
 
@@ -192,6 +193,8 @@ export const updateRowDoador = (doador) => {
 
         return true;
     }
+
+    return null;
 
 
 }

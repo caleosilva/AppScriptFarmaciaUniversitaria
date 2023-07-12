@@ -11,10 +11,9 @@ export default function formatarDataParaVisualizacao(dataRecebida) {
         const parts = dataRecebida.split('-');
         if (parts[0].length === 4) {
             return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        } else {
+            return `${parts[0]}/${parts[1]}/${parts[2]}`;
         }
-        let temp = dataRecebida + 'T00:00:00Z';
-        data = new Date(temp);
-        data.setMinutes(data.getMinutes() + data.getTimezoneOffset()); // Ajuste para o fuso horário local
     } else {
         data = new Date(dataRecebida);
         data.setMinutes(data.getMinutes() + data.getTimezoneOffset()); // Ajuste para o fuso horário local

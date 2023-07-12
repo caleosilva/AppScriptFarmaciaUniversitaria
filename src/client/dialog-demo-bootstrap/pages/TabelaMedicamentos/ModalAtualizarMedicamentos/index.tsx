@@ -102,9 +102,6 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
             const medicamentoGeral = {
                 chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
             }
-
-            console.log(medicamentoGeral);
-
             if (isLoading) {
 
                 serverFunctions.updateRowMedicamentos(medicamentoGeral).then((sucesso) => {

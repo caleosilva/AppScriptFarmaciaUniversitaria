@@ -28,16 +28,12 @@ export default function Login() {
     function testar(string) {
         const hashCode = gerarHashCode(string);
         console.log(hashCode);
-
-        if ("ZH7rkQBhXSEXRzKqQ/BbXIQawKfd65BeXRcw7VATsbc=" === hashCode) {
-            console.log('SIMMMMM');
-        } else {
-            console.log('NÃOOOO')
-        }
     }
 
     return (
         <section className="border pageBackground" style={{ height: "100vh", width: "100%" }}>
+
+            {testar("123")}
 
             <Container className="child pe-5 ps-5">
                 <Row className="d-flex justify-content-center pt-4 pb-4">

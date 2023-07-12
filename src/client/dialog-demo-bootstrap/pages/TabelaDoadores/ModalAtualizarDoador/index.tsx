@@ -164,8 +164,12 @@ function MedModalAtualizar({ doador, index, listaDrop, data, setData }:
                 sexo,
                 estadoCivil
             }
+
+            console.log(dados)
             if (isLoading) {
                 serverFunctions.updateRowDoador(dados).then((sucesso) => {
+                    console.log("sucesso: ", sucesso);
+
                     if (sucesso) {
                         var novosDados = gerarObjetoEstiloDoador(dados);
                         data[index] = novosDados;

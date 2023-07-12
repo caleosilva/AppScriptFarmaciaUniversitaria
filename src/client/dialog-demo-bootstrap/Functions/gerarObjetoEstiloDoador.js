@@ -1,18 +1,26 @@
 import formatarData from "./formatarData";
+import gerarHashCode from "./gerarHashCode";
 
 
 export default function gerarObjetoEstiloDoador(doador) {
 
-    // Ainda precisa dessa verificação?
     var dataNascimentoFormatada;
+    var chaveDoador;
     if (doador.tipoDoador === "Pessoa física") {
         dataNascimentoFormatada = formatarData(doador.dataNascimento);
-    } else{
+        chaveDoador = gerarHashCode(cpf);
+    } else if (doador.tipoDoador === 'Pessoa jurídica') {
         dataNascimentoFormatada = "-";
+        chaveDoador = gerarHashCode(cnpj);
+
+    } else if (doador.tipoDoador === 'Outro') {
+        dataNascimentoFormatada = "-";
+        var nomeLimpo = doador.nome.replace(/\s/g, '').toString().toLowerCase();
+        chaveDoador = gerarHashCode(nomeLimpo);
     }
 
     const dados = {
-        "chaveDoador": doador.chaveDoador,
+        chaveDoador,
         "nome": doador.nome,
         "tipoDoador": doador.tipoDoador,
         "cidade": doador.cidade,
@@ -23,7 +31,7 @@ export default function gerarObjetoEstiloDoador(doador) {
         "cnpj": doador.cnpj,
         "cpf": doador.cpf,
         "dataNascimento": dataNascimentoFormatada,
-        "sexo":doador.sexo,
+        "sexo": doador.sexo,
         "estadoCivil": doador.estadoCivil
     }
 

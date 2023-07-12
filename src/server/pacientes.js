@@ -112,7 +112,7 @@ export const updateRowPaciente = (paciente) => {
     var ws = ss.getSheetByName("Pacientes");
 
     // Formatanto a data e pegando novo código
-    // var paciente.dataNascimento = formatarData(paciente.dataNascimento);
+    var dataNascimentoFormatada = formatarData(paciente.dataNascimento);
     var novaChavePaciente = paciente.cpf;
 
     // Lista com os novos dados:
@@ -126,11 +126,11 @@ export const updateRowPaciente = (paciente) => {
         if (resultadoBusca) {
             return false;
         } else {
-            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
+            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
         }
     // A chave continua a mesma
     } else {
-        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
+        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
     }
 
     var chavePacienteOriginal = paciente.chavePaciente;
