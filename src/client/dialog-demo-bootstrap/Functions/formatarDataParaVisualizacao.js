@@ -9,8 +9,8 @@ export default function formatarDataParaVisualizacao(dataRecebida) {
         return dataRecebida;
     } else if (8 <= tamanho && tamanho <= 10) {
         const parts = dataRecebida.split('-');
-        if (parts[2].length === 4){
-            return `${parts[0]}/${parts[1]}/${parts[2]}`;
+        if (parts[0].length === 4) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
         }
         let temp = dataRecebida + 'T00:00:00Z';
         data = new Date(temp);

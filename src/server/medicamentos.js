@@ -1,6 +1,5 @@
 import idSheet from './env';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
-import { buscaBinariaSimples } from './geral';
 
 
 const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
@@ -20,12 +19,6 @@ const realizarQuery = (nomeDaAba, primeiraCol, ultimaCol, consulta) => {
     currentDoc.deleteSheet(tempSheet);
     return pullResult;
 }
-
-// const getDateToday = () => {
-//     var data = new Date();
-//     var dataFormatada = (data.getUTCDate()) + "-" + (data.getMonth() + 1) + "-" + data.getFullYear();
-//     return dataFormatada;
-// }
 
 const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ss = SpreadsheetApp.openById(idSheet);
@@ -149,7 +142,7 @@ export const getMedicamentos = () => {
 
         if (data.length > 0) {
             for (i = 0; i < data.length; i++) {
-                
+
                 const remedio = {
                     "chaveGeral": data[i][0],
                     "dataCadastro": data[i][1],
@@ -217,14 +210,14 @@ export const appendRowMedicamentos = (medicamento) => {
     } else {
         ws.appendRow([
             medicamento.chaveGeral,
-            medicamento.dataCadastro,
+            formatarData(medicamento.dataCadastro),
             medicamento.nome,
             medicamento.principioAtivo,
             medicamento.classe,
             medicamento.tarja,
             medicamento.apresentacao,
             medicamento.quantidadeTotal,
-            formatarData(medicamento.validadeMaisProxima)            
+            formatarData(medicamento.validadeMaisProxima)
         ]);
         ordenarPlanilha("Medicamentos", 1)
         return true;
@@ -236,7 +229,6 @@ export const updateRowMedicamentos = (medicamento) => {
     var ws = ss.getSheetByName("Medicamentos");
 
     // Formatanto a data e pegando novo código
-    // var medicamento.dataCadastro = formatarData(medicamento.dataCadastro)
     var novaChaveGeral = (medicamento.nome + '#' + medicamento.principioAtivo + '#' + medicamento.apresentacao).toString().toLowerCase().replace(/\s+/g, '');
 
     // Lista com os novos dados:
@@ -250,12 +242,12 @@ export const updateRowMedicamentos = (medicamento) => {
         if (resultadoBusca) {
             return false;
         } else {
-            novosDados = [novaChaveGeral, medicamento.dataCadastro, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+            novosDados = [novaChaveGeral, formatarData(medicamento.dataCadastro), medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
         }
 
         // A chave continua a mesma
     } else {
-        novosDados = [medicamento.chaveGeral, medicamento.dataCadastro, medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
+        novosDados = [medicamento.chaveGeral, formatarData(medicamento.dataCadastro), medicamento.nome, medicamento.principioAtivo, medicamento.classe, medicamento.tarja, medicamento.apresentacao];
     }
 
     var chaveMedicamentoOriginal = medicamento.chaveGeral;
@@ -270,7 +262,7 @@ export const updateRowMedicamentos = (medicamento) => {
 
         // Verifica se a chave geral mudou para atualizar e reordenar as tabelas:
         if (chaveMedicamentoOriginal !== novaChaveGeral) {
-            
+
             var wsn = ss.getSheetByName("MedicamentoEspecifico");
             var dados = buscaBinariaCompleta(idSheet, "MedicamentoEspecifico", chaveMedicamentoOriginal, 0);
 

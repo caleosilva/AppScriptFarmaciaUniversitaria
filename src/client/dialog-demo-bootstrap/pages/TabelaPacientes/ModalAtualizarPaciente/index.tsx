@@ -39,6 +39,8 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
     const [endereco, setEndereco] = useState(paciente.endereco);
     const [numero, setNumero] = useState(paciente.numero);
     const [comoSoube, setComoSoube] = useState(paciente.comoSoube);
+    const [nivelEscolaridade, setNivelEscolaridade] = useState(paciente.nivelEscolaridade);
+    const [profissao, setProfissao] = useState(paciente.profissao);
 
     const chavePaciente = paciente.chavePaciente;
     const dateValue = Date.parse(dataNascimento.toString());
@@ -97,14 +99,14 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
     useEffect(() => {
         var localDataString = formatarData(dataNascimento);
 
-        if (nome !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && localDataString.length <= 10 && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
+        if (nome !== '' && cpf !== '' && cpf.length === 14 && (!isNaN(dateObject.getTime())) && localDataString.length <= 10 && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && nivelEscolaridade !== '' && profissao !== '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
 
         setAlterado(true);
-    }, [nome, cpf, dataNascimento, telefone, tipoPaciente, complemento, sexo, estadoCivil, cidade, bairro, endereco, numero, comoSoube]);
+    }, [nome, cpf, dataNascimento, telefone, tipoPaciente, complemento, sexo, estadoCivil, cidade, bairro, endereco, numero, comoSoube, nivelEscolaridade, profissao]);
 
 
     useEffect(() => {
@@ -130,8 +132,12 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
                 bairro,
                 endereco,
                 numero,
-                comoSoube
+                comoSoube,
+                nivelEscolaridade,
+                profissao
             }
+
+            console.log(dados);
 
             if (isLoading) {
                 serverFunctions.updateRowPaciente(dados).then((sucesso) => {
@@ -294,6 +300,16 @@ export default function ModalAtualizarPaciente({ paciente, index, listaDrop, dat
 
                                 <Col sm={6}>
                                     <InputText type={"text"} required={true} label={"Número do endereço"} placeholder={""} controlId={"inputNumero"} name={"numero"} data={numero} setData={setNumero} />
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col sm={6}>
+                                    <InputSelect required={true} label={"Nível de escolaridade"} name={"nivelEscolaridade"} data={nivelEscolaridade} setData={setNivelEscolaridade} lista={lista ? lista[13] : []} />
+                                </Col>
+
+                                <Col sm={6}>
+                                    <InputText type={"text"} required={true} label={"Profissão"} placeholder={""} controlId={"inputProfissao"} name={"profissao"} data={profissao} setData={setProfissao} />
                                 </Col>
                             </Row>
 

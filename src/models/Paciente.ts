@@ -13,8 +13,10 @@ export default class Doador{
     endereco: string;
     numero: string;
     comoSoube: string;
+    nivelEscolaridade: string;
+    profissao: string;
     
-    constructor(chavePaciente: string, nome: string, cpf: string, dataNascimento: Date, telefone: string, tipoPaciente: string, complemento: string, sexo: string, estadoCivil: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string){
+    constructor(chavePaciente: string, nome: string, cpf: string, dataNascimento: Date, telefone: string, tipoPaciente: string, complemento: string, sexo: string, estadoCivil: string, cidade: string, bairro: string, endereco: string, numero: string, comoSoube: string, nivelEscolaridade: string, profissao: string){
         this.chavePaciente = chavePaciente;
         this.nome = nome;
         this.cpf = cpf;
@@ -29,6 +31,8 @@ export default class Doador{
         this.endereco = endereco;
         this.numero = numero;
         this.comoSoube = comoSoube;
+        this.nivelEscolaridade = nivelEscolaridade;
+        this.profissao = profissao;
     }
 
 }

@@ -75,7 +75,7 @@ function MedModalCadastrar({ data, setData, listaDD }: { data: Array<Medicamento
         // const medicamentoGeral = new MedicamentoGeral(chaveGeral, dataHoje, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima);
 
         const medicamentoGeral = {
-            chaveGeral, "dataCadastro": dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
+            chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
         }
 
         if (isLoading) {

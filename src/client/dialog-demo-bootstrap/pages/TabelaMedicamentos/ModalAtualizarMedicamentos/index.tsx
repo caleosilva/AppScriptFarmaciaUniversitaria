@@ -34,7 +34,7 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
 
     const [alterado, setAlterado] = useState(false);
 
-    const dataCadastro = formatarData(remedio.dataCadastro);
+    const dataCadastro = remedio.dataCadastro;
     const validadeMaisProxima = remedio.validadeMaisProxima;
     const quantidadeTotal = remedio.quantidadeTotal;
     const chaveGeral = remedio.chaveGeral;
@@ -102,6 +102,8 @@ function MedModalAtualizar({ remedio, index, listaDrop, data, setData }:
             const medicamentoGeral = {
                 chaveGeral, dataCadastro, nome, principioAtivo, tarja, classe, apresentacao, quantidadeTotal, validadeMaisProxima
             }
+
+            console.log(medicamentoGeral);
 
             if (isLoading) {
 

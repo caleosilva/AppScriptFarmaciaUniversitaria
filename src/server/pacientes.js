@@ -38,7 +38,9 @@ export const getPacientes = () => {
                 'bairro': data[i][10],
                 'endereco': data[i][11],
                 'numero': data[i][12],
-                'comoSoube': data[i][13]
+                'comoSoube': data[i][13],
+                'nivelEscolaridade': data[i][14],
+                'profissao': data[i][15]
             }
             informacoes.push(info);
         }
@@ -63,12 +65,12 @@ export const appendRowPacientes = (paciente) => {
     if (resultadoBuscaPorPaciente) {
         return false;
     } else {
-        // let dataNascimento = formatarData(paciente.dataNascimento);
+        let dataNascimento = formatarData(paciente.dataNascimento);
         ws.appendRow([
             paciente.chavePaciente,
             paciente.nome,
             paciente.cpf,
-            formatarData(paciente.dataNascimento),
+            dataNascimento,
             paciente.telefone,
             paciente.tipoPaciente,
             paciente.complemento,
@@ -78,7 +80,9 @@ export const appendRowPacientes = (paciente) => {
             paciente.bairro,
             paciente.endereco,
             paciente.numero,
-            paciente.comoSoube
+            paciente.comoSoube,
+            paciente.nivelEscolaridade,
+            paciente.profissao
         ]);
 
         ordenarPlanilha("Pacientes", 1)
@@ -122,11 +126,11 @@ export const updateRowPaciente = (paciente) => {
         if (resultadoBusca) {
             return false;
         } else {
-            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
+            novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
         }
     // A chave continua a mesma
     } else {
-        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube];
+        novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, paciente.dataNascimento, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
     }
 
     var chavePacienteOriginal = paciente.chavePaciente;
@@ -136,7 +140,7 @@ export const updateRowPaciente = (paciente) => {
 
     if (buscaChaveOriginal) {
         // Atualiza e ordena a tabela
-        ws.getRange('A' + buscaChaveOriginal.linha + ':N' + buscaChaveOriginal.linha).setValues([novosDados]);
+        ws.getRange('A' + buscaChaveOriginal.linha + ':P' + buscaChaveOriginal.linha).setValues([novosDados]);
         ordenarPlanilha('Pacientes', 1);
         return true;
     }

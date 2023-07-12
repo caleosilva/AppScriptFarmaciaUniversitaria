@@ -119,6 +119,16 @@ export default function ModalVerMaisPaciente({ paciente }: { paciente: Paciente 
                         </Row>
 
                         <Row>
+                            <Col sm={6}>
+                                <ExibirInputSimples label={"Nível de escolaridade"} data={paciente.nivelEscolaridade} controlId={"exibirEscolaridade"} />
+                            </Col>
+
+                            <Col sm={6}>
+                                <ExibirInputSimples label={"Profissão"} data={paciente.profissao} controlId={"exibirProfissao"} />
+                            </Col>
+                        </Row>
+
+                        <Row>
                             <Col>
                                 <ExibirInputSimples label={"Como soube?"} data={paciente.comoSoube} controlId={"exibirComoSoube"} />
                             </Col>

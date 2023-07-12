@@ -46,6 +46,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
     const [endereco, setEndereco] = useState('');
     const [numero, setNumero] = useState('');
     const [comoSoube, setComoSoube] = useState('');
+    const [nivelEscolaridade, setNivelEscolaridade] = useState('');
+    const [profissao, setProfissao] = useState('');
 
     const [mensagemErroBack, setMensagemErroBack] = useState(false);
 
@@ -77,18 +79,19 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
 
     const [isFormValid, setIsFormValid] = useState(false);
     useEffect(() => {
-        if (nome !== '' && cpf !== '' && cpf.length === 14 && dataNascimento !== '' && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '') {
+        if (nome !== '' && cpf !== '' && cpf.length === 14 && dataNascimento !== '' && telefone !== '' && telefone.length >= 14 && tipoPaciente !== '' && complemento !== '' && sexo !== '' && estadoCivil !== '' && cidade !== '' && bairro !== '' && endereco !== '' && numero !== '' && comoSoube !== '' && profissao !== '' && nivelEscolaridade !== '') {
             setIsFormValid(true);
         } else {
             setIsFormValid(false);
         }
-    }, [nome, cpf, dataNascimento, telefone, tipoPaciente, complemento, sexo, estadoCivil, cidade, bairro, endereco, numero, comoSoube]);
+    }, [nome, cpf, dataNascimento, telefone, tipoPaciente, complemento, sexo, estadoCivil, cidade, bairro, endereco, numero, comoSoube, profissao,
+        nivelEscolaridade]);
 
 
     // Realiza o cadastro //TO-DO
     useEffect(() => {
 
-        var dataNascimentoFormatada = formatarData(dataNascimento);
+        // var dataNascimentoFormatada = formatarData(dataNascimento);
 
         const dados = {
             "chavePaciente": cpf,
@@ -104,7 +107,9 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
             bairro,
             endereco,
             numero,
-            comoSoube
+            comoSoube,
+            profissao,
+            nivelEscolaridade
         }
 
         if (isLoading) {
@@ -128,6 +133,8 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                     setEndereco('');
                     setNumero('');
                     setComoSoube('');
+                    setNivelEscolaridade('');
+                    setProfissao('');
 
                     setLoading(false);
                     setMensagem(false);
@@ -235,13 +242,21 @@ export default function ModalCadastarDoador({ data, setData, listaDD }: { data: 
                                 </Col>
                             </Row>
 
+                            <Row>
+                                <Col sm={6}>
+                                    <InputSelect required={true} label={"Nível de escolaridade"} name={"nivelEscolaridade"} data={nivelEscolaridade} setData={setNivelEscolaridade} lista={lista ? lista[13] : []} />
+                                </Col>
+
+                                <Col sm={6}>
+                                    <InputText type={"text"} required={true} label={"Profissão"} placeholder={""} controlId={"inputProfissao"} name={"profissao"} data={profissao} setData={setProfissao} />
+                                </Col>
+                            </Row>
 
                             <Row>
                                 <Col>
                                     <InputSelect required={true} label={"Como soube?"} name={"comoSoube"} data={comoSoube} setData={setComoSoube} lista={lista ? lista[12] : []} />
                                 </Col>
                             </Row>
-
 
                             <Row>
                                 {mensagem &&

@@ -274,7 +274,7 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
     } else {
         const chaveGeral = medicamento.chaveMedicamentoGeral + medicamento.chaveMedicamentoEspecifico;
         const validadeFormatada = formatarData(medicamento.validade);
-        // const dataHojeFormatada = formatarData(medicamento.dataEntrada)
+        const dataEntradaFormatada = formatarData(medicamento.dataEntrada)
 
         ws.appendRow([
             medicamento.chaveMedicamentoGeral,
@@ -287,7 +287,7 @@ export const appendRowMedicamentoEspecifico = (medicamento) => {
             medicamento.tipo,
             medicamento.fabricante,
             medicamento.motivoDoacao,
-            medicamento.dataEntrada,
+            dataEntradaFormatada,
             chaveGeral
         ]);
         ordenarPlanilha("MedicamentoEspecifico", 12)

@@ -8,9 +8,12 @@ export default function formatarData(dataRecebida) {
     if (tamanho < 8) {
         return dataRecebida;
     } else if (8 <= tamanho && tamanho <= 10) {
-        let temp = dataRecebida + 'T00:00:00Z';
-        data = new Date(temp);
-        data.setMinutes(data.getMinutes() + data.getTimezoneOffset()); // Ajuste para o fuso horário local
+        const parts = dataRecebida.split('-');
+        if (parts[0].length === 4) {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        } else {
+            return `${parts[0]}-${parts[1]}-${parts[2]}`;
+        }
     } else {
         data = new Date(dataRecebida);
         data.setMinutes(data.getMinutes() + data.getTimezoneOffset()); // Ajuste para o fuso horário local
@@ -18,12 +21,12 @@ export default function formatarData(dataRecebida) {
 
     var dia = data.getDate();
     if (dia < 10) {
-        dia = '0' + dia; // Adiciona um zero à esquerda para dias menores que 10
+        dia = '0' + dia;
     }
 
-    var mes = data.getMonth() + 1; // Os meses são indexados a partir de 0, então é necessário adicionar 1
+    var mes = data.getMonth() + 1;
     if (mes < 10) {
-        mes = '0' + mes; // Adiciona um zero à esquerda para meses menores que 10
+        mes = '0' + mes;
     }
 
     var ano = data.getFullYear();
