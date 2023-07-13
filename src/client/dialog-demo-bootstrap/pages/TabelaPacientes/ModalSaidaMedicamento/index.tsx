@@ -43,24 +43,6 @@ export default function ModalSaidaMedicamento({ paciente, data, setData, index }
         </Tooltip>
     );
 
-    function renderAlertaErro() {
-        if (mensagem) {
-            return (
-                <Row>
-                    <Col>
-                        <Alert variant="danger" onClose={() => setMensagem(false)} dismissible>
-                            <Alert.Heading>Erro!</Alert.Heading>
-                            <hr />
-                            <p>
-                                Não foi possível excluir o paciente, tente novamente mais tarde.
-                            </p>
-                        </Alert>
-                    </Col>
-                </Row>
-            )
-        }
-    }
-
     const handleSubtrair = () => {
         if (valor > 1) {
             setValor(valor - 1);

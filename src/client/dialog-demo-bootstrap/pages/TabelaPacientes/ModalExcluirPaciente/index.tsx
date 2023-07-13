@@ -11,6 +11,7 @@ import { serverFunctions } from '../../../../utils/serverFunctions';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import Paciente from '../../../../../models/Paciente';
 import formatarData from '../../../Functions/formatarData';
+import formatarDataParaVisualizacao from '../../../Functions/formatarDataParaVisualizacao';
 
 import React, { useState, useEffect } from 'react';
 
@@ -138,7 +139,7 @@ export default function ModalExcluirPaciente({ paciente, data, setData, index }:
                             </Col>
 
                             <Col sm={3}>
-                                <ExibirInputSimples label={"Data de nascimento"} data={formatarData(paciente.dataNascimento)} controlId={"exibirDataNascimento"} />
+                                <ExibirInputSimples label={"Data de nascimento"} data={formatarDataParaVisualizacao(paciente.dataNascimento)} controlId={"exibirDataNascimento"} />
                             </Col>
                         </Row>
 

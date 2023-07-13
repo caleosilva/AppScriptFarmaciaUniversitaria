@@ -1,8 +1,5 @@
 import React from 'react';
 import Select from 'react-select';
-import { useEffect, useState } from 'react';
-
-
 
 
 export default function InputSelectMedGeral({ label, lista, data, setData }: { label: string, lista: any, data: string, setData: Function}) {
