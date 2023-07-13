@@ -51,7 +51,8 @@ import {
   getPacientes,
   appendRowPacientes,
   removeRowPaciente,
-  updateRowPaciente
+  updateRowPaciente,
+  saidaPorPaciente
 } from './pacientes';
 
 // Public functions must be exported as named exports
@@ -90,5 +91,6 @@ export {
   getPacientes,
   appendRowPacientes,
   removeRowPaciente,
-  updateRowPaciente
+  updateRowPaciente,
+  saidaPorPaciente
 };

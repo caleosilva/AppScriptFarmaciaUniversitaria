@@ -3,3 +3,11 @@
     height: 40px;
     border-radius: 50%;
 }
+
+.inputQuantidade{
+    width: 200px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #FBF7F4;
+
+}

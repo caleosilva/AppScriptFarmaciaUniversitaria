@@ -8,19 +8,20 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import Alert from 'react-bootstrap/Alert';
 import Accordion from 'react-bootstrap/Accordion';
 
-
-import { serverFunctions } from '../../../../utils/serverFunctions';
 import ExibirInputSimples from '../../../components/ExibirInputSimples';
 import Paciente from '../../../../../models/Paciente';
 import formatarDataParaVisualizacao from '../../../Functions/formatarDataParaVisualizacao';
 import './estiloModalSaida.css';
-
 import AccordionitemUnico from './AccordionItemUnico/AccordionItemUnico';
+import { serverFunctions } from '../../../../utils/serverFunctions';
+
 
 import React, { useState, useEffect } from 'react';
 
 
 export default function ModalSaidaMedicamento({ paciente, data, setData, index }: { paciente: Paciente, data: Array<Paciente>, setData: Function, index: number }) {
+
+    const [dataMedicamentoGeral, setDataMedicamentoGeral] = useState(null);
 
     // CRIAR OS USESTATE
     const [mensagem, setMensagem] = useState(false);
@@ -30,12 +31,11 @@ export default function ModalSaidaMedicamento({ paciente, data, setData, index }
     const [valor, setValor] = useState(1);
 
     const handleClose = () => {
-        setShow(false)
+        setShow(false);
+        setValor(1);
     };
-    const handleShow = () => setShow(true);
 
-    const handleClick = () => setLoading(true);
-    const [isLoading, setLoading] = useState(false);
+    const handleShow = () => setShow(true);
 
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
@@ -76,7 +76,7 @@ export default function ModalSaidaMedicamento({ paciente, data, setData, index }
     function renderAccordionItemUnico() {
         const accordions = [];
         for (let i = 1; i <= valor; i++) {
-            accordions.push(<AccordionitemUnico eventKey={i.toString()} />);
+            accordions.push(<AccordionitemUnico eventKey={i.toString()} paciente={paciente} dataMedicamentoGeral={dataMedicamentoGeral} setDataMedicamentoGeral={setDataMedicamentoGeral}/>);
         }
         return accordions;
     }
@@ -91,11 +91,11 @@ export default function ModalSaidaMedicamento({ paciente, data, setData, index }
                 </Col>
 
 
-                <Col sm={6} className='border p-2'>
+                <Col sm={6} className='d-flex justify-content-center'>
 
-                    <div className='border'>
+                    <div className='border inputQuantidade '>
                         <Row>
-                            <h6 className='d-flex justify-content-center'>Quantidade a sair</h6>
+                            <h6 className='d-flex justify-content-center mt-1'>Quantidade a sair</h6>
                         </Row>
 
                         <Row className="mt-3">
@@ -123,33 +123,16 @@ export default function ModalSaidaMedicamento({ paciente, data, setData, index }
         )
     }
 
-
-    // talvez não precise desse ká que será individual
     useEffect(() => {
+        serverFunctions.getMedicamentos().then(dados => { setDataMedicamentoGeral(JSON.parse(dados)) }).catch(alert);
+    }, []);
 
-        if (isLoading) {
-            serverFunctions.removeRowPaciente(paciente).then((sucesso) => {
-                if (sucesso) {
-                    // Atualiza a tabela:
-                    const novaLista = data.filter((item, posicao) => posicao !== index);
-                    setData(novaLista);
-
-                    setLoading(false);
-                    setMensagem(false);
-                    handleClose();
-                } else {
-                    setLoading(false);
-                    setMensagem(true);
-                }
-            }).catch(
-                (e) => {
-                    console.log(e.stack);
-                    setMensagemErroBack(true);
-                    setLoading(false);
-                });
-
+    useEffect(() => {
+        if (dataMedicamentoGeral === null) {
+            console.log("Atualizei papai de fora")
+            serverFunctions.getMedicamentos().then(dados => { setDataMedicamentoGeral(JSON.parse(dados)) }).catch(alert);
         }
-    }, [isLoading]);
+    }, [dataMedicamentoGeral]);
 
     return (
 
@@ -210,17 +193,6 @@ export default function ModalSaidaMedicamento({ paciente, data, setData, index }
                         <Button variant="outline-secondary" onClick={handleClose} className=''>
                             Concluir
                         </Button>
-
-                        {/* <Button
-                            type="submit"
-                            variant="dark"
-                            disabled={isLoading}
-                            onClick={!isLoading ? handleClick : null}
-                        >
-                            {isLoading ? 'Excluindo...' : 'Excluir'}
-                        </Button> */}
-
-
                     </div>
                 </Modal.Footer>
             </Modal>

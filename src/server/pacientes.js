@@ -1,6 +1,6 @@
 import idSheet from './env';
 import formatarData from '../client/dialog-demo-bootstrap/Functions/formatarData';
-import { buscaBinariaSimples } from './geral';
+// import { buscaBinariaSimples } from './geral';
 
 
 const ordenarPlanilha = (nomeDaAba, colunaBase) => {
@@ -8,6 +8,39 @@ const ordenarPlanilha = (nomeDaAba, colunaBase) => {
     var ws = ss.getSheetByName(nomeDaAba);
     var range = ws.getDataRange().offset(1, 0); // começa na segunda linha
     range.sort(colunaBase);// ordena a faixa de células com base na coluna 1 (A)
+}
+
+const buscaBinariaSimples = (nomePlanilha, valorBuscado, colBusca) => {
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName(nomePlanilha);
+
+    var lr = ws.getLastRow();
+
+    if (lr > 1) {
+        var values = ws.getRange(2, colBusca, lr - 1, 1).getValues();
+        var lowerBound = 0;
+        var upperBound = values.length - 1;
+
+        while (lowerBound <= upperBound) {
+            var middle = Math.floor((lowerBound + upperBound) / 2);
+            var value = values[middle][0];
+
+            if (value == valorBuscado) {
+                var linhaReal = middle + 2
+                var info = ws.getRange(linhaReal, 1, 1, ws.getLastColumn()).getValues();
+
+                return { linha: linhaReal, data: info }
+
+            } else if (value < valorBuscado) {
+                lowerBound = middle + 1;
+            } else {
+                upperBound = middle - 1;
+            }
+        }
+    } else {
+        return false;
+    }
+    return null;
 }
 
 export const getPacientes = () => {
@@ -128,7 +161,7 @@ export const updateRowPaciente = (paciente) => {
         } else {
             novosDados = [novaChavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
         }
-    // A chave continua a mesma
+        // A chave continua a mesma
     } else {
         novosDados = [paciente.chavePaciente, paciente.nome, paciente.cpf, dataNascimentoFormatada, paciente.telefone, paciente.tipoPaciente, paciente.complemento, paciente.sexo, paciente.estadoCivil, paciente.cidade, paciente.bairro, paciente.endereco, paciente.numero, paciente.comoSoube, paciente.nivelEscolaridade, paciente.profissao];
     }
@@ -144,4 +177,57 @@ export const updateRowPaciente = (paciente) => {
         ordenarPlanilha('Pacientes', 1);
         return true;
     }
+}
+
+export const saidaPorPaciente = (dados) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("Estoque");
+
+    // Atualizar a quantidade:
+    const retornoAtualizacao = atualizarQuantidadeEstoque(dados.chaveGeralMedicamentoEspecifico, dados.chaveMedicamentoGeral, dados.novaQuantidade, dados.quantidade);
+
+    if (retornoAtualizacao) {
+        // Adiciona na planilha estoque
+        ws.appendRow([
+            dados.dataOperacao,
+            dados.quantidadeAnterior,
+            dados.novaQuantidade,
+            dados.motivo,
+            dados.chaveMedicamentoEspecifico,
+            dados.chaveMedicamentoGeral,
+            dados.chaveDoador,
+            dados.chavePaciente,
+            dados.chaveUsuario
+        ]);
+    }
+    return JSON.stringify(retornoAtualizacao);
+    return retornoAtualizacao;
+}
+
+
+const atualizarQuantidadeEstoque = (medEspecificoChaveGeral, medEspecificoChaveMedicamentoGeral, novaQuantidade, quantidade) => {
+    //Abrindo a planilha:
+    var ss = SpreadsheetApp.openById(idSheet);
+    var ws = ss.getSheetByName("MedicamentoEspecifico");
+
+    // Encontrando o medicamento específico:
+    var dados = buscaBinariaSimples("MedicamentoEspecifico", medEspecificoChaveGeral, 12);
+
+    if (dados) {
+        //Atualiza na tabela MedicamentoEspecifico
+        ws.getRange("F" + parseInt(dados.linha)).setValue(novaQuantidade);
+
+        // Abre a planilha Medicamentos
+        var wsMed = ss.getSheetByName("Medicamentos");
+        var dadosMed = buscaBinariaSimples("Medicamentos", medEspecificoChaveMedicamentoGeral, 1);
+
+
+        var quantidadeMed = wsMed.getRange("H" + parseInt(dadosMed.linha)).getValue();
+        var novaQuantidadeMed = parseInt(quantidadeMed) - parseInt(quantidade);
+        wsMed.getRange("H" + parseInt(dadosMed.linha)).setValue(novaQuantidadeMed);
+        return true;
+    }
+
+    return false;
 }

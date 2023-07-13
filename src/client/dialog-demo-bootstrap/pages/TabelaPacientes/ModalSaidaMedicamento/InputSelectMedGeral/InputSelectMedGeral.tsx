@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react';
 
 export default function InputSelectMedGeral({ label, lista, data, setData }: { label: string, lista: any, data: string, setData: Function}) {
 
-    const [medGeral, setMedGeral] = useState(null);
-
     const handelSelect = (e: any) => {
         setData(e);
     }
