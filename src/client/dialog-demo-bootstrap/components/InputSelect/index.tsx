@@ -2,9 +2,6 @@ import Form from 'react-bootstrap/Form';
 import React, { useState } from 'react';
 
 
-
-// const InputSelect = ({ label, name, data, setData, required, lista}) => {
-
 export default function InputSelect({ label, name, data, setData, required, lista }:
     { label: string, name: string, data: string, setData: Function, required: boolean, lista: Array<string> }) {
     return (

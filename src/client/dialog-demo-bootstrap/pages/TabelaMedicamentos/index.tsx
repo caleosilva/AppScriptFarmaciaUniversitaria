@@ -96,7 +96,6 @@ function TabelaMedicamentos() {
 
     useEffect(() => {
         serverFunctions.getMedicamentos().then(string => { setData(JSON.parse(string)) }).catch(alert);
-
     }, []);
 
     useEffect(() => {
